@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using DB;
 using Microsoft.AspNetCore.Mvc;
-using Beacon.Models;
+using Models;
 
 namespace Beacon.Controllers
 {
@@ -12,7 +13,23 @@ namespace Beacon.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            List<StoreDataModel> locations = new List<StoreDataModel>();
+            //this using statement creates our connection to the database
+            using (var context = new ApplicationDBContext())
+            {
+                context.Database.EnsureCreated();
+                
+                if (context.Stores.Any())
+                {
+                    foreach (var location in context.Stores)
+                    {
+                        locations.Add(location);
+                    }
+                }
+            }
+
+
+            return View(locations);
         }
 
         public IActionResult About()

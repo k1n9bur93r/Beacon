@@ -1,6 +1,6 @@
 using System;
 
-namespace Beacon.Models
+namespace Models
 {
     public class ErrorViewModel
     {
