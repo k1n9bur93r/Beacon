@@ -1,0 +1,27 @@
+﻿@model StoreEventModel;
+@using Models;
+
+<div>
+    <h1 id="StoreTitle"> @Model.Store.Name </h1>
+    @if (Model.Events.Count() > 1)
+    {
+        <p>There are currently @Model.Events.Count events</p>
+    }
+    else if (Model.Events.Count() == 1)
+    {
+        <p>There is currently 1 event</p>
+    }
+    else
+    {
+        <p>There are no events</p>
+    }
+</div>
+<div>
+    @foreach (EventDataModel Event in Model.Events)
+    {
+    <div>   
+        <p>@Event.EventName </p>
+        <p>@Event.Participants</p>
+    </div>
+    }
+</div>

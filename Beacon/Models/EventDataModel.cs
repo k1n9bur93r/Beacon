@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace Beacon.Models
+namespace Models
 {
     public class EventDataModel
     {
@@ -15,7 +15,10 @@ namespace Beacon.Models
         public string EventName { get; set; }
         [Required]
         [MaxLength(2048)]
-        public string EventType { get; set; }
+        public string StoreFK { get; set; }
+        [Required]
+        [MaxLength(2048)]
+        public string GameFK { get; set; }
         [Required]
         [MaxLength(2048)]
         public DateTime StartDate { get; set; }

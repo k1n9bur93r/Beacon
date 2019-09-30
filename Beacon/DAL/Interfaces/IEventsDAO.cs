@@ -1,4 +1,5 @@
-﻿using Beacon.Models;
+﻿
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,8 @@ namespace Beacon.DAL
     {
 
         void Delete(EventDataModel data);
-        List<EventDataModel> Read();
+        List<EventDataModel> ReadAll();
+        List<EventDataModel> ReadByStore(string Id);
         void Insert(EventDataModel data);
         void Update(EventDataModel data);
     }

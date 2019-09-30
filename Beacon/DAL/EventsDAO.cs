@@ -1,5 +1,6 @@
 ﻿using Beacon.Models;
 using DB;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Beacon.DAL
     {
 
         #region Read
-        public List<EventDataModel> Read()
+        public List<EventDataModel> ReadAll()
         {
             List<EventDataModel> Meetups = new List<EventDataModel>();
             //this using statement creates our connection to the database
@@ -30,7 +31,7 @@ namespace Beacon.DAL
             return Meetups;
         }
 
-
+       
         #endregion
 
         #region Insert
@@ -68,7 +69,6 @@ namespace Beacon.DAL
                 context.Database.EnsureCreated();
                 var row = context.Events.FirstOrDefault(item => item.Id == data.Id);
                 row.EventName = data.EventName;
-                row.EventType = data.EventType;
                 row.Participants = data.Participants;
                 row.StartDate = data.StartDate;
                 row.EndDate = data.EndDate;
@@ -78,6 +78,16 @@ namespace Beacon.DAL
         }
 
         #endregion
-
+        public List<EventDataModel> ReadByStore(string id)
+        {
+            List<EventDataModel> Meetups = new List<EventDataModel>();
+            //this using statement creates our connection to the database
+            using (var context = new ApplicationDBContext())
+            {
+                context.Database.EnsureCreated();
+                Meetups = context.Events.Where(a => a.StoreFK == id).Where(b => b.Deleted != true).ToList();
+            }
+            return Meetups;
+        }
     }
 }

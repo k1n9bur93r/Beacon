@@ -1,5 +1,5 @@
 ﻿using Beacon.DAL;
-using Beacon.Models;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +19,7 @@ namespace Beacon.BL
         #region Read
         private List<EventDataModel> Read()
         {
-            return _EventsDAO.Read();
+            return _EventsDAO.ReadAll();
         }
         #endregion
 
@@ -43,5 +43,11 @@ namespace Beacon.BL
             _EventsDAO.Update(data);
         }
         #endregion
+
+        public List<EventDataModel> GetStoreEvents(string storeID)
+        {
+            List<EventDataModel> allEvents = _EventsDAO.ReadByStore(storeID);
+            return allEvents;
+        }
     }
 }
