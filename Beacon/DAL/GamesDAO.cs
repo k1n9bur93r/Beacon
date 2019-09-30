@@ -67,8 +67,8 @@ namespace Beacon.DAL
             {
                 context.Database.EnsureCreated();
                 var row = context.Games.FirstOrDefault(item => item.Id == data.Id);
-                row.Name = data.Name;
-                row.Type = data.Type;
+                row.GameName = data.GameName;
+                row.GameType = data.GameType;
                 context.Games.Update(row);
                 context.SaveChanges();
 

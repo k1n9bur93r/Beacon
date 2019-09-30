@@ -12,7 +12,10 @@ namespace Beacon.Models
         public string Id { get; set; }
         [Required]
         [MaxLength(2048)]
-        public string Name { get; set; }
+        public string EventName { get; set; }
+        [Required]
+        [MaxLength(2048)]
+        public string EventType { get; set; }
         [Required]
         [MaxLength(2048)]
         public DateTime StartDate { get; set; }

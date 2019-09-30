@@ -12,10 +12,10 @@ namespace Beacon.Models
         public string Id { get; set; }
         [Required]
         [MaxLength(2048)]
-        public string Name { get; set; }
+        public string GameName { get; set; }
         [Required]
         [MaxLength(2048)]
-        public string Type { get; set; }
+        public string GameType { get; set; }
         [Required]
         [MaxLength(1)]
         public int Deleted { get; set; }

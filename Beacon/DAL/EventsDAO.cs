@@ -67,7 +67,8 @@ namespace Beacon.DAL
             {
                 context.Database.EnsureCreated();
                 var row = context.Events.FirstOrDefault(item => item.Id == data.Id);
-                row.Name = data.Name;
+                row.EventName = data.EventName;
+                row.EventType = data.EventType;
                 row.Participants = data.Participants;
                 row.StartDate = data.StartDate;
                 row.EndDate = data.EndDate;
