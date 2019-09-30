@@ -26,6 +26,6 @@ namespace Beacon.Models
         public int Participants { get; set; }
         [Required]
         [MaxLength(1)]
-        public int Deleted { get; set; }
+        public bool Deleted { get; set; }
     }
 }

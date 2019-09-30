@@ -52,7 +52,7 @@ namespace Beacon
             {
                 context.Database.EnsureCreated();
                 var row = context.Stores.FirstOrDefault(item => item.Id == data.Id);
-                row.Deleted = 1;
+                row.Deleted = true;
                 context.Stores.Update(row);
                 context.SaveChanges();
             }

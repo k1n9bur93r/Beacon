@@ -11,7 +11,7 @@ namespace Beacon.BL
     {
         private readonly IGamesDAO _GamesDAO;
 
-        GamesBO()
+        public GamesBO()
         {
             _GamesDAO = new GamesDAO();
         }

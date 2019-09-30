@@ -18,6 +18,6 @@ namespace Beacon.Models
         public string GameType { get; set; }
         [Required]
         [MaxLength(1)]
-        public int Deleted { get; set; }
+        public bool Deleted { get; set; }
     }
 }

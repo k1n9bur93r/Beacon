@@ -13,23 +13,9 @@ namespace Beacon.Controllers
     {
         public IActionResult Index()
         {
-            List<StoreDataModel> locations = new List<StoreDataModel>();
-            //this using statement creates our connection to the database
-            using (var context = new ApplicationDBContext())
-            {
-                context.Database.EnsureCreated();
-                
-                if (context.Stores.Any())
-                {
-                    foreach (var location in context.Stores)
-                    {
-                        locations.Add(location);
-                    }
-                }
-            }
+            StoresBO storesBO = new StoresBO();
 
-
-            return View(locations);
+            return View(storesBO.Read());
         }
 
         public IActionResult About()

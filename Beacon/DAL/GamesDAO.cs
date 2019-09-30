@@ -51,7 +51,7 @@ namespace Beacon.DAL
             {
                 context.Database.EnsureCreated();
                 var row = context.Games.FirstOrDefault(item => item.Id == data.Id);
-                row.Deleted = 1;
+                row.Deleted = true;
                 context.Games.Update(row);
                 context.SaveChanges();
             }

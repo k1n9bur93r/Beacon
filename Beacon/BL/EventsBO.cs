@@ -11,7 +11,7 @@ namespace Beacon.BL
     {
         private readonly IEventsDAO _EventsDAO;
 
-        EventsBO()
+        public EventsBO()
         {
             _EventsDAO = new EventsDAO();
         }

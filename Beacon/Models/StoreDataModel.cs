@@ -27,7 +27,7 @@ namespace Models
         public string State {get;set;}
         [Required]
         [MaxLength(1)]
-        public int Deleted { get; set; }
+        public bool Deleted { get; set; }
 
     }
 }

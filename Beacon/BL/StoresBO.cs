@@ -11,12 +11,12 @@ namespace Beacon
     {
         private readonly IStoresDAO _StoresDAO;
 
-        StoresBO() {
+       public StoresBO() {
             _StoresDAO = new StoresDAO();
         }
 
         #region Read
-        private List<StoreDataModel> Read()
+        public List<StoreDataModel> Read()
         {
             return _StoresDAO.Read();
         }
