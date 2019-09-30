@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Beacon.Models;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ namespace DB
     {
         #region
         public DbSet<StoreDataModel> Stores { get; set; }
+        public DbSet<GameDataModel> Games { get; set; }
+        public DbSet<EventDataModel> Events { get; set; }
         #endregion
 
         public ApplicationDBContext()

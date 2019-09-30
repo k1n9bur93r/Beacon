@@ -1,27 +1,66 @@
-﻿@model List<Models.StoreDataModel>
+﻿@using Newtonsoft;  
+@model List<Models.StoreDataModel>
 @{
     ViewData["Title"] = "Home Page";
 }
 
-<h1>Hello world, this is Beacon!</h1>
-@if (Model.Count() > 0)
-{
-    <table style="width:100%">
-        <tr>
-            <th>Address</th>
-            <th>Zip</th>
-            <th>City</th>
-            <th>State</th>
-        </tr>
-        @foreach (StoreDataModel data in Model)
-        {
-            <tr>
-                <td>@data.Address</td>
-                <td>@data.Zip</td>
-                <td>@data.City</td>
-                <td>@data.State</td>
-            </tr>
-          
+<h1>Beacon</h1>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3">
+            @if (Model.Count() > 0)
+            {
+
+         
+                    @foreach (StoreDataModel data in Model)
+                    {
+                        
+                            <p>@data.Address</p>
+
+                    }
+               
+            }
+        </div>
+
+        <div id="map" style="height:500px;width:60%;margin:0px;padding:0px" class="col-sm-7"></div>
+    </div>
+        </div>
+
+
+<script>
+    var StoreCount=@Model.Count();
+    var StoreObj=@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented));
+    var map;
+    var geocoder;
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'),{
+            center: { lat: 36.269360, lng: -115.210790 },
+            zoom: 11,
+            disableDefaultUI: true,
+            clickableIcons: false,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+
+        });
+
+        geocoder = new google.maps.Geocoder();
+        for (var x = 0; x < StoreCount; x++) {
+            geocodeAddress(StoreObj[x].Address, geocoder, map);
         }
-        </table>
-}
+    }
+    
+    function geocodeAddress(address,geocoder, map) {
+        geocoder.geocode({ 'address': address }, function (results, status) {
+            if (status === 'OK') {
+                map.setCenter(results[0].geometry.location);
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location
+                });
+                }
+                else {
+                    //throw alert here 
+                }
+        });
+    }
+    </script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARC2ud3IHzqKVuh2ACGZXvSSb6r3cfGHA&callback=initMap"> </script>
