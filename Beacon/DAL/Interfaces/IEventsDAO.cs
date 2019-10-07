@@ -12,6 +12,7 @@ namespace Beacon.DAL
 
         void Delete(EventDataModel data);
         List<EventDataModel> ReadAll();
+        EventDataModel ReadEvent(string Id);
         List<EventDataModel> ReadByStore(string Id);
         void Insert(EventDataModel data);
         void Update(EventDataModel data);

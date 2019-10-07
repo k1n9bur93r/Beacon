@@ -49,5 +49,12 @@ namespace Beacon.BL
             List<EventDataModel> allEvents = _EventsDAO.ReadByStore(storeID);
             return allEvents;
         }
+
+        public void IncEventParticipants(string eventID)
+        {
+            EventDataModel events=_EventsDAO.ReadEvent(eventID);
+            events.Participants++;
+            _EventsDAO.Update(events);
+        }
     }
 }

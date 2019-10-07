@@ -35,3 +35,15 @@ body {
         display: none;
     }
 }
+
+
+
+
+/*Custom CSS*/
+
+.StoreDisplayItem 
+{
+cursor:pointer;
+border:solid;
+border-color:darkgray;
+}

@@ -12,27 +12,45 @@ namespace Beacon.DAL
     {
 
         #region Read
+        public EventDataModel ReadEvent(string id)
+        {
+            EventDataModel Meetups = new EventDataModel();
+            //this using statement creates our connection to the database
+            using (var context = new ApplicationDBContext())
+            {
+                context.Database.EnsureCreated();
+                if (id != String.Empty)
+                {
+                  Meetups = context.Events.Where(a => a.Id == id).Where(b => b.Deleted != true).FirstOrDefault();
+
+                }
+            }
+              
+            return Meetups;
+        }
+
+
+        #endregion
+
         public List<EventDataModel> ReadAll()
         {
+
             List<EventDataModel> Meetups = new List<EventDataModel>();
             //this using statement creates our connection to the database
             using (var context = new ApplicationDBContext())
             {
                 context.Database.EnsureCreated();
-
-                if (context.Events.Any())
-                {
-                    foreach (var Meetup in context.Events)
+                    if (context.Events.Any())
                     {
-                        Meetups.Add(Meetup);
+                        foreach (var Meetup in context.Events)
+                        {
+                            Meetups.Add(Meetup);
+                        }
                     }
-                }
             }
+
             return Meetups;
         }
-
-       
-        #endregion
 
         #region Insert
         public void Insert(EventDataModel data)

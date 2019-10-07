@@ -1,4 +1,4 @@
-﻿@using Newtonsoft;  
+﻿@using Newtonsoft;
 @model List<Models.StoreDataModel>
 @{
     ViewData["Title"] = "Home Page";
@@ -8,70 +8,28 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3">
-           <button id="GetTestData">Get Data</button>
+            <div id="StoreDataWrapper">
+                @foreach (StoreDataModel store in Model)
+                {
+                    <div>
+                        <h2>@store.Name</h2>
+                        <p>@store.Address</p>
+                    </div>
+                }
+            </div>
             <div id="StoreEventDataWrapper"> </div>
+            <button id="returnStoreDataWrapperView" hidden>Return to Store List</button>
         </div>
 
         <div id="map" style="height:500px;width:60%;margin:0px;padding:0px" class="col-sm-7"></div>
     </div>
-        </div>
+</div>
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/Gmap.js"></script>
+<script src="~/js/MainUI.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARC2ud3IHzqKVuh2ACGZXvSSb6r3cfGHA&callback=initMap"></script>
 <script>
-
-    var StoreCount =@Model.Count();
+     var StoreCount =@Model.Count();
     var StoreObj=@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented));
-    var map;
-    var geocoder;
-    function initMap() {
-        map = new google.maps.Map(document.getElementById('map'),{
-            center: { lat: 36.269360, lng: -115.210790 },
-            zoom: 11,
-            disableDefaultUI: true,
-            clickableIcons: false,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-
-        });
-
-        geocoder = new google.maps.Geocoder();
-        for (var x = 0; x < StoreCount; x++) {
-            geocodeAddress(StoreObj[x].Address, geocoder, map);
-        }
-    }
-    
-    function geocodeAddress(address,geocoder, map) {
-        geocoder.geocode({ 'address': address }, function (results, status) {
-            if (status === 'OK') {
-                map.setCenter(results[0].geometry.location);
-                var marker = new google.maps.Marker({
-                    map: map,
-                    position: results[0].geometry.location
-                });
-                }
-                else {
-                    //throw alert here 
-                }
-        });
-    }
-   
     </script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARC2ud3IHzqKVuh2ACGZXvSSb6r3cfGHA&callback=initMap"> </script>
-<script>
-    $('#GetTestData').on('click', function () {
-        console.log(StoreObj);
-        $.ajax({
-            type: "GET",
-            url: "/Home/GetStoreInfo",
-            contentType: "application/json;charset=utf-8",
-            data: { "JSON": JSON.stringify(StoreObj[0])},
-            dataType: "html"
-        }).done(function (data) {
-            console.log(data);
-            $('div#StoreEventDataWrapper').html(data);
-        })
-            .fail(function () {
-                alert('Failed to get data for ' + StoreObj[0].Name);
-            });
-
-    });
-</script>

@@ -15,13 +15,32 @@
     {
         <p>There are no events</p>
     }
+    <button id="AddEvent" StoreId="@Model.Store.Id"> Add New Event </button>
+    <div id="NewEventForm" hidden>
+        <form>
+            Event Name: <br>
+            <input id="EventNameInput" type="text" />
+            <br> Event Game: <br>
+            <select id="EventGameInput">
+                <option>Right now it is empty</option>
+            </select>
+            <br> Current Participants: <br>
+            <input id="EventParticipantsInput" type="text">
+            <br> Event Start Date: <br>
+            <input id="EventStartDate" type="datetime">
+            <br> Event EndDate : <br>
+            <input id="EventEndDate" type="datetime">
+        </form>
+        <button id="SubmitEvent">Submit New Event</button>
+        </div>
 </div>
 <div>
     @foreach (EventDataModel Event in Model.Events)
     {
-    <div>   
-        <p>@Event.EventName </p>
-        <p>@Event.Participants</p>
+    <div id="StoreEvent">   
+        <p id="name"> Name: @Event.EventName </p>
+        <p id="attending" num="@Event.Participants">People Attending: @Event.Participants</p>
+        <button id="IncStoreEvent" EventId="@Event.Id">I'm Going</button>
     </div>
     }
 </div>

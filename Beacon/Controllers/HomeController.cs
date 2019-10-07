@@ -36,6 +36,21 @@ namespace Beacon.Controllers
 
             return PartialView("Views/PartialViews/StoreEventData.cshtml", storeEvents);
         }
+        [HttpGet]
+        public string GetGames()
+        {
+            GamesBO gamesBO = new GamesBO();
+            List<GameDataModel> gameData= gamesBO.Read();
+
+            return JsonConvert.SerializeObject(gameData); 
+        }
+
+        [HttpGet]
+        public void IncEventAmount(string Id)
+        {
+            EventsBO eventsBO = new EventsBO();
+            eventsBO.IncEventParticipants(Id);
+        }
 
         public IActionResult About()
         {
@@ -60,36 +75,6 @@ namespace Beacon.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        protected string RenderPartialViewToString(string viewName, object model)
-        {
-            model = new object();
-            if (string.IsNullOrEmpty(viewName))
-                viewName = ControllerContext.ActionDescriptor.DisplayName;
-
-            ViewData.Model = model;
-
-            using (StringWriter sw = new StringWriter())
-            {
-                var engine = serviceProvider.GetService(typeof(ICompositeViewEngine)) as ICompositeViewEngine; // Resolver.GetService(typeof(ICompositeViewEngine)) as ICompositeViewEngine;
-                ViewEngineResult viewResult = engine.FindView(ControllerContext, viewName, false);
-
-                ViewContext viewContext = new ViewContext(
-                    ControllerContext,
-                    viewResult.View,
-                    ViewData,
-                    TempData,
-                    sw,
-                    new HtmlHelperOptions() //Added this parameter in
-                );
-
-                //Everything is async now!
-                var t = viewResult.View.RenderAsync(viewContext);
-                t.Wait();
-
-                return sw.GetStringBuilder().ToString();
-            }
         }
     }
 

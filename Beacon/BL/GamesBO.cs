@@ -17,7 +17,7 @@ namespace Beacon.BL
         }
 
         #region Read
-        private List<GameDataModel> Read()
+        public List<GameDataModel> Read()
         {
             return _GamesDAO.Read();
         }
