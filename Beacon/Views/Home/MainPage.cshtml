@@ -1,0 +1,35 @@
+﻿@using Newtonsoft;
+@model List<Models.StoreDataModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h1>Beacon</h1>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3">
+            <div id="StoreDataWrapper">
+                @foreach (StoreDataModel store in Model)
+                {
+                    <div>
+                        <h2>@store.Name</h2>
+                        <p>@store.Address</p>
+                    </div>
+                }
+            </div>
+            <div id="StoreEventDataWrapper"> </div>
+            <button id="returnStoreDataWrapperView" hidden>Return to Store List</button>
+        </div>
+
+        <div id="map" style="height:750px;width:70%;margin:0px;padding:0px" class="col-sm-7"></div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/Gmap.js"></script>
+<script src="~/js/MainUI.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARC2ud3IHzqKVuh2ACGZXvSSb6r3cfGHA&callback=initMap"></script>
+<script>
+     var StoreCount =@Model.Count();
+    var StoreObj=@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented));
+</script>

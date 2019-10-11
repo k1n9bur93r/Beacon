@@ -21,9 +21,7 @@ namespace Beacon.Controllers
         IServiceProvider serviceProvider;
         public IActionResult Index()
         {
-            StoresBO storesBO = new StoresBO();
-
-            return View(storesBO.Read());
+            return View();
         }
         [HttpGet]
         public IActionResult GetStoreInfo(string JSON)
@@ -43,6 +41,15 @@ namespace Beacon.Controllers
             List<GameDataModel> gameData= gamesBO.Read();
 
             return JsonConvert.SerializeObject(gameData); 
+        }
+
+        [HttpGet]
+       public ActionResult RunApp()
+        {
+            StoresBO storesBO = new StoresBO();
+
+            return View("Views/Home/MainPage.cshtml", storesBO.Read());
+            
         }
 
         [HttpGet]
