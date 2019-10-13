@@ -35,7 +35,7 @@ function initMap() {
 function checkAddress(address) {
     return new Promise(function (resolve, reject) {
         geocoder.geocode({ 'address': address }, function (results, status) {
-            if (status === 'OK') {
+            if (google.maps.GeocoderStatus.OK && results.length > 0) {
                 alert('Valid Address');
                 //change text color,green pop up icon maybe?
                 resolve(true);

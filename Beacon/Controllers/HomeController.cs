@@ -73,6 +73,12 @@ namespace Beacon.Controllers
             EventsBO eventsBO = new EventsBO();
             eventsBO.IncEventParticipants(Id);
         }
+        [HttpGet]
+        public void DecEventAmount(string Id)
+        {
+            EventsBO eventsBO = new EventsBO();
+            eventsBO.DecEventParticipants(Id);
+        }
 
         public IActionResult About()
         {

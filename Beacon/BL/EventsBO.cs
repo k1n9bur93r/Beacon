@@ -63,5 +63,11 @@ namespace Beacon.BL
             events.Participants++;
             _EventsDAO.Update(events);
         }
+        public void DecEventParticipants(string eventID)
+        {
+            EventDataModel events = _EventsDAO.ReadEvent(eventID);
+            events.Participants--;
+            _EventsDAO.Update(events);
+        }
     }
 }
