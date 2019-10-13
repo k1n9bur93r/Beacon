@@ -44,6 +44,21 @@ namespace Beacon.Controllers
         }
 
         [HttpGet]
+        public void CreateEvent(string JSON, bool IsToday,string Time) {
+
+            EventDataModel newEvent = JsonConvert.DeserializeObject<EventDataModel>(JSON);
+            EventsBO eventsBO = new EventsBO();
+            eventsBO.createNewEvent(newEvent,Time);
+        }
+
+        [HttpGet]
+        public void CreateStore(string JSON) {
+            StoreDataModel newStore = JsonConvert.DeserializeObject<StoreDataModel>(JSON);
+            StoresBO storeBO = new StoresBO();
+            storeBO.CreateNewStore(newStore);
+        }
+
+        [HttpGet]
        public ActionResult RunApp()
         {
             StoresBO storesBO = new StoresBO();

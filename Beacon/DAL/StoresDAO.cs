@@ -41,6 +41,7 @@ namespace Beacon
             {
                 context.Database.EnsureCreated();
                 context.Stores.Add(data);
+                context.SaveChanges();
             }
         }
         #endregion

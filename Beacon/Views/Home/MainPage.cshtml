@@ -9,16 +9,33 @@
     <div class="row">
         <div class="col-sm-3">
             <div id="StoreDataWrapper">
-                @foreach (StoreDataModel store in Model)
+                @for (int x = 0; x < Model.Count; x++)
                 {
-                    <div>
-                        <h2>@store.Name</h2>
-                        <p>@store.Address</p>
+                    <div StoreId="@Model[x].Id" id="StorePanel">
+                        <h2>@Model[x].Name</h2>
+                        <p>@Model[x].Address</p>
                     </div>
                 }
+                <button id="AddNewStore">Add New Store</button>
+                <div id="AddNewStoreWrapper" hidden>
+                    <form>
+                        <br>Store Name:<br>
+                        <input id="StoreNameInput" type="text">
+                        <br>Address:<br>
+                        <input id="StoreAddressInput" type="text">
+                        <br>Zip:<br>
+                        <input id="StoreZipInput" type="text">
+                        <br>City:<br>
+                        <input id="StoreCityInput" type="text">
+                        <br>State:<br>
+                        <input id="StoreStateInput" type="text">
+                    </form>
+                    <button id="SubmitNewStore"> Submit </button>
+                </div>
             </div>
             <div id="StoreEventDataWrapper"> </div>
             <button id="returnStoreDataWrapperView" hidden>Return to Store List</button>
+            
         </div>
 
         <div id="map" style="height:750px;width:70%;margin:0px;padding:0px" class="col-sm-7"></div>

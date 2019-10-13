@@ -17,22 +17,47 @@
     }
     <button id="AddEvent" StoreId="@Model.Store.Id"> Add New Event </button>
     <div id="NewEventForm" hidden>
+
+        
+
         <form>
             Event Name: <br>
             <input id="EventNameInput" type="text" />
             <br> Event Game: <br>
             <select id="EventGameInput">
-                <option>Right now it is empty</option>
+                <option>Select Game</option>
             </select>
-            <br> Current Participants: <br>
-            <input id="EventParticipantsInput" type="text">
-            <br> Event Start Date: <br>
-            <input id="EventStartDate" type="datetime">
-            <br> Event EndDate : <br>
-            <input id="EventEndDate" type="datetime">
+            <br>Event Date:
+            <br>Is the Event Today? 
+            <input id="EventToday"type="checkbox" checked>
+            <div id="StartTime" class="container">
+                    <div class="row">
+                        <div class='col-sm-6'>
+                            <input type='text' id="StartTimeValue" class="form-control" />
+                        </div>
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#StartTimeValue').datetimepicker({ format: 'LT'});
+                            });
+                        </script>
+                    </div>
+            </div>
+            <div id="StartDateTime" class="container" hidden>
+                Future Event Date:<br>
+                <div class="row">
+                    <div class='col-sm-6'>
+                        <input type='text'id="StartDateTimeValue" class="form-control" />
+                    </div>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#StartDateTimeValue').datetimepicker();
+                        });
+                    </script>
+                </div>
+            </div>
         </form>
         <button id="SubmitEvent">Submit New Event</button>
-        </div>
+    </div>
 </div>
 <div>
     @foreach (EventDataModel Event in Model.Events)

@@ -42,5 +42,11 @@ namespace Beacon
             _StoresDAO.Update(data);
         }
         #endregion
+
+        public void CreateNewStore(StoreDataModel newStore)
+        {
+            newStore.Id = Guid.NewGuid().ToString();
+            this.Insert(newStore);
+        }
     }
 }

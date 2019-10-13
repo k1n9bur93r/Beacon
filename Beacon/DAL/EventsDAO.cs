@@ -59,6 +59,7 @@ namespace Beacon.DAL
             {
                 context.Database.EnsureCreated();
                 context.Events.Add(data);
+                context.SaveChanges();
             }
         }
         #endregion
