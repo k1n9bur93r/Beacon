@@ -1,0 +1,11 @@
+﻿@model EventDataModel;
+@using Models;
+
+<div>
+        <div id="@Model.Id">
+            <p id="name"> Name: @Model.EventName </p>
+            <div id="attending" num="@Model.Participants">People Attending:<p id="number"> @Model.Participants</p></div>
+            <button id="IncStoreEvent" EventId="@Model.Id">I'm Going!</button>
+            <button id="DecStoreEvent" EventId="@Model.Id" hidden>Never Mind...</button>
+        </div>
+</div>

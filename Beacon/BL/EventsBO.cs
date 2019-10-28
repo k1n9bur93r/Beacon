@@ -44,12 +44,13 @@ namespace Beacon.BL
         }
         #endregion
 
-        public void createNewEvent(EventDataModel newEvent,string Time)
+        public EventDataModel createNewEvent(EventDataModel newEvent,string Time)
         {
             newEvent.Id = Guid.NewGuid().ToString();
             newEvent.StartDate = DateTime.Parse(Time);
             newEvent.EndDate = newEvent.StartDate.AddHours(8);
             this.Insert(newEvent);
+            return newEvent;
         }
         public List<EventDataModel> GetStoreEvents(string storeID)
         {

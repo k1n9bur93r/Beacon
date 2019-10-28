@@ -62,6 +62,7 @@ function checkAddress(address) {
                 });
                 marker.addListener('click', function (point) {
                     map.setZoom(15);
+                    marker.setIcon(null);
                     map.setCenter(this.getPosition());
                     getStoreData(this.ObjIndex);
                 });
@@ -74,4 +75,13 @@ function checkAddress(address) {
     }
 
 
-  
+function UpdateMarkerNotify(markerId)
+{
+    for (var x = 0; x < StoreObj.length; x++) {
+
+        if (markers[x].StoreId == markerId && markers[x].StoreId != ActiveStore)
+            markers[x].setIcon(NotifyIconUrl);
+    }
+
+   
+}

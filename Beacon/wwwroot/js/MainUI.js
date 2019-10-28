@@ -1,9 +1,19 @@
-﻿var SubbedEvents = 0;// variable that keeps track of all sessions that a user commits themsleves to 
+﻿var SubbedEvents = false;// variable that keeps track of all sessions that a user commits themsleves to 
+var SubbedEventsID = new Array();
+var ActiveStore;
 
+
+$('#Test').on('click', function () {
+    $('div#AlertBar').removeClass('Slider_Closed');
+});
 
 //Function that is called to get a detailed store panel
 //It is called either by clicking a Map marker or a Store's side panel
 function getStoreData(data) {
+
+    //set flag for which store is currently active 
+    ActiveStore = StoreObj[data].Id;
+
     $.ajax({ //set up the ajax call
         type: "GET",
         url: "/Home/GetStoreInfo",
@@ -23,13 +33,14 @@ function getStoreData(data) {
 }
 //if the return to store list view
 $('button#returnStoreDataWrapperView').on('click', function () {
+    ActiveStore = "none";
     $('div#StoreEventDataWrapper').toggle(false); //Hide advanced store panel
     $('div#StoreDataWrapper').toggle(true); //Show store panel list
     map.setZoom(11); //revert map zoom
     $('button#returnStoreDataWrapperView').toggle(false); //Hide return button
 });
 
-//If a store panel is clicked, we want to gather this stores information to display and adjust the map view
+//If a store panel is clicked, we want to gather this store's information to display and adjust the map view
 $('div#StorePanel').on('click', function () {
     var ClickId = $(this).attr('StoreId'); //get store ID
     var getIndex;//variable that holds a current object index
@@ -45,53 +56,32 @@ $('div#StorePanel').on('click', function () {
     }
     //Zoom the map into the corret marker,call the return store panel
     google.maps.event.trigger(markers[getIndex], 'click');
+   
 });
+
+
 // If an 'Im Going!' button is clicked for an event
 $('body').on('click', 'button[id*=\'IncStoreEvent\']', function () {
-    var id = $(this).attr('eventId'); //get the related event ID
-    var CurElement = $(this); //store a copy of the element
-    $.ajax({
-        type: "GET",
-        url: "/Home/IncEventAmount",
-        contentType: "application/json;charset=utf-8",
-        data: { "Id": id },
-        dataType: "html"
-    }).done(function () {
-        SubbedEvents++; //inc subbed events
-        var num = $(CurElement).siblings('p#attending').attr('num'); //get the current amount of particpants 
-
-        num++; //inc it
-        $(CurElement).siblings('p#attending').attr('num', num); //update the stored value
-        num = "People Attending: " + num;
-
-        $(CurElement).siblings('p#attending').text(num); //update the visible text
-        $(CurElement).toggle(false); //hide ths clicked button
-        $(CurElement).siblings('button#DecStoreEvent').toggle(true); //show the regert button
-    });
+    if (!SubbedEvents) {
+        var id = $(this).attr('eventId'); //get the related event ID
+        PostEventUpdate(id, 1);
+        SubbedEvents = true;
+        $(this).toggle(false); //hide ths clicked button
+        $(this).siblings('button#DecStoreEvent').toggle(true); //show the regert button
+    }
 });
+
 // If an 'Never Mind...' button is clicked for an event
 $('body').on('click', 'button[id*=\'DecStoreEvent\']', function () {
-    var id = $(this).prev().attr('eventId');//get the related event ID
-    var CurElement = $(this);//store a copy of the element
-    $.ajax({
-        type: "GET",
-        url: "/Home/DecEventAmount",
-        contentType: "application/json;charset=utf-8",
-        data: { "Id": id },
-        dataType: "html"
-    }).done(function () {
-        SubbedEvents--;//Dec subbed events
-        var num = $(CurElement).siblings('p#attending').attr('num');//get the current amount of particpants 
-
-        num--;
-        $(CurElement).siblings('p#attending').attr('num', num);//update the stored value
-        num = "People Attending: " + num;
-
-        $(CurElement).siblings('p#attending').text(num);//update the visible text
-        $(CurElement).toggle(false);//hide ths clicked button
-        $(CurElement).siblings('button#IncStoreEvent').toggle(true);//show the I'm in button
-    });
+    if (SubbedEvents) {
+        var id = $(this).prev().attr('eventId');//get the related event ID
+        PostEventUpdate(id, -1);
+        SubbedEvents = false;
+        $(this).toggle(false);//hide ths clicked button
+        $(this).siblings('button#IncStoreEvent').toggle(true);//show the I'm in button
+    }
 });
+
 //if the add event button was clicked, g
 $('body').on('click', 'button[id*=\'AddEvent\']', function () {
     var element = $(this); //get a copy of the element
@@ -169,25 +159,8 @@ else
     }
     //create a EventModel payload
     var dataPayload = { "Id": 69, "EventName": $('#EventNameInput').val(), "StoreFK": $('button#AddEvent').attr('StoreId'), "GameFK": $('select#EventGameInput').children(':selected').attr('id'), "StartDate": tempDate.format(), "EndDate": tempDate.format(), "Deleted": "False", "Participants": 0 };
-    $.ajax({
-            type: "GET",
-            url: "/Home/CreateEvent",
-        contentType: "application/json;charset=utf-8",
-        data: { "JSON": JSON.stringify(dataPayload), "IsToday": isToday, "Time": moment(startDate).format('MM/DD/YYYY hh:mm') },
-            dataType: "html"
-    }
-    ).done(function ()
-    {
-        //reload the page 
-        window.location.reload(); 
-        }
-    ).fail(function ()
-    {
-        //Error message here 
-    }
-        );
 
-
+    PostNewEvent(JSON.stringify(dataPayload), isToday, moment(startDate).format('MM/DD/YYYY hh:mm'), $('button#AddEvent').attr('StoreId'));
 });
 //if the 'Add new Store' button is clicked
 $('button#AddNewStore').on('click', function () {

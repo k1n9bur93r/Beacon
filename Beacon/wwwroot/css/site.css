@@ -47,3 +47,19 @@ cursor:pointer;
 border:solid;
 border-color:darkgray;
 }
+
+.Slider {
+    overflow-y: hidden;
+    position:absolute;
+    max-height: 100px; /* approximate max height */
+    opacity:1;
+    transition-property: all;
+    transition-duration: .5s;
+    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+    /*Themeing*/
+    background-color:lightcoral;
+}
+.Slider_Closed {
+    max-height: 0px!important;
+    opacity:0;
+}

@@ -34,6 +34,7 @@ namespace Beacon.Controllers
 
             return PartialView("Views/PartialViews/StoreEventData.cshtml", storeEvents);
         }
+
         [HttpGet]
         public string GetGames()
         {
@@ -44,11 +45,11 @@ namespace Beacon.Controllers
         }
 
         [HttpGet]
-        public void CreateEvent(string JSON, bool IsToday,string Time) {
+        public EventDataModel CreateEvent(string JSON, bool IsToday,string Time) {
 
             EventDataModel newEvent = JsonConvert.DeserializeObject<EventDataModel>(JSON);
             EventsBO eventsBO = new EventsBO();
-            eventsBO.createNewEvent(newEvent,Time);
+           return newEvent= eventsBO.createNewEvent(newEvent,Time);
         }
 
         [HttpGet]
@@ -104,6 +105,10 @@ namespace Beacon.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
+
+
     }
 
 }

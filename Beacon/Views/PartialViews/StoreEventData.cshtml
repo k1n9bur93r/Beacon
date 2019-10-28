@@ -1,7 +1,7 @@
 ﻿@model StoreEventModel;
 @using Models;
 
-<div>
+<div style="height:750px;">
     <h1 id="StoreTitle"> @Model.Store.Name </h1>
     @if (Model.Events.Count() > 1)
     {
@@ -18,7 +18,7 @@
     <button id="AddEvent" StoreId="@Model.Store.Id"> Add New Event </button>
     <div id="NewEventForm" hidden>
 
-        
+
 
         <form>
             Event Name: <br>
@@ -28,25 +28,25 @@
                 <option>Select Game</option>
             </select>
             <br>Event Date:
-            <br>Is the Event Today? 
-            <input id="EventToday"type="checkbox" checked>
+            <br>Is the Event Today?
+            <input id="EventToday" type="checkbox" checked>
             <div id="StartTime" class="container">
-                    <div class="row">
-                        <div class='col-sm-6'>
-                            <input type='text' id="StartTimeValue" class="form-control" />
-                        </div>
-                        <script type="text/javascript">
-                            $(function () {
-                                $('#StartTimeValue').datetimepicker({ format: 'LT'});
-                            });
-                        </script>
+                <div class="row">
+                    <div class='col-sm-6'>
+                        <input type='text' id="StartTimeValue" class="form-control" />
                     </div>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#StartTimeValue').datetimepicker({ format: 'LT' });
+                        });
+                    </script>
+                </div>
             </div>
             <div id="StartDateTime" class="container" hidden>
                 Future Event Date:<br>
                 <div class="row">
                     <div class='col-sm-6'>
-                        <input type='text'id="StartDateTimeValue" class="form-control" />
+                        <input type='text' id="StartDateTimeValue" class="form-control" />
                     </div>
                     <script type="text/javascript">
                         $(function () {
@@ -58,15 +58,15 @@
         </form>
         <button id="SubmitEvent">Submit New Event</button>
     </div>
-</div>
-<div>
-    @foreach (EventDataModel Event in Model.Events)
-    {
-    <div id="StoreEvent">
-        <p id="name"> Name: @Event.EventName </p>
-        <p id="attending" num="@Event.Participants">People Attending: @Event.Participants</p>
-        <button id="IncStoreEvent" EventId="@Event.Id">I'm Going!</button>
-        <button id="DecStoreEvent" EventId="@Event.Id" hidden>Never Mind...</button>
+    <div id="EventList" >
+        @foreach (EventDataModel Event in Model.Events)
+        {
+            <div id="@Event.Id">
+                <p id="name"> Name: @Event.EventName </p>
+                <div id="attending" num="@Event.Participants">People Attending:<p id="number"> @Event.Participants</p></div>
+                <button id="IncStoreEvent" EventId="@Event.Id">I'm Going!</button>
+                <button id="DecStoreEvent" EventId="@Event.Id" hidden>Never Mind...</button>
+            </div>
+        }
     </div>
-    }
 </div>
