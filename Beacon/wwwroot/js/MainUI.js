@@ -102,12 +102,12 @@ $('body').on('click', 'button[id*=\'AddEvent\']', function () {
     ).done(function (data)
     {
         data = JSON.parse(data);
-        $(element).next().children('form').children('select').children().remove();//clean dropdown
-        $(element).next().children('form').children('select').append('<option >Select Game</option>');//add default opiton
+        $('select#EventGameInput').children().remove();//clean dropdown
+        $('select#EventGameInput').append('<option >Select Game</option>');//add default opiton
         //populate all returned game types 
         for (var x = 0; x < data.length; x++)
         {
-            $(element).next().children('form').children('select').append('<option id="' + data[x].Id+ '">' + data[x].GameName + '</option>');
+            $('select#EventGameInput').append('<option id="' + data[x].Id+ '">' + data[x].GameName + '</option>');
         }
     }
     ).fail(function ()
@@ -159,7 +159,6 @@ else
     }
     //create a EventModel payload
     var dataPayload = { "Id": 69, "EventName": $('#EventNameInput').val(), "StoreFK": $('button#AddEvent').attr('StoreId'), "GameFK": $('select#EventGameInput').children(':selected').attr('id'), "StartDate": tempDate.format(), "EndDate": tempDate.format(), "Deleted": "False", "Participants": 0 };
-
     PostNewEvent(JSON.stringify(dataPayload), isToday, moment(startDate).format('MM/DD/YYYY hh:mm'), $('button#AddEvent').attr('StoreId'));
 });
 //if the 'Add new Store' button is clicked
