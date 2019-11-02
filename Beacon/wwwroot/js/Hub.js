@@ -57,3 +57,18 @@ connection.on("GetNewEvent", function (returnData, StoreId) {
     UpdateMarkerNotify(storeId);
 });
 
+
+//create new store event
+function PostNewStore(newStore) {
+    connection.invoke("PostNewStore", JSON.stringify(newStore)).catch(function (err) {
+        return console.error(err.toString());
+    });
+}
+
+//get storeEvent
+connection.on("GetNewStore", function (html, JSONs) {
+    $('div#StoreDataWrapper').prepend(html);
+    var store = JSON.parse(JSONs);
+    StoreObj.push(JSON.parse(JSONs));
+    geocodeAddress(store.Address,store.Id,StoreObj.length-1,geocoder, map);
+});

@@ -41,7 +41,7 @@ $('button#returnStoreDataWrapperView').on('click', function () {
 });
 
 //If a store panel is clicked, we want to gather this store's information to display and adjust the map view
-$('div#StorePanel').on('click', function () {
+$('body').on('click','div#StorePanel', function () {
     var ClickId = $(this).attr('StoreId'); //get store ID
     var getIndex;//variable that holds a current object index
 
@@ -177,29 +177,13 @@ $('button#SubmitNewStore').on('click', function () {
     //make a variable to check the addresss
     var newAddress = $('input#StoreAddressInput').val() + ' ' + $('input#StoreZipInput').val() + ' ' + $('input#StoreCityInput').val() + ' ' + $('input#StoreCityInput').val();
     //create an async promise, function calls google Geocode to check if the address is valid 
+    //checkAddress(newAddress);
     checkAddress(newAddress).then(info => {
-        //if the address is valid, create a StoreDataModel payload and send it out 
         var dataPayload = { "Name": $('input#StoreNameInput').val(), "Id": 69, "Address": $('input#StoreAddressInput').val(), "Zip": $('input#StoreZipInput').val(), "City": $('input#StoreCityInput').val(), "State": $('input#StoreStateInput').val(), "Deleted": false };
-
-        $.ajax(
-            {
-                type: "GET",
-                url: "/Home/CreateStore",
-                contentType: "application/json;charset=utf-8",
-                data: { "JSON": JSON.stringify(dataPayload) },
-                dataType: "html"
-            }
-        ).done(function () {
-            window.location.reload();
-        }
-        ).fail(function () {
-            //Error Message Here
-        }
-        );
+        PostNewStore(dataPayload);
     }).catch(badfo => {
         return;
+        //fail snack bar
     });
-
-
-
+  
 });

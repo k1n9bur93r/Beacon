@@ -32,6 +32,7 @@ namespace Beacon
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
             services.AddSignalR();
                 services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

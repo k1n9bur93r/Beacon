@@ -53,10 +53,11 @@ namespace Beacon.Controllers
         }
 
         [HttpGet]
-        public void CreateStore(string JSON) {
+        public StoreDataModel CreateStore(string JSON) {
             StoreDataModel newStore = JsonConvert.DeserializeObject<StoreDataModel>(JSON);
             StoresBO storeBO = new StoresBO();
             storeBO.CreateNewStore(newStore);
+            return newStore;
         }
 
         [HttpGet]
