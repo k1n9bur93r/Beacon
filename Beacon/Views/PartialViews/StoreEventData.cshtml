@@ -1,72 +1,98 @@
 ﻿@model StoreEventModel;
 @using Models;
+@{int curPartAmt = 0, currentEvent = 0,totPartAmt=0;
+    bool [] isCurrent= new bool[Model.Events.Count()];
+    }
 
-<div style="height:750px;">
+<div style="height:100%;">
+    @foreach (EventDataModel Event in Model.Events)
+    {
+
+        if (Event.EndDate > DateTime.Now)
+        {
+            currentEvent++;
+            curPartAmt+= Event.Participants;
+        }
+        else {
+            totPartAmt += Event.Participants;
+        }
+    }
     <h1 id="StoreTitle"> @Model.Store.Name </h1>
     @if (Model.Events.Count() > 1)
     {
-        <p>There are currently @Model.Events.Count events</p>
-    }
-    else if (Model.Events.Count() == 1)
-    {
-        <p>There is currently 1 event</p>
+        <div>
+            @if (currentEvent > 0)
+            {
+                <h3 class="Side_By_Side_Data">Current Events:</h3>
+                <h3 class="Side_By_Side_Data"> @currentEvent</h3>
+            }
+        </div>
+        <div id="CurrentParts">
+            <h4 class="Side_By_Side_Data">Current Participants:</h4>
+            <h4 id="partCount" class="Side_By_Side_Data">@curPartAmt</h4>
+        </div>
+        <div id="TotalParts">
+            <h4 class="Side_By_Side_Data">Upcomming Participants:</h4>
+            <h4 id="partCount" class="Side_By_Side_Data">@totPartAmt</h4>
+        </div>
     }
     else
     {
-        <p>There are no events</p>
+        <h3>There are no events</h3>
     }
-    <button id="AddEvent" StoreId="@Model.Store.Id"> Add New Event </button>
-    <div id="NewEventForm" hidden>
 
 
-
-        <form>
-            Event Name: <br>
-            <input id="EventNameInput" type="text" />
-            <br> Event Game: <br>
-            <select id="EventGameInput">
-                <option>Select Game</option>
-            </select>
-            <br>Event Date:
-            <br>Is the Event Today?
-            <input id="EventToday" type="checkbox" checked>
-            <div id="StartTime" class="container">
-                <div class="row">
-                    <div class='col-sm-6'>
-                        <input type='text' id="StartTimeValue" class="form-control" />
-                    </div>
-                    <script type="text/javascript">
-                        $(function () {
-                            $('#StartTimeValue').datetimepicker({ format: 'LT' });
-                        });
-                    </script>
-                </div>
-            </div>
-            <div id="StartDateTime" class="container" hidden>
-                Future Event Date:<br>
-                <div class="row">
-                    <div class='col-sm-6'>
-                        <input type='text' id="StartDateTimeValue" class="form-control" />
-                    </div>
-                    <script type="text/javascript">
-                        $(function () {
-                            $('#StartDateTimeValue').datetimepicker();
-                        });
-                    </script>
-                </div>
-            </div>
-        </form>
-        <button id="SubmitEvent">Submit New Event</button>
-    </div>
-    <div id="EventList" >
-        @foreach (EventDataModel Event in Model.Events)
+    <h3>Current:</h3>
+    <div id="currentEvents" class="Panel_Margin">
+        @if (currentEvent != 0)
         {
-            <div id="@Event.Id">
-                <p id="name"> Name: @Event.EventName </p>
-                <div id="attending" num="@Event.Participants">People Attending:<p id="number"> @Event.Participants</p></div>
-                <button id="IncStoreEvent" EventId="@Event.Id">I'm Going!</button>
-                <button id="DecStoreEvent" EventId="@Event.Id" hidden>Never Mind...</button>
-            </div>
+            @foreach (EventDataModel Event in Model.Events)
+            {
+                @if (DateTime.Now < Event.EndDate)
+                {
+                    isCurrent[Model.Events.FindIndex(a => a.Id == Event.Id)] = true;
+                    <div id="@Event.Id" class="Event_Margin">
+                        <p id="name"> Name: @Event.EventName </p>
+                        <div>
+                            <div id="attending" num="@Event.Participants" class="Side_By_Side_Data">People Attending:<p id="number" class="Side_By_Side_Data"> @Event.Participants</p></div>
+                        </div>
+                        <button id="IncStoreEvent" EventId="@Event.Id">I'm Going!</button>
+                        <button id="DecStoreEvent" EventId="@Event.Id" hidden>Never Mind...</button>
+                    </div>
+                }
+
+            }
+        }
+        else
+        {
+            <h4>There are no current events.</h4>
         }
     </div>
+    <h3>Scheduled: (notnowtho)</h3>
+    <div id="EventList" class="Panel_Margin">
+        @foreach (EventDataModel Event in Model.Events)
+        {
+            if (!isCurrent[Model.Events.FindIndex(a => a.Id == Event.Id)] == true)
+            {
+                <div id="@Event.Id" class="Event_Margin">
+                    <p id="name"> Name: @Event.EventName </p>
+                    <div>
+                        <div id="attending" num="@Event.Participants" class="Side_By_Side_Data">People Attending:<p id="number" class="Side_By_Side_Data"> @Event.Participants</p></div>
+                    </div>
+                    <button id="IncStoreEvent" EventId="@Event.Id">I'm Going!</button>
+                    <button id="DecStoreEvent" EventId="@Event.Id" hidden>Never Mind...</button>
+                </div>
+            }
+        }
+    </div>
+
+    <div class="Panel_Margin">
+        <button id="AddEvent" StoreId="@Model.Store.Id"> Add New Event </button>
+        <div id="NewEventForm" hidden>
+            <partial name="~/Views/PartialViews/AddEventForm.cshtml" />
+
+            <button id="SubmitEvent">Submit New Event</button>
+        </div>
+    </div>
+
 </div>

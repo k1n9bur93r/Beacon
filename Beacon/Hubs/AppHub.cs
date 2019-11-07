@@ -31,7 +31,9 @@ namespace Beacon.Hubs
 
             EventDataModel newEvent=controller.CreateEvent(eventData,IsToday,Time);
             string html= "<div><div id=\"" + newEvent.Id + "\"><p id=\"name\"> Name: " + newEvent.EventName + " </p> <div id=\"attending\" num=\"" + newEvent.Participants + "\">People Attending:<p id=\"number\"> " + newEvent.Participants + "</p></div><button id=\"IncStoreEvent\" EventId=\"" + newEvent.Id + "\">I'm Going!</button><button id=\"DecStoreEvent\" EventId=\"" + newEvent.Id + "\" hidden>Never Mind...</button></div></div>";
-            await Clients.All.SendAsync("GetNewEvent", html,StoreId);
+            StoresBO storesBO = new StoresBO();
+            StoreDataModel temp = storesBO.ReadIndividual(newEvent.StoreFK);
+            await Clients.All.SendAsync("GetNewEvent", html,StoreId,newEvent.EventName,temp.Name);
         }
 
         public async Task PostNewStore(string newStore) {

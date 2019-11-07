@@ -1,0 +1,37 @@
+﻿
+    <form>
+        Event Name: <br>
+        <input id="EventNameInput" type="text" />
+        <br> Event Game: <br>
+        <select id="EventGameInput">
+            <option>Select Game</option>
+        </select>
+        <br>Event Date:
+        <br>Is the Event Today?
+        <input id="EventToday" type="checkbox" checked>
+        <div id="StartTime" class="container">
+            <div class="row">
+                <div class='col-sm-6'>
+                    <input type='text' id="StartTimeValue" class="form-control" />
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        $('#StartTimeValue').datetimepicker({ format: 'LT' });
+                    });
+                </script>
+            </div>
+        </div>
+        <div id="StartDateTime" class="container" hidden>
+            Future Event Date:<br>
+            <div class="row">
+                <div class='col-sm-6'>
+                    <input type='text' id="StartDateTimeValue" class="form-control" />
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        $('#StartDateTimeValue').datetimepicker();
+                    });
+                </script>
+            </div>
+        </div>
+    </form>

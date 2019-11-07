@@ -28,7 +28,7 @@ function getStoreData(data) {
     })
         .fail(function () {
             //Error Message
-            alert('Failed to get data for ' + StoreObj[0].Name);
+            DisplaySnackBar("Failed to get data for " + StoreObj[data].Name + "", 3);
         });
 }
 //if the return to store list view
@@ -111,8 +111,8 @@ $('body').on('click', 'button[id*=\'AddEvent\']', function () {
         }
     }
     ).fail(function ()
-        {
-            //Error Message here
+    {
+        DisplaySnackBar("Unable to get game drop down data", 3);
         });
 });
 //if the 'is the event today?' check box is clicked
@@ -187,3 +187,44 @@ $('button#SubmitNewStore').on('click', function () {
     });
   
 });
+//snack bar logic 
+function DisplaySnackBar(msgtext, state) {
+    // Get the snackbar DIV'
+    $("div#snackbar").text(msgtext);
+    $("div#snackbar").addClass('show');
+    var classname;
+    classname = 'temp';
+    switch (state)
+    {
+        case 0:
+            {
+        $("div#snackbar").addClass('SuccessStatus');
+        classname = 'SuccessStatus';
+                break;
+            }
+        case 1:
+            {
+        $("div#snackbar").addClass('InfoStatus');
+        classname = 'InfoStatus';
+                break;
+            }
+        case 2:
+            {
+        $("div#snackbar").addClass('WarningStatus');
+        classname = 'WarningStatus';
+                break;
+            }
+        case 3:
+            {
+        $("div#snackbar").addClass('ErrorStatus');
+        classname = 'ErrorStatus';
+                break;
+            }
+    }
+
+    // After 3 seconds, remove the show class from DIV
+    setTimeout(function () {
+        $("div#snackbar").removeClass('show');
+        $("div#snackbar").removeClass(classname);
+    }, 3000);
+}

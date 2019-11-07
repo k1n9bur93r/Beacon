@@ -36,13 +36,13 @@ function checkAddress(address) {
     return new Promise(function (resolve, reject) {
         geocoder.geocode({ 'address': address }, function (results, status) {
             if (google.maps.GeocoderStatus.OK && results.length > 0) {
-               // alert('Valid Address');
+                DisplaySnackBar('Valid Address',0);
                 //change text color,green pop up icon maybe?
                resolve(true);
             }
             else {
                 //change text color,red pop up icon maybe?
-                alert('Invalid Address');
+                DisplaySnackBar('Invalid Address', 3);
                reject(false);
             }
         });

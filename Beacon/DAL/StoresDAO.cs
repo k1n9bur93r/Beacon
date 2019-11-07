@@ -10,7 +10,27 @@ namespace Beacon
 { 
     public class StoresDAO : IStoresDAO
     {
+        #region ReadIndividual
+        public StoreDataModel ReadIndividual(string storeFK)
+        {
+        StoreDataModel locations = new StoreDataModel();
+            //this using statement creates our connection to the database
+            using (var context = new ApplicationDBContext())
+            {
+                context.Database.EnsureCreated();
 
+                if (context.Stores.Any())
+                {
+                    if (storeFK != String.Empty)
+                    {
+                        locations = context.Stores.Where(a => a.Id == storeFK).Where(b => b.Deleted != true).FirstOrDefault();
+
+                    }
+                }
+            }
+            return locations;
+        }
+        #endregion
         #region Read
         public List<StoreDataModel> Read()
         {
