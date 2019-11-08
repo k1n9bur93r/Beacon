@@ -24,26 +24,26 @@
             @if (currentEvent > 0)
             {
                 <h3 class="Side_By_Side_Data">Current Events:</h3>
-                <h3 class="Side_By_Side_Data"> @currentEvent</h3>
+                <h3 id="CurrentEvents"class="Side_By_Side_Data"> @currentEvent</h3>
             }
         </div>
         <div id="CurrentParts">
             <h4 class="Side_By_Side_Data">Current Participants:</h4>
-            <h4 id="partCount" class="Side_By_Side_Data">@curPartAmt</h4>
+            <h4 id="curPartCount" class="Side_By_Side_Data">@curPartAmt</h4>
         </div>
         <div id="TotalParts">
             <h4 class="Side_By_Side_Data">Upcomming Participants:</h4>
-            <h4 id="partCount" class="Side_By_Side_Data">@totPartAmt</h4>
+            <h4 id="upPartCount" class="Side_By_Side_Data">@totPartAmt</h4>
         </div>
     }
     else
     {
-        <h3>There are no events</h3>
+        <h3 id="NoCurrent">There are no events</h3>
     }
 
 
     <h3>Current:</h3>
-    <div id="currentEvents" class="Panel_Margin">
+    <div id="CurrentEventList" class="Panel_Margin">
         @if (currentEvent != 0)
         {
             @foreach (EventDataModel Event in Model.Events)
@@ -51,7 +51,7 @@
                 @if (DateTime.Now < Event.EndDate)
                 {
                     isCurrent[Model.Events.FindIndex(a => a.Id == Event.Id)] = true;
-                    <div id="@Event.Id" class="Event_Margin">
+                    <div id="@Event.Id" EndTime="@Event.EndDate"class="Event_Margin">
                         <p id="name"> Name: @Event.EventName </p>
                         <div>
                             <div id="attending" num="@Event.Participants" class="Side_By_Side_Data">People Attending:<p id="number" class="Side_By_Side_Data"> @Event.Participants</p></div>
@@ -74,7 +74,7 @@
         {
             if (!isCurrent[Model.Events.FindIndex(a => a.Id == Event.Id)] == true)
             {
-                <div id="@Event.Id" class="Event_Margin">
+                <div id="@Event.Id" EndTime="@Event.EndDate" class="Event_Margin">
                     <p id="name"> Name: @Event.EventName </p>
                     <div>
                         <div id="attending" num="@Event.Participants" class="Side_By_Side_Data">People Attending:<p id="number" class="Side_By_Side_Data"> @Event.Participants</p></div>
@@ -88,11 +88,7 @@
 
     <div class="Panel_Margin">
         <button id="AddEvent" StoreId="@Model.Store.Id"> Add New Event </button>
-        <div id="NewEventForm" hidden>
-            <partial name="~/Views/PartialViews/AddEventForm.cshtml" />
-
-            <button id="SubmitEvent">Submit New Event</button>
-        </div>
+       
     </div>
 
 </div>

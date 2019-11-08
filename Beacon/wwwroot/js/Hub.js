@@ -24,29 +24,51 @@ function PostEventUpdate(event,action) {
 
 //Recieve event update
 
-connection.on("GetEventUpdate", function (event, store, action) {
+connection.on("GetEventUpdate", function (event, store, action,current,storeName) {
     if (store == ActiveStore) {
-        var number = $('div#' + event + '').children('div#attending').children("p#number").text();
-        var totalnumber = $('p#partCount').text();
+        var number = $('div#' + event + '').children('div').children('div#attending').children("p#number").text();
+        var totalnumber;
         if (action == 1) {
             number++;
-            totalnumber++;
-            $('div#' + event + '').children('div#attending').children("p#number").text(number);
-            $('p#partCount').text(totalnumber);
+            $('div#' + event + '').children('div').children('div#attending').children("p#number").text(number);
+            if (current) {
+                totalnumber = $('h4#curPartCount').text();
+                totalnumber++;
+                $('h4#curPartCount').text(totalnumber);
+            }
+            else {
+                totalnumber = $('h4#upPartCount').text();
+                totalnumber++;
+                $('h4#upPartCount').text(totalnumber);
+            }
+
         }
         else if (action == -1) {
             number--;
-            totalnumber--;
             if (number < 0) number = 0;
-            $('div#' + event + '').children('div#attending').children("p#number").text(number);
-            $('p#partCount').text(totalnumber);
+            $('div#' + event + '').children('div').children('div#attending').children("p#number").text(number);
+            if (current) {
+                totalnumber = $('h4#curPartCount').text();
+                totalnumber--;
+                $('h4#curPartCount').text(totalnumber);
+            }
+            else {
+                totalnumber = $('h4#upPartCount').text();
+                totalnumber--;
+                $('h4#upPartCount').text(totalnumber);
+            }
         }
         DisplaySnackBar("participance adjusted ", 0);
     }
     else {
-        DisplaySnackBar("More people are going to an event at " + store + "", 1);
-        UpdateMarkerNotify(store);
+
+        if (action == 1 && current == true)
+        {
+    DisplaySnackBar("More people are going to an event at " + storeName + "", 1);
+        }
     }
+        UpdateMarkerNotify(store);
+    
 
 });
 
@@ -63,8 +85,13 @@ function PostNewEvent(eventData, IsToday, Time, StoreId) {
 //Receve New Event
 connection.on("GetNewEvent", function (returnData, StoreId, EventName, StoreName) {
     if (StoreId == ActiveStore) {
-        $('div#EventList').append(returnData);
+        $('div#CurrentEventList').append(returnData);
         DisplaySnackBar("Event added", 0);
+
+        var data = $('h3#CurrentEvents').text();
+        data++;
+        $('h3#CurrentEvents').text(data);
+        $('h4#NoCurrent').toggle(false);
     }
     else
     {

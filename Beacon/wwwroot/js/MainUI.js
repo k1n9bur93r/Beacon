@@ -64,6 +64,7 @@ $('body').on('click','div#StorePanel', function () {
 $('body').on('click', 'button[id*=\'IncStoreEvent\']', function () {
     if (!SubbedEvents) {
         var id = $(this).attr('eventId'); //get the related event ID
+        
         PostEventUpdate(id, 1);
         SubbedEvents = true;
         $(this).toggle(false); //hide ths clicked button
@@ -86,11 +87,11 @@ $('body').on('click', 'button[id*=\'DecStoreEvent\']', function () {
 $('body').on('click', 'button[id*=\'AddEvent\']', function () {
     var element = $(this); //get a copy of the element
     //if the form is not visible, make it visible, if visible make invisible  
-    if ($(this).next().is(':visible') == false) {
-        $(this).next().toggle(true);
+    if ($('div#NewEventForm').hasClass('show') == true) {
+        $('div#NewEventForm').removeClass('show');
     }
     else {
-        $(this).next().toggle(false);
+        $('div#NewEventForm').addClass('show')
     }
     //get the dropdown data for game types
     $.ajax({

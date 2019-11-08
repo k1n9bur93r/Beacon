@@ -15,13 +15,18 @@ namespace Beacon.Hubs
     {
         public async Task PostEventUpdate(string eventId,string storeId,int function)
         {
+            bool isCurrentEvent = false;
             EventsBO eventBo = new EventsBO();
+            StoresBO storesBO = new StoresBO();
             if (function == 1)
                 eventBo.IncEventParticipants(eventId);
             else if (function == -1)
                 eventBo.DecEventParticipants(eventId);
-
-            await Clients.All.SendAsync("GetEventUpdate", eventId,storeId,function);
+            List<EventDataModel>storeEvent=eventBo.GetStoreEvents(storeId);
+            EventDataModel single = storeEvent.Find(a => a.Id==eventId);
+            StoreDataModel singleStore = storesBO.ReadIndividual(storeId);
+            if (single.EndDate > DateTime.Now) isCurrentEvent = true;
+            await Clients.All.SendAsync("GetEventUpdate", eventId,storeId,function,isCurrentEvent, singleStore.Name);
         }
 
         public async Task PostNewEvent(string eventData, bool IsToday, string Time,string StoreId)

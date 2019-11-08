@@ -11,7 +11,7 @@
             <div id="StoreDataWrapper">
                 @for (int x = 0; x < Model.Count; x++)
                 {
-                    <div StoreId="@Model[x].Id" id="StorePanel">
+                    <div StoreId="@Model[x].Id" id="StorePanel" class="Panel_Margin">
                         <h2>@Model[x].Name</h2>
                         <p>@Model[x].Address</p>
                     </div>
@@ -42,7 +42,11 @@
     </div>
 </div>
 
+<div id="NewEventForm"  class="Modal_Background">
+    <partial name="~/Views/PartialViews/AddEventForm.cshtml" />
 
+    <button id="SubmitEvent">Submit New Event</button>
+</div>
 
 
 <div id="AlertBar" class="Slider Slider_Closed">Hey, this is hidden!</div>
