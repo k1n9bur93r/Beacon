@@ -153,6 +153,16 @@ border-color:darkgray;
     }
 } 
 
+/*Gmap Stylings*/
+.MapBorder {
+    height: 400px;
+    width: 50%;
+    min-width: 100px;
+    box-shadow: 0 0 0 5px #524937;
+    outline: dashed 7px #ccaf76;
+    border: dashed 6px #faebcd;
+    background-color: pink;
+}
 
 /*Event Panel Blocks*/
 .Side_By_Side_Data {
