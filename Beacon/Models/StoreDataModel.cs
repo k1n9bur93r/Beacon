@@ -28,6 +28,5 @@ namespace Models
         [Required]
         [MaxLength(1)]
         public bool Deleted { get; set; }
-
     }
 }

@@ -114,7 +114,7 @@ function PostNewStore(newStore) {
 connection.on("GetNewStore", function (html, JSONs) {
     $('div#StoreDataWrapper').prepend(html);
     var store = JSON.parse(JSONs);
-    StoreObj.push(JSON.parse(JSONs));
+    StoreObj.Store.push(JSON.parse(JSONs));
     DisplaySnackBar("New store added!", 1);
     geocodeAddress(store.Address,store.Id,StoreObj.length-1,geocoder, map);
 });

@@ -12,13 +12,13 @@ $('#Test').on('click', function () {
 function getStoreData(data) {
 
     //set flag for which store is currently active 
-    ActiveStore = StoreObj[data].Id;
+    ActiveStore = StoreObj[data].Store.Id;
 
     $.ajax({ //set up the ajax call
         type: "GET",
         url: "/Home/GetStoreInfo",
         contentType: "application/json;charset=utf-8",
-        data: { "JSON": JSON.stringify(StoreObj[data]) },
+        data: { "JSON": JSON.stringify(StoreObj[data].Store) },
         dataType: "html"
     }).done(function (data) {
         $('div#StoreEventDataWrapper').html(data); //inject the HTML into the webpage
@@ -28,7 +28,7 @@ function getStoreData(data) {
     })
         .fail(function () {
             //Error Message
-            DisplaySnackBar("Failed to get data for " + StoreObj[data].Name + "", 3);
+            DisplaySnackBar("Failed to get data for " + StoreObj[data].Store.Name + "", 3);
         });
 }
 //if the return to store list view
@@ -87,11 +87,11 @@ $('body').on('click', 'button[id*=\'DecStoreEvent\']', function () {
 $('body').on('click', 'button[id*=\'AddEvent\']', function () {
     var element = $(this); //get a copy of the element
     //if the form is not visible, make it visible, if visible make invisible  
-    if ($('div#NewEventForm').hasClass('show') == true) {
-        $('div#NewEventForm').removeClass('show');
+    if ($('div#NewEventForm').hasClass('showModal') == true) {
+        $('div#NewEventForm').removeClass('showModal');
     }
     else {
-        $('div#NewEventForm').addClass('show')
+        $('div#NewEventForm').addClass('showModal');
     }
     //get the dropdown data for game types
     $.ajax({
@@ -121,7 +121,7 @@ $('body').on('click', $('input#EventToday') ,function () {
     //if the checkbox is checked then uncheck it, if unchecked then check it
     if ($('input#EventToday').is(':checked')) {
         //event is today only allow for time entries
-        $('div#StartDateTime').toggle(false);
+        $('input#StartDateTime').toggle(false);
         $('#StartDateTimeValue').val("");
         $('div#StartTime').toggle(true);
     }
@@ -129,7 +129,7 @@ $('body').on('click', $('input#EventToday') ,function () {
         //event is in the future allow for date time entries
         $('div#StartTime').toggle(false);
         $('#StartTimeValue').val("");
-        $('div#StartDateTime').toggle(true);
+        $('input#StartDateTime').toggle(true);
     }
         
 });
@@ -229,3 +229,28 @@ function DisplaySnackBar(msgtext, state) {
         $("div#snackbar").removeClass(classname);
     }, 3000);
 }
+
+$('body').on('click', 'h1#StoreTitle', function () {
+    var text = $(this).attr('Address');
+     if /* if we're on iOS, open in Apple Maps */
+    ((navigator.platform.indexOf("iPhone") != -1) || 
+     (navigator.platform.indexOf("iPad") != -1) || 
+         (navigator.platform.indexOf("iPod") != -1))
+         window.open(genMapLink(text,false));
+else /* else use Google */
+         window.open(genMapLink(text, true));
+
+});
+
+function genMapLink(text, status)
+{
+    if (!status) {
+        return "maps://maps.google.com/maps?q=" + text;
+    }
+    else
+    {
+        return "http://maps.google.com/maps?q=" + text;
+        }
+}
+
+
