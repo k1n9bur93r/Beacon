@@ -29,42 +29,31 @@ connection.on("GetEventUpdate", function (event, store, action,current,storeName
         var number = $('div#' + event + '').children('div').children('div#attending').children("p#number").text();
         var totalnumber;
         if (action == 1) {
-            number++;
+            if (action == 1) number++; else number--;
             $('div#' + event + '').children('div').children('div#attending').children("p#number").text(number);
             if (current) {
                 totalnumber = $('h4#curPartCount').text();
-                totalnumber++;
+                if (action == 1) totalnumber++; else totalnumber--;
                 $('h4#curPartCount').text(totalnumber);
             }
             else {
                 totalnumber = $('h4#upPartCount').text();
-                totalnumber++;
+                if (action == 1) totalnumber++; else totalnumber--;
                 $('h4#upPartCount').text(totalnumber);
             }
 
-        }
-        else if (action == -1) {
-            number--;
-            if (number < 0) number = 0;
-            $('div#' + event + '').children('div').children('div#attending').children("p#number").text(number);
-            if (current) {
-                totalnumber = $('h4#curPartCount').text();
-                totalnumber--;
-                $('h4#curPartCount').text(totalnumber);
-            }
-            else {
-                totalnumber = $('h4#upPartCount').text();
-                totalnumber--;
-                $('h4#upPartCount').text(totalnumber);
-            }
         }
         DisplaySnackBar("participance adjusted ", 0);
     }
     else {
 
-        if (action == 1 && current == true)
+        if ( current == true)
         {
-    DisplaySnackBar("More people are going to an event at " + storeName + "", 1);
+            DisplaySnackBar("More people are going to an event at " + storeName + "", 1);
+            var frontNumber = $('div[Storeid=' + StoreId + '][id=storeParticipants]').children('h3').text();
+            if (action == 1) frontNumber++; else frontNumber--;
+            $('div[Storeid=' + StoreId + '][id=storeParticipants]').children('h3').text(frontNumber);
+
         }
     }
         UpdateMarkerNotify(store);
@@ -83,18 +72,39 @@ function PostNewEvent(eventData, IsToday, Time, StoreId) {
 }
 
 //Receve New Event
-connection.on("GetNewEvent", function (returnData, StoreId, EventName, StoreName) {
+connection.on("GetNewEvent", function (returnData, StoreId, EventName, StoreName,current) {
     if (StoreId == ActiveStore) {
-        $('div#CurrentEventList').append(returnData);
-        DisplaySnackBar("Event added", 0);
+        if (current) {
+            $('div#CurrentEventList').append(returnData);
+            $('div#CurrentEventList').children('h4').toggle(false);
+        }
+        else {
+            $('div#EventList').append(returnData);
+            $('div#EventList').children('h4').toggle(false);
+        }
+        
 
         var data = $('h3#CurrentEvents').text();
         data++;
         $('h3#CurrentEvents').text(data);
         $('h4#NoCurrent').toggle(false);
+        DisplaySnackBar("Event added", 0);
     }
     else
     {
+        if (current) {
+            if ($('div[Storeid=' + StoreId + '][id=storeParticipants]').is(':visible')) {
+                var number = $('div[Storeid=' + StoreId + '][id=storeEvents]').children('h4').text();
+                number++;
+                $('div[Storeid=' + StoreId + '][id=storeEvents]').children('h4').text(number);
+            }
+            else {
+                $('div[Storeid=' + StoreId + '][id=storeParticipants]').toggle(true);
+                $('div[Storeid=' + StoreId + '][id=storeParticipants]').children('h3').text('0');
+                $('div[Storeid=' + StoreId + '][id=storeEvents]').children('h4').text('Current Events:');
+                $('div[Storeid=' + StoreId + '][id=storeEvents]').children('h3').text('1');
+            }
+        }
         DisplaySnackBar("Event " + EventName + " created at " + StoreName + "", 1);
     }
     UpdateMarkerNotify(storeId);

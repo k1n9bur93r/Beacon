@@ -252,5 +252,3 @@ function genMapLink(text, status)
         return "http://maps.google.com/maps?q=" + text;
         }
 }
-
-

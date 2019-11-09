@@ -31,14 +31,15 @@ namespace Beacon.Hubs
 
         public async Task PostNewEvent(string eventData, bool IsToday, string Time,string StoreId)
         {
-
+            bool isCurrentEvent = false;
             HomeController controller = new HomeController();
 
             EventDataModel newEvent=controller.CreateEvent(eventData,IsToday,Time);
+            if (newEvent.EndDate > DateTime.Now) isCurrentEvent = true;
             string html= "<div><div id=\"" + newEvent.Id + "\"><p id=\"name\"> Name: " + newEvent.EventName + " </p> <div id=\"attending\" num=\"" + newEvent.Participants + "\">People Attending:<p id=\"number\"> " + newEvent.Participants + "</p></div><button id=\"IncStoreEvent\" EventId=\"" + newEvent.Id + "\">I'm Going!</button><button id=\"DecStoreEvent\" EventId=\"" + newEvent.Id + "\" hidden>Never Mind...</button></div></div>";
             StoresBO storesBO = new StoresBO();
             StoreDataModel temp = storesBO.ReadIndividual(newEvent.StoreFK);
-            await Clients.All.SendAsync("GetNewEvent", html,StoreId,newEvent.EventName,temp.Name);
+            await Clients.All.SendAsync("GetNewEvent", html,StoreId,newEvent.EventName,temp.Name,isCurrentEvent);
         }
 
         public async Task PostNewStore(string newStore) {

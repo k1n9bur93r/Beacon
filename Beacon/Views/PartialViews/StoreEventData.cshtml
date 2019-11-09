@@ -1,10 +1,10 @@
 ﻿@model StoreEventModel;
 @using Models;
-@{int curPartAmt = 0, currentEvent = 0, totPartAmt = 0;
+@{int curPartAmt = 0, currentEvent = 0, totPartAmt = 0,pastEvent=0;
     bool[] isCurrent = new bool[Model.Events.Count()];
 }
 
-          
+            
 <div style="height:100%;">
 
     @foreach (EventDataModel Event in Model.Events)
@@ -77,6 +77,7 @@
         {
             if (!isCurrent[Model.Events.FindIndex(a => a.Id == Event.Id)] == true)
             {
+                pastEvent++;
                 <div id="@Event.Id" EndTime="@Event.EndDate" class="Event_Margin">
                     <p id="name"> Name: @Event.EventName </p>
                     <div>
@@ -86,6 +87,10 @@
                     <button id="DecStoreEvent" EventId="@Event.Id" hidden>Never Mind...</button>
                 </div>
             }
+        }
+        @if (pastEvent != 0)
+        {
+            <h4>There are no upcomming events.</h4>
         }
     </div>
 
