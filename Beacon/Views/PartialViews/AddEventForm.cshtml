@@ -1,0 +1,46 @@
+﻿
+<div class="Modal_Window">
+    <form>
+
+
+
+        <div>
+            <p class="Side_By_Side_Data"> Event Name:</p>
+            <input class="Side_By_Side_Data input-group" id="EventNameInput" type="text" />
+        </div>
+        <div>
+            <p class="Side_By_Side_Data">Event Game:</p>
+            <select id="EventGameInput">
+                <option>Select Game</option>
+            </select>
+        </div>
+        <div>
+            <p class="Side_By_Side_Data">Event Date:</p>
+            <div>
+                <p class="Side_By_Side_Data">Is the Event Today?</p>
+                <input id="EventToday" class="Side_By_Side_Data" type="checkbox" checked>
+            </div>
+            <div id="StartTime" class="container">
+                <div class="row">
+                    <div class='col-sm-6'>
+                        <input type='text' id="StartTimeValue" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <button id="SubmitEvent">Submit New Event</button>
+    </form>
+</div>
+
+<div class='input-group date'>
+    <input type='text' class="form-control " id='datetimepicker1' />
+</div>
+<script type="text/javascript">
+
+    $('#datetimepicker1').click().datetimepicker();
+
+</script>

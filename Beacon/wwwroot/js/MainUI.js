@@ -12,13 +12,13 @@ $('#Test').on('click', function () {
 function getStoreData(data) {
 
     //set flag for which store is currently active 
-    ActiveStore = StoreObj[data].Id;
+    ActiveStore = StoreObj[data].Store.Id;
 
     $.ajax({ //set up the ajax call
         type: "GET",
         url: "/Home/GetStoreInfo",
         contentType: "application/json;charset=utf-8",
-        data: { "JSON": JSON.stringify(StoreObj[data]) },
+        data: { "JSON": JSON.stringify(StoreObj[data].Store) },
         dataType: "html"
     }).done(function (data) {
         $('div#StoreEventDataWrapper').html(data); //inject the HTML into the webpage
@@ -28,7 +28,7 @@ function getStoreData(data) {
     })
         .fail(function () {
             //Error Message
-            alert('Failed to get data for ' + StoreObj[0].Name);
+            DisplaySnackBar("Failed to get data for " + StoreObj[data].Store.Name + "", 3);
         });
 }
 //if the return to store list view
@@ -41,7 +41,7 @@ $('button#returnStoreDataWrapperView').on('click', function () {
 });
 
 //If a store panel is clicked, we want to gather this store's information to display and adjust the map view
-$('div#StorePanel').on('click', function () {
+$('body').on('click','div#StorePanel', function () {
     var ClickId = $(this).attr('StoreId'); //get store ID
     var getIndex;//variable that holds a current object index
 
@@ -64,6 +64,7 @@ $('div#StorePanel').on('click', function () {
 $('body').on('click', 'button[id*=\'IncStoreEvent\']', function () {
     if (!SubbedEvents) {
         var id = $(this).attr('eventId'); //get the related event ID
+        
         PostEventUpdate(id, 1);
         SubbedEvents = true;
         $(this).toggle(false); //hide ths clicked button
@@ -86,11 +87,11 @@ $('body').on('click', 'button[id*=\'DecStoreEvent\']', function () {
 $('body').on('click', 'button[id*=\'AddEvent\']', function () {
     var element = $(this); //get a copy of the element
     //if the form is not visible, make it visible, if visible make invisible  
-    if ($(this).next().is(':visible') == false) {
-        $(this).next().toggle(true);
+    if ($('div#NewEventForm').hasClass('showModal') == true) {
+        $('div#NewEventForm').removeClass('showModal');
     }
     else {
-        $(this).next().toggle(false);
+        $('div#NewEventForm').addClass('showModal');
     }
     //get the dropdown data for game types
     $.ajax({
@@ -111,8 +112,8 @@ $('body').on('click', 'button[id*=\'AddEvent\']', function () {
         }
     }
     ).fail(function ()
-        {
-            //Error Message here
+    {
+        DisplaySnackBar("Unable to get game drop down data", 3);
         });
 });
 //if the 'is the event today?' check box is clicked
@@ -120,7 +121,7 @@ $('body').on('click', $('input#EventToday') ,function () {
     //if the checkbox is checked then uncheck it, if unchecked then check it
     if ($('input#EventToday').is(':checked')) {
         //event is today only allow for time entries
-        $('div#StartDateTime').toggle(false);
+        $('input#StartDateTime').toggle(false);
         $('#StartDateTimeValue').val("");
         $('div#StartTime').toggle(true);
     }
@@ -128,7 +129,7 @@ $('body').on('click', $('input#EventToday') ,function () {
         //event is in the future allow for date time entries
         $('div#StartTime').toggle(false);
         $('#StartTimeValue').val("");
-        $('div#StartDateTime').toggle(true);
+        $('input#StartDateTime').toggle(true);
     }
         
 });
@@ -177,29 +178,77 @@ $('button#SubmitNewStore').on('click', function () {
     //make a variable to check the addresss
     var newAddress = $('input#StoreAddressInput').val() + ' ' + $('input#StoreZipInput').val() + ' ' + $('input#StoreCityInput').val() + ' ' + $('input#StoreCityInput').val();
     //create an async promise, function calls google Geocode to check if the address is valid 
+    //checkAddress(newAddress);
     checkAddress(newAddress).then(info => {
-        //if the address is valid, create a StoreDataModel payload and send it out 
         var dataPayload = { "Name": $('input#StoreNameInput').val(), "Id": 69, "Address": $('input#StoreAddressInput').val(), "Zip": $('input#StoreZipInput').val(), "City": $('input#StoreCityInput').val(), "State": $('input#StoreStateInput').val(), "Deleted": false };
-
-        $.ajax(
-            {
-                type: "GET",
-                url: "/Home/CreateStore",
-                contentType: "application/json;charset=utf-8",
-                data: { "JSON": JSON.stringify(dataPayload) },
-                dataType: "html"
-            }
-        ).done(function () {
-            window.location.reload();
-        }
-        ).fail(function () {
-            //Error Message Here
-        }
-        );
+        PostNewStore(dataPayload);
     }).catch(badfo => {
         return;
+        //fail snack bar
     });
+  
+});
+//snack bar logic 
+function DisplaySnackBar(msgtext, state) {
+    // Get the snackbar DIV'
+    $("div#snackbar").text(msgtext);
+    $("div#snackbar").addClass('show');
+    var classname;
+    classname = 'temp';
+    switch (state)
+    {
+        case 0:
+            {
+        $("div#snackbar").addClass('SuccessStatus');
+        classname = 'SuccessStatus';
+                break;
+            }
+        case 1:
+            {
+        $("div#snackbar").addClass('InfoStatus');
+        classname = 'InfoStatus';
+                break;
+            }
+        case 2:
+            {
+        $("div#snackbar").addClass('WarningStatus');
+        classname = 'WarningStatus';
+                break;
+            }
+        case 3:
+            {
+        $("div#snackbar").addClass('ErrorStatus');
+        classname = 'ErrorStatus';
+                break;
+            }
+    }
 
+    // After 3 seconds, remove the show class from DIV
+    setTimeout(function () {
+        $("div#snackbar").removeClass('show');
+        $("div#snackbar").removeClass(classname);
+    }, 3000);
+}
 
+$('body').on('click', 'h1#StoreTitle', function () {
+    var text = $(this).attr('Address');
+     if /* if we're on iOS, open in Apple Maps */
+    ((navigator.platform.indexOf("iPhone") != -1) || 
+     (navigator.platform.indexOf("iPad") != -1) || 
+         (navigator.platform.indexOf("iPod") != -1))
+         window.open(genMapLink(text,false));
+else /* else use Google */
+         window.open(genMapLink(text, true));
 
 });
+
+function genMapLink(text, status)
+{
+    if (!status) {
+        return "maps://maps.google.com/maps?q=" + text;
+    }
+    else
+    {
+        return "http://maps.google.com/maps?q=" + text;
+        }
+}

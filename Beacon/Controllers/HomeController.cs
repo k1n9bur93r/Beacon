@@ -53,18 +53,34 @@ namespace Beacon.Controllers
         }
 
         [HttpGet]
-        public void CreateStore(string JSON) {
+        public StoreDataModel CreateStore(string JSON) {
             StoreDataModel newStore = JsonConvert.DeserializeObject<StoreDataModel>(JSON);
             StoresBO storeBO = new StoresBO();
             storeBO.CreateNewStore(newStore);
+            return newStore;
         }
 
         [HttpGet]
        public ActionResult RunApp()
         {
+            int tot;
             StoresBO storesBO = new StoresBO();
+            EventsBO eventsBO = new EventsBO();
+            List<StoreDataModel> stores = storesBO.Read();
 
-            return View("Views/Home/MainPage.cshtml", storesBO.Read());
+            List<StoreEventModel> allInfo = new List<StoreEventModel>();
+            foreach (StoreDataModel store in stores)
+            {
+                StoreEventModel temp = new StoreEventModel();
+                temp.Store = store;
+                temp.Events = eventsBO.GetStoreEvents(store.Id);
+                temp.TotalParticipants = eventsBO.GetCurrentParticipants(temp.Events);
+                temp.CurrentEvents = eventsBO.GetCurrentEvents(temp.Events);
+                allInfo.Add(temp);
+                
+            }
+           
+            return View("Views/Home/MainPage.cshtml",allInfo);
             
         }
 

@@ -9,6 +9,7 @@ namespace Beacon.DAL
    public interface IStoresDAO
     {
         List<StoreDataModel> Read();
+        StoreDataModel ReadIndividual(string storeFK);
         void Delete(StoreDataModel data);
         void Insert(StoreDataModel data);
         void Update(StoreDataModel data);

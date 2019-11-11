@@ -21,6 +21,12 @@ namespace Beacon
             return _StoresDAO.Read();
         }
         #endregion
+        #region ReadIndividual
+        public StoreDataModel ReadIndividual(string FK)
+        {
+            return _StoresDAO.ReadIndividual(FK);
+        }
+        #endregion
 
         #region Insert
         private void  Insert(StoreDataModel data)

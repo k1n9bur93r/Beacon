@@ -17,39 +17,20 @@
     </environment>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Beacon</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
+  
     <partial name="_CookieConsentPartial" />
 
     <div class="">
         @RenderBody()
         <hr />
-       
+
         <footer>
             <p>&copy; 2019 - Beacon and Friends</p>
         </footer>
     </div>
 
     <environment include="Development">
+
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script type="text/javascript" src="~/lib/Moment/moment.js"></script>
@@ -75,7 +56,11 @@
     </environment>
 
     @RenderSection("Scripts", required: false)
+     <!-- Use a button to open the snackbar -->
+<!-- The actual snackbar -->
+<div id="snackbar">Some text some message..</div>
 </body>
+
 </html>
 
 

@@ -54,10 +54,29 @@ namespace Beacon.BL
         }
         public List<EventDataModel> GetStoreEvents(string storeID)
         {
-            List<EventDataModel> allEvents = _EventsDAO.ReadByStore(storeID);
+            List<EventDataModel> allEvents = _EventsDAO.ReadByStore(storeID); 
             return allEvents;
         }
 
+        public int GetCurrentParticipants(List<EventDataModel> data)
+        {
+            int counter = 0;
+            foreach (EventDataModel singleEvent in data)
+            {
+                if (singleEvent.EndDate > DateTime.Now) counter += singleEvent.Participants;
+                
+            }
+            return counter;
+        }
+        public int GetCurrentEvents(List<EventDataModel> data)
+        {
+            int counter = 0;
+            foreach (EventDataModel singleEvent in data)
+            {
+                if (singleEvent.EndDate > DateTime.Now) counter++;
+            }
+            return counter;
+        }
         public void IncEventParticipants(string eventID)
         {
             EventDataModel events=_EventsDAO.ReadEvent(eventID);

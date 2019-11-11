@@ -1,5 +1,5 @@
 ﻿@using Newtonsoft;
-@model List<Models.StoreDataModel>
+@model List<Models.StoreEventModel>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -11,10 +11,21 @@
             <div id="StoreDataWrapper">
                 @for (int x = 0; x < Model.Count; x++)
                 {
-                    <div StoreId="@Model[x].Id" id="StorePanel">
-                        <h2>@Model[x].Name</h2>
-                        <p>@Model[x].Address</p>
+                <div StoreId="@Model[x].Store.Id" id="StorePanel" class="Panel_Margin">
+                    <div class="Remove_Margin">
+                        <h3 class="Side_By_Side_Data">@(x + 1):&nbsp; </h3><h2 class="Side_By_Side_Data"> @Model[x].Store.Name</h2>
                     </div>
+                    @if (Model[x].CurrentEvents > 0)
+                    {
+                        <div id="storeEvents"storeId="@Model[x].Store.Id"><h4 class="Side_By_Side_Data Remove_Margin">Current Events:&nbsp;</h4><h3 class="Side_By_Side_Data Remove_Margin">@Model[x].CurrentEvents</h3></div>
+                        <div id="storeParticipants"storeId="@Model[x].Store.Id"><h4 class="Side_By_Side_Data Remove_Margin">Current Participants:&nbsp;</h4><h3 class="Side_By_Side_Data Remove_Margin">@Model[x].TotalParticipants</h3></div>
+                    }
+                    else
+                    {
+                        <div id="storeEvents"storeId="@Model[x].Store.Id"><h4 class="Side_By_Side_Data Remove_Margin">No Current Events&nbsp;</h4><h3 class="Side_By_Side_Data Remove_Margin"></h3></div>
+                        <div id="storeParticipants"storeId="@Model[x].Store.Id" hidden><h4 class="Side_By_Side_Data Remove_Margin">Current Particpants:&nbsp;</h4><h3 class="Side_By_Side_Data Remove_Margin">@Model[x].TotalParticipants</h3></div>
+                    }
+                </div>
                 }
                 <button id="AddNewStore">Add New Store</button>
                 <div id="AddNewStoreWrapper" hidden>
@@ -38,11 +49,13 @@
 
         </div>
 
-        <div id="map" style="height:750px;width:70%;margin:0px;padding:0px" class="col-sm-7"></div>
+        <div id="map" style="height:750px;width:70%;margin:0px;padding:0px" class="col-sm-7 MapBorder"></div>
     </div>
 </div>
 
-
+<div id="NewEventForm" class="Modal_Container">
+    <partial name="~/Views/PartialViews/AddEventForm.cshtml" />
+</div>
 
 
 <div id="AlertBar" class="Slider Slider_Closed">Hey, this is hidden!</div>
@@ -55,3 +68,4 @@
      var StoreCount =@Model.Count();
     var StoreObj=@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented));
 </script>
+
