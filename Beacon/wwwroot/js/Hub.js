@@ -26,33 +26,36 @@ function PostEventUpdate(event,action) {
 
 connection.on("GetEventUpdate", function (event, store, action,current,storeName) {
     if (store == ActiveStore) {
-        var number = $('div#' + event + '').children('div').children('div#attending').children("p#number").text();
+        var number = $('div#' + event + '').children('div').children('p#attending').siblings("p#number").text();
+        var eventName = $('div#' + event + '').children('div').children('p#name').text();
         var totalnumber;
-        if (action == 1) {
             if (action == 1) number++; else number--;
-            $('div#' + event + '').children('div').children('div#attending').children("p#number").text(number);
+            $('div#' + event + '').children('div').children('p#attending').siblings("p#number").text(number);
             if (current) {
-                totalnumber = $('h4#curPartCount').text();
+                totalnumber = $('h3#curPartCount').text();
                 if (action == 1) totalnumber++; else totalnumber--;
-                $('h4#curPartCount').text(totalnumber);
+                $('h3#curPartCount').text(totalnumber);
             }
             else {
-                totalnumber = $('h4#upPartCount').text();
+                totalnumber = $('h3#upPartCount').text();
                 if (action == 1) totalnumber++; else totalnumber--;
-                $('h4#upPartCount').text(totalnumber);
-            }
-
+                $('h3#upPartCount').text(totalnumber);
         }
-        DisplaySnackBar("participance adjusted ", 0);
+
+        if (action==1)
+            DisplaySnackBar("New attendee at  "+eventName+"", 0);
+        else
+            DisplaySnackBar("Removed attendance at   " + eventName+"", 0);
     }
     else {
 
         if ( current == true)
         {
+            if (action == 1)
             DisplaySnackBar("More people are going to an event at " + storeName + "", 1);
-            var frontNumber = $('div[Storeid=' + StoreId + '][id=storeParticipants]').children('h3').text();
+            var frontNumber = $('div[Storeid=' + StoreId + '][id=storeParticipants]').children('h4').text();
             if (action == 1) frontNumber++; else frontNumber--;
-            $('div[Storeid=' + StoreId + '][id=storeParticipants]').children('h3').text(frontNumber);
+            $('div[Storeid=' + StoreId + '][id=storeParticipants]').children('h4').text(frontNumber);
 
         }
     }
@@ -64,7 +67,7 @@ connection.on("GetEventUpdate", function (event, store, action,current,storeName
 //Create Event
 
 function PostNewEvent(eventData, IsToday, Time, StoreId) {
-    connection.invoke("PostNewEvent", eventData, IsToday, Time,StoreId).catch(function (error) {
+    connection.invoke("PostNewEvent", eventData, IsToday, Time, StoreId, currentColor).catch(function (error) {
         
         DisplaySnackBar('Failed to post new event!', 3);
         return console.error(error.toString());
@@ -86,8 +89,8 @@ connection.on("GetNewEvent", function (returnData, StoreId, EventName, StoreName
 
         var data = $('h3#CurrentEvents').text();
         data++;
-        $('h3#CurrentEvents').text(data);
-        $('h4#NoCurrent').toggle(false);
+        $('h2#CurrentEvents').text(data);
+        $('h3#NoCurrent').toggle(false);
         DisplaySnackBar("Event added", 0);
     }
     else

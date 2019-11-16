@@ -1,46 +1,35 @@
 ﻿
 <div class="Modal_Window">
     <form>
-
-
-
-        <div>
-            <p class="Side_By_Side_Data"> Event Name:</p>
-            <input class="Side_By_Side_Data input-group" id="EventNameInput" type="text" />
+        <div class="Event_Margin ">
+            <p class="Side_By_Side_Data BitFont_Large"> Event Name:</p>
+            <input class="Side_By_Side_Data input-group BitFont_Tight Input_Box" id="EventNameInput" autocomplete="off" type="text" />
         </div>
-        <div>
-            <p class="Side_By_Side_Data">Event Game:</p>
+        <div class="Event_Margin select">
+            <p class="Side_By_Side_Data BitFont_Large">Event Game:</p>
             <select id="EventGameInput">
                 <option>Select Game</option>
             </select>
         </div>
-        <div>
-            <p class="Side_By_Side_Data">Event Date:</p>
-            <div>
-                <p class="Side_By_Side_Data">Is the Event Today?</p>
-                <input id="EventToday" class="Side_By_Side_Data" type="checkbox" checked>
-            </div>
-            <div id="StartTime" class="container">
-                <div class="row">
-                    <div class='col-sm-6'>
-                        <input type='text' id="StartTimeValue" class="form-control" />
-                    </div>
+
+        <p class=" BitFont_Large Event_Margin">Event Date:</p>
+        <div class="Side_By_Side_Data ModalFlex">
+            <div class="Side_By_Side_Data ">
+                <div class="Side_By_Side_Data ">
+                    <p class="Side_By_Side_Data BitFont_Tight">Is the Event Today?</p>
+                    <input id="EventToday" class="Side_By_Side_Data" style="width:20px!important;height:20px!important" type="checkbox" checked>
+                </div>
+
+                <div class='input-group date BitFont_Tight  Side_By_Side_Data' id='StartTime'>
+                    <input type='text' class="Input_Box" id="StartTimeValue" autocomplete="off" />
+                </div>
+                <div class='input-group date No_Show BitFont_Tight  Side_By_Side_Data' id='StartDateTime'>
+                    <input type='text' class="Input_Box" id="StartDateTimeValue" autocomplete="off" />
                 </div>
             </div>
         </div>
-
-
-
-
-        <button id="SubmitEvent">Submit New Event</button>
+        <div class="Center_Button Event_Margin">
+            <button id="SubmitEvent" class="Event_Button_Sml BitFont_Large ">Submit New Event</button>
+        </div>
     </form>
 </div>
-
-<div class='input-group date'>
-    <input type='text' class="form-control " id='datetimepicker1' />
-</div>
-<script type="text/javascript">
-
-    $('#datetimepicker1').click().datetimepicker();
-
-</script>

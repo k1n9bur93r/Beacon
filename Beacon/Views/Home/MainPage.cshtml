@@ -4,30 +4,35 @@
     ViewData["Title"] = "Home Page";
 }
 
-<h1>Beacon</h1>
+
+<div class="logo_header">
+    <img class="logo" src="~/images/beacon_logo.png">
+</div>
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-3">
+    <div class="row" style="height:900px">
+        <div class="col-sm-3 Store_vertical_Margin">
             <div id="StoreDataWrapper">
                 @for (int x = 0; x < Model.Count; x++)
                 {
-                <div StoreId="@Model[x].Store.Id" id="StorePanel" class="Panel_Margin">
-                    <div class="Remove_Margin">
-                        <h3 class="Side_By_Side_Data">@(x + 1):&nbsp; </h3><h2 class="Side_By_Side_Data"> @Model[x].Store.Name</h2>
+                    <div StoreId="@Model[x].Store.Id" color="@(x%5)" id="StorePanel" class="Panel_Margin Store_Theme_@(x%5) Panel_Spacing ">
+                        <div class="Remove_Margin">
+                            <h3 class="Side_By_Side_Data BitFont_Tight ">@(x + 1):&nbsp; </h3><h2 class="Side_By_Side_Data BitFont_Large "> @Model[x].Store.Name</h2>
+                        </div>
+                        @if (Model[x].CurrentEvents > 0)
+                        {
+                            <div id="storeEvents" storeId="@Model[x].Store.Id"><h4 class="Side_By_Side_Data Remove_Margin BitFont_Tight">Current Events:&nbsp;</h4><h3 class="Side_By_Side_Data Remove_Margin BitFont_Tight"><strong>@Model[x].CurrentEvents</strong></h3></div>
+                            <div id="storeParticipants" storeId="@Model[x].Store.Id"><h4 class="Side_By_Side_Data Remove_Margin BitFont_Tight">Current Participants:&nbsp;</h4><h3 class="Side_By_Side_Data Remove_Margin BitFont_Tight"><strong>@Model[x].TotalParticipants</strong></h3></div>
+                        }
+                        else
+                        {
+                            <div id="storeEvents" storeId="@Model[x].Store.Id"><h4 class="Side_By_Side_Data Remove_Margin BitFont_Tight">No Current Events&nbsp;</h4><h3 class="Side_By_Side_Data Remove_Margin"></h3></div>
+                            <div id="storeParticipants" storeId="@Model[x].Store.Id" hidden><h4 class="Side_By_Side_Data Remove_Margin BitFont_Tight">Current Particpants:&nbsp;</h4><h3 class="Side_By_Side_Data Remove_Margin BitFont_Tight"> <strong>@Model[x].TotalParticipants</strong></h3></div>
+                        }
                     </div>
-                    @if (Model[x].CurrentEvents > 0)
-                    {
-                        <div id="storeEvents"storeId="@Model[x].Store.Id"><h4 class="Side_By_Side_Data Remove_Margin">Current Events:&nbsp;</h4><h3 class="Side_By_Side_Data Remove_Margin">@Model[x].CurrentEvents</h3></div>
-                        <div id="storeParticipants"storeId="@Model[x].Store.Id"><h4 class="Side_By_Side_Data Remove_Margin">Current Participants:&nbsp;</h4><h3 class="Side_By_Side_Data Remove_Margin">@Model[x].TotalParticipants</h3></div>
-                    }
-                    else
-                    {
-                        <div id="storeEvents"storeId="@Model[x].Store.Id"><h4 class="Side_By_Side_Data Remove_Margin">No Current Events&nbsp;</h4><h3 class="Side_By_Side_Data Remove_Margin"></h3></div>
-                        <div id="storeParticipants"storeId="@Model[x].Store.Id" hidden><h4 class="Side_By_Side_Data Remove_Margin">Current Particpants:&nbsp;</h4><h3 class="Side_By_Side_Data Remove_Margin">@Model[x].TotalParticipants</h3></div>
-                    }
-                </div>
                 }
-                <button id="AddNewStore">Add New Store</button>
+                <div class="Center_Button">
+                    <button id="AddNewStore" class="Event_Button_Go BitFont_Large" style="width:100%!important">Add New Store</button>
+                </div>
                 <div id="AddNewStoreWrapper" hidden>
                     <form>
                         <br>Store Name:<br>
@@ -45,27 +50,29 @@
                 </div>
             </div>
             <div id="StoreEventDataWrapper"> </div>
-            <button id="returnStoreDataWrapperView" hidden>Return to Store List</button>
+
 
         </div>
 
-        <div id="map" style="height:750px;width:70%;margin:0px;padding:0px" class="col-sm-7 MapBorder"></div>
+        <div id="map" style="height:100%;width:70%;margin:0px;padding:0px" class="col-sm-7 MapBorder"></div>
     </div>
-</div>
+    <div id="NewEventForm" class="Modal_Container">
+        <partial name="~/Views/PartialViews/AddEventForm.cshtml" />
+    </div>
 
-<div id="NewEventForm" class="Modal_Container">
-    <partial name="~/Views/PartialViews/AddEventForm.cshtml" />
-</div>
-
-
-<div id="AlertBar" class="Slider Slider_Closed">Hey, this is hidden!</div>
-<script src="~/lib/jquery/dist/jquery.js"></script>
-<script src="~/js/Gmap.js"></script>
-<script src="~/js/MainUI.js"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARC2ud3IHzqKVuh2ACGZXvSSb6r3cfGHA&callback=initMap"></script>
-<script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/js/Gmap.js"></script>
+    <script src="~/js/MainUI.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARC2ud3IHzqKVuh2ACGZXvSSb6r3cfGHA&callback=initMap"></script>
+    <script>
     var NotifyIconUrl = '@Url.Content("~/images/Marker_Notify.png")';
      var StoreCount =@Model.Count();
-    var StoreObj=@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented));
-</script>
+        var StoreObj =@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented));
+        $(function () {
+            $('#StartTimeValue').datetimepicker({
+                format: 'LT'
+            });
+            $('#StartDateTimeValue').datetimepicker();
+        });
+    </script>
 

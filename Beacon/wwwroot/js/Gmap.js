@@ -287,7 +287,7 @@ function initMap() {
    geocoder = new google.maps.Geocoder();
     for (var x = 0; x < StoreCount; x++)
     {
-        geocodeAddress(StoreObj[x].Store.Address, StoreObj[x].Store.Id,x, geocoder, map);
+        geocodeAddress(StoreObj[x].Store.Address, StoreObj[x].Store.Id,x, geocoder, map,(x%5));
     }
 
 
@@ -311,7 +311,7 @@ function checkAddress(address) {
     
         }
 
-    function geocodeAddress(address,Id,Index,geocoder, map) {
+    function geocodeAddress(address,Id,Index,geocoder, map,colorCode) {
         geocoder.geocode({ 'address': address }, function (results, status) {
             if (status === 'OK') {
                 map.setCenter(results[0].geometry.location);
@@ -319,13 +319,15 @@ function checkAddress(address) {
                     map: map,
                     position: results[0].geometry.location,
                     StoreId: Id,
-                    ObjIndex: Index 
+                    ObjIndex: Index,
+                    color:colorCode
                 });
                 marker.addListener('click', function (point) {
                     map.setZoom(15);
                     marker.setIcon(null);
                     map.setCenter(this.getPosition());
                     getStoreData(this.ObjIndex);
+                    currentColor = colorCode;
                 });
                 markers.push(marker);
 

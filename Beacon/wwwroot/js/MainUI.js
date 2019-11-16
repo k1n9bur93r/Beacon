@@ -1,7 +1,7 @@
 ﻿var SubbedEvents = false;// variable that keeps track of all sessions that a user commits themsleves to 
 var SubbedEventsID = new Array();
 var ActiveStore;
-
+var currentColor = 0;
 
 $('#Test').on('click', function () {
     $('div#AlertBar').removeClass('Slider_Closed');
@@ -32,7 +32,7 @@ function getStoreData(data) {
         });
 }
 //if the return to store list view
-$('button#returnStoreDataWrapperView').on('click', function () {
+$('body').on('click','button#returnStoreDataWrapperView', function () {
     ActiveStore = "none";
     $('div#StoreEventDataWrapper').toggle(false); //Hide advanced store panel
     $('div#StoreDataWrapper').toggle(true); //Show store panel list
@@ -43,6 +43,7 @@ $('button#returnStoreDataWrapperView').on('click', function () {
 //If a store panel is clicked, we want to gather this store's information to display and adjust the map view
 $('body').on('click','div#StorePanel', function () {
     var ClickId = $(this).attr('StoreId'); //get store ID
+    currentColor = $(this).attr('color');
     var getIndex;//variable that holds a current object index
 
     //find a matching store id stored in a JS object list
@@ -62,13 +63,14 @@ $('body').on('click','div#StorePanel', function () {
 
 // If an 'Im Going!' button is clicked for an event
 $('body').on('click', 'button[id*=\'IncStoreEvent\']', function () {
+    var element = $(this);
     if (!SubbedEvents) {
         var id = $(this).attr('eventId'); //get the related event ID
         
         PostEventUpdate(id, 1);
         SubbedEvents = true;
         $(this).toggle(false); //hide ths clicked button
-        $(this).siblings('button#DecStoreEvent').toggle(true); //show the regert button
+        $(this).siblings('button#DecStoreEvent').removeClass('No_Show'); //show the regert button
     }
 });
 
@@ -78,14 +80,14 @@ $('body').on('click', 'button[id*=\'DecStoreEvent\']', function () {
         var id = $(this).prev().attr('eventId');//get the related event ID
         PostEventUpdate(id, -1);
         SubbedEvents = false;
-        $(this).toggle(false);//hide ths clicked button
+        $(this).addClass('No_Show');//hide ths clicked button
         $(this).siblings('button#IncStoreEvent').toggle(true);//show the I'm in button
     }
 });
 
 //if the add event button was clicked, g
 $('body').on('click', 'button[id*=\'AddEvent\']', function () {
-    var element = $(this); //get a copy of the element
+    
     //if the form is not visible, make it visible, if visible make invisible  
     if ($('div#NewEventForm').hasClass('showModal') == true) {
         $('div#NewEventForm').removeClass('showModal');
@@ -121,24 +123,30 @@ $('body').on('click', $('input#EventToday') ,function () {
     //if the checkbox is checked then uncheck it, if unchecked then check it
     if ($('input#EventToday').is(':checked')) {
         //event is today only allow for time entries
-        $('input#StartDateTime').toggle(false);
+        $('div#StartDateTime').addClass('No_Show');
         $('#StartDateTimeValue').val("");
-        $('div#StartTime').toggle(true);
+        $('div#StartTime').removeClass('No_Show');
     }
     else {
         //event is in the future allow for date time entries
-        $('div#StartTime').toggle(false);
+        $('div#StartTime').addClass('No_Show');
         $('#StartTimeValue').val("");
-        $('input#StartDateTime').toggle(true);
+        $('div#StartDateTime').removeClass('No_Show');
     }
         
 });
 //if the submit 'event button' was clicked
-$('body').on('click', 'button[id*=\'SubmitEvent\']', function () {
+$('body').on('click', 'button#SubmitEvent', function () {
+    event.preventDefault();
     var startDate; //hold the entered date
     var tempDate = moment(); //hold a fake date
     var isToday; //is the event scheduled for today
     //if the is the event today checkbox is checked 
+    if ($('#EventNameInput').val() == '')
+    {
+        DisplaySnackBar('Event has no name!',3);
+        return;
+    }
     if ($('input#EventToday').is(':checked'))
     {
         //get time 
@@ -155,12 +163,15 @@ else
     //if the selected time is less that the present, fail
     if (startDate < moment()) {
         //highlight in read, create Event a past date/time
-        alert('Cannot create events in the past!');
-        return;
+        DisplaySnackBar('Cannot create events in the past!', 3);
     }
-    //create a EventModel payload
-    var dataPayload = { "Id": 69, "EventName": $('#EventNameInput').val(), "StoreFK": $('button#AddEvent').attr('StoreId'), "GameFK": $('select#EventGameInput').children(':selected').attr('id'), "StartDate": tempDate.format(), "EndDate": tempDate.format(), "Deleted": "False", "Participants": 0 };
-    PostNewEvent(JSON.stringify(dataPayload), isToday, moment(startDate).format('MM/DD/YYYY hh:mm'), $('button#AddEvent').attr('StoreId'));
+    else {
+        //create a EventModel payload
+        var storeId = $('button#AddEvent').attr('StoreId');
+        var dataPayload = { "Id": 69, "EventName": $('#EventNameInput').val(), "StoreFK": storeId, "GameFK": $('select#EventGameInput').children(':selected').attr('id'), "StartDate": tempDate.format(), "EndDate": tempDate.format(), "Deleted": "False", "Participants": 0 };
+        PostNewEvent(JSON.stringify(dataPayload), isToday, moment(startDate).format('MM/DD/YYYY hh:mm'), storeId);
+        $('div#NewEventForm').removeClass('showModal');
+    }
 });
 //if the 'Add new Store' button is clicked
 $('button#AddNewStore').on('click', function () {
@@ -225,8 +236,8 @@ function DisplaySnackBar(msgtext, state) {
 
     // After 3 seconds, remove the show class from DIV
     setTimeout(function () {
+        $("div#snackbar").addClass('show');
         $("div#snackbar").removeClass('show');
-        $("div#snackbar").removeClass(classname);
     }, 3000);
 }
 

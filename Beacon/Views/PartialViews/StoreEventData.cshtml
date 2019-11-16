@@ -1,11 +1,11 @@
 ﻿@model StoreEventModel;
 @using Models;
-@{int curPartAmt = 0, currentEvent = 0, totPartAmt = 0,pastEvent=0;
+@{int curPartAmt = 0, currentEvent = 0, totPartAmt = 0, pastEvent = 0, numCounter = 0;
     bool[] isCurrent = new bool[Model.Events.Count()];
 }
 
-            
-<div style="height:100%;">
+
+<div id="EventPanelWrapper" style="height:100%;" class="Event_Structure">
 
     @foreach (EventDataModel Event in Model.Events)
     {
@@ -19,84 +19,136 @@
         {
             totPartAmt += Event.Participants;
         }
-    }
-    <h1 id="StoreTitle" Address="@Model.Store.Address" class="Hover_Link"> @Model.Store.Name </h1>
+    }<div class="Event_Title_Flex">
+        <div class="Center_Button">
+            <button id="returnStoreDataWrapperView" class="Event_Button_Sml" style="height:50px!important;width:70px!important;margin-top:11px;margin-right:11px" hidden><img src="~/images/backArrow.png" style="width:50px"></button>
+        </div>
+        <div>
+            <h1 id="StoreTitle" Address="@Model.Store.Address" class="Hover_Link BitFont_Large"> @Model.Store.Name </h1>
+        </div>
+
+    </div>
     @if (Model.Events.Count() > 1)
     {
-        <div>
+        <div class="Text_UnderLine">
             @if (currentEvent > 0)
             {
-                <h3 class="Side_By_Side_Data">Current Events:&nbsp;</h3>
-                <h3 id="CurrentEvents" class="Side_By_Side_Data"> @currentEvent</h3>
+                <h2 id="CurrentEvents" class="Side_By_Side_Data  BitFont_Tight "> @currentEvent</h2>
+                @if (currentEvent == 1)
+                {
+                    <h3 class="Side_By_Side_Data BitFont_Tight">&nbsp;:Event</h3>
+                }
+                else
+                {<h3 class="Side_By_Side_Data BitFont_Tight">&nbsp;:Events</h3>
+                }
+
+
             }
         </div>
-        <div id="CurrentParts">
-            <h4 class="Side_By_Side_Data">Current Participants:&nbsp;</h4>
-            <h4 id="curPartCount" class="Side_By_Side_Data">@curPartAmt</h4>
+        <div id="CurrentParts " class="Text_UnderLine">
+            <h3 id="curPartCount" class="Side_By_Side_Data BitFont_Tight ">@curPartAmt</h3>
+            @if (curPartAmt == 1)
+            {
+                <h4 class="Side_By_Side_Data BitFont_Tight">&nbsp;: Current Attendee</h4>
+            }
+            else
+            {
+                <h4 class="Side_By_Side_Data BitFont_Tight">&nbsp;: Current Attendees</h4>
+            }
+
         </div>
-        <div id="TotalParts">
-            <h4 class="Side_By_Side_Data">Upcomming Participants:&nbsp;</h4>
-            <h4 id="upPartCount" class="Side_By_Side_Data">@totPartAmt</h4>
+        <div id="TotalParts" class="Text_UnderLine">
+            <h3 id="upPartCount" class="Side_By_Side_Data BitFont_Tight">@totPartAmt</h3>
+            @if (totPartAmt == 1)
+            {
+                <h4 class="Side_By_Side_Data BitFont_Tight">&nbsp;: Upcomming Attendee</h4>
+            }
+            else
+            {
+                <h4 class="Side_By_Side_Data BitFont_Tight">&nbsp;: Upcomming Attendees</h4>
+            }
+
+
         </div>
     }
     else
     {
-        <h3 id="NoCurrent">There are no events</h3>
+        <h3 id="NoCurrent" class="BitFont_Large">There are no events</h3>
     }
 
 
-    <h3>Current:</h3>
-    <div id="CurrentEventList" class="Panel_Margin">
+    <h3 class="BitFont_Tight">Current:</h3>
+    <div id="CurrentEventList" class="Panel_Margin ">
         @if (currentEvent != 0)
         {
             @foreach (EventDataModel Event in Model.Events)
             {
+
                 @if (DateTime.Now < Event.EndDate)
                 {
+                    numCounter += 1;
                     isCurrent[Model.Events.FindIndex(a => a.Id == Event.Id)] = true;
-                    <div id="@Event.Id" EndTime="@Event.EndDate" class="Event_Margin">
-                        <p id="name"> Name: @Event.EventName </p>
+                    <div id="@Event.Id" EndTime="@Event.EndDate" class="Event_Margin Event_SubTheme_1 Event_Sub_Structure">
+
                         <div>
-                            <div id="attending" num="@Event.Participants" class="Side_By_Side_Data">People Attending:<p id="number" class="Side_By_Side_Data"> @Event.Participants</p></div>
+                            <p id="name" class="Side_By_Side_Data BitFont_Tight">@Event.EventName </p>
+                            <p id="attending" num="@Event.Participants" class="Side_By_Side_Data BitFont_Tight"> : </p><p id="number" class="Side_By_Side_Data BitFont_Tight"> @Event.Participants</p><p id="attending" num="@Event.Participants" class="Side_By_Side_Data BitFont_Tight">&nbsp;Attending</p>
                         </div>
-                        <button id="IncStoreEvent" EventId="@Event.Id">I'm Going!</button>
-                        <button id="DecStoreEvent" EventId="@Event.Id" hidden>Never Mind...</button>
+                        <div class="Center_Button">
+                            <p id="PosSlideNum" class="slideNumber No_Show">+1</p>
+                            <button id="IncStoreEvent" EventId="@Event.Id" class="Event_Button_Go BitFont_Large">I'm Going!</button>
+                            <button id="DecStoreEvent" EventId="@Event.Id" class="Event_Button_No No_Show BitFont_Large" hidden>Never Mind...</button>
+                        </div>
+
                     </div>
+
                 }
 
             }
         }
         else
         {
-            <h4>There are no current events.</h4>
+            <h4 class="BitFont_Large Panel_Spacing">There are no current events.</h4>
         }
     </div>
-    <h3>Scheduled: (notnowtho)</h3>
+    <h3 class="BitFont_Tight">Scheduled:</h3>
     <div id="EventList" class="Panel_Margin">
         @foreach (EventDataModel Event in Model.Events)
         {
             if (!isCurrent[Model.Events.FindIndex(a => a.Id == Event.Id)] == true)
             {
                 pastEvent++;
-                <div id="@Event.Id" EndTime="@Event.EndDate" class="Event_Margin">
-                    <p id="name"> Name: @Event.EventName </p>
+                <div id="@Event.Id" EndTime="@Event.EndDate" class="Event_Margin  Event_Sub_Structure">
                     <div>
-                        <div id="attending" num="@Event.Participants" class="Side_By_Side_Data">People Attending:<p id="number" class="Side_By_Side_Data"> @Event.Participants</p></div>
+                        <p id="name" class="Side_By_Side_Data BitFont_Tight">@Event.EventName </p>
+                        <p id="attending" num="@Event.Participants" class="Side_By_Side_Data BitFont_Tight"> : </p><p id="number" class="Side_By_Side_Data BitFont_Tight"> @Event.Participants</p><p id="attending" num="@Event.Participants" class="Side_By_Side_Data BitFont_Tight">&nbsp;Attending</p>
                     </div>
-                    <button id="IncStoreEvent" EventId="@Event.Id">I'm Going!</button>
-                    <button id="DecStoreEvent" EventId="@Event.Id" hidden>Never Mind...</button>
+                    <div class="Center_Button">
+                        <button id="IncStoreEvent" EventId="@Event.Id" class="Event_Button_Go BitFont_Large">I'm Going!</button>
+                        <button id="DecStoreEvent" EventId="@Event.Id" class="Event_Button_No No_Show BitFont_Large">Never Mind...</button>
+                    </div>
                 </div>
             }
         }
-        @if (pastEvent != 0)
+        @if (pastEvent == 0)
         {
-            <h4>There are no upcomming events.</h4>
+            <h4 class=" BitFont_Large Panel_Spacing">There are no upcomming events.</h4>
         }
     </div>
 
-    <div class="Panel_Margin">
-        <button id="AddEvent" StoreId="@Model.Store.Id"> Add New Event </button>
+    <div class="Panel_Margin Center_Button">
+        <button id="AddEvent" StoreId="@Model.Store.Id" class="Event_Button_Sml BitFont_Large"> Add New Event </button>
     </div>
 
 </div>
 
+
+<script>
+    $(document).ready(function () {
+        $('#EventPanelWrapper').addClass('Event_Theme_' + currentColor + '');
+        $('#EventList').children('div').addClass('Event_SubTheme_' + currentColor + '');
+        $('#EventList').children('h4').addClass('Event_SubTheme_' + currentColor + '');
+        $('#CurrentEventList').children('div').addClass('Event_SubTheme_' + currentColor + '');
+        $('#CurrentEventList').children('h4').addClass('Event_SubTheme_' + currentColor + '');
+    });
+</script>

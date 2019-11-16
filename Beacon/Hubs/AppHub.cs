@@ -29,15 +29,17 @@ namespace Beacon.Hubs
             await Clients.All.SendAsync("GetEventUpdate", eventId,storeId,function,isCurrentEvent, singleStore.Name);
         }
 
-        public async Task PostNewEvent(string eventData, bool IsToday, string Time,string StoreId)
+        public async Task PostNewEvent(string eventData, bool IsToday, string Time,string StoreId,int currentColor)
         {
             bool isCurrentEvent = false;
             HomeController controller = new HomeController();
 
             EventDataModel newEvent=controller.CreateEvent(eventData,IsToday,Time);
             if (newEvent.EndDate > DateTime.Now) isCurrentEvent = true;
-            string html= "<div><div id=\"" + newEvent.Id + "\"><p id=\"name\"> Name: " + newEvent.EventName + " </p> <div id=\"attending\" num=\"" + newEvent.Participants + "\">People Attending:<p id=\"number\"> " + newEvent.Participants + "</p></div><button id=\"IncStoreEvent\" EventId=\"" + newEvent.Id + "\">I'm Going!</button><button id=\"DecStoreEvent\" EventId=\"" + newEvent.Id + "\" hidden>Never Mind...</button></div></div>";
-            StoresBO storesBO = new StoresBO();
+            //  string html= "<div><div id=\"" + newEvent.Id + "\"><p id=\"name\"> Name: " + newEvent.EventName + " </p> <div id=\"attending\" num=\"" + newEvent.Participants + "\">People Attending:<p id=\"number\"> " + newEvent.Participants + "</p></div><button id=\"IncStoreEvent\" EventId=\"" + newEvent.Id + "\">I'm Going!</button><button id=\"DecStoreEvent\" EventId=\"" + newEvent.Id + "\" hidden>Never Mind...</button></div></div>";
+            string html = "<div id=\"" + newEvent.Id + "\" EndTime =\""+ newEvent.EndDate + "\" class=\"Event_Margin  Event_Sub_Structure Event_SubTheme_"+currentColor+"\"><div><p id=\"name\" class=\"Side_By_Side_Data BitFont_Tight\">" + newEvent.EventName + "</p><p id = \"attending\" num=\"" + newEvent.Participants + "\" class=\"Side_By_Side_Data BitFont_Tight\"> : </p><p id = \"number\" class=\"Side_By_Side_Data BitFont_Tight\"> " + newEvent.Participants + "</p><p id = \"attending\" num=\"" + newEvent.Participants + "\" class=\"Side_By_Side_Data BitFont_Tight\">&nbsp;Attending</p> </div><div class=\"Center_Button\"><button id = \"IncStoreEvent\" EventId=\"" + newEvent.Id + "\" class=\"Event_Button_Go BitFont_Large\">I'm Going!</button><button id = \"DecStoreEvent\" EventId=\"" + newEvent.Id + "\" class=\"Event_Button_No No_Show BitFont_Large\">Never Mind...</button> </div> </div>";
+
+              StoresBO storesBO = new StoresBO();
             StoreDataModel temp = storesBO.ReadIndividual(newEvent.StoreFK);
             await Clients.All.SendAsync("GetNewEvent", html,StoreId,newEvent.EventName,temp.Name,isCurrentEvent);
         }
