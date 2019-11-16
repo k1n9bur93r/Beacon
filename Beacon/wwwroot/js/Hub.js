@@ -45,7 +45,7 @@ connection.on("GetEventUpdate", function (event, store, action,current,storeName
         if (action==1)
             DisplaySnackBar("New attendee at  "+eventName+"", 0);
         else
-            DisplaySnackBar("Removed attendance at   " + eventName+"", 0);
+            DisplaySnackBar("Removed attendance at   " + eventName+"", 2);
     }
     else {
 
