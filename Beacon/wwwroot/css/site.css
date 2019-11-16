@@ -199,6 +199,30 @@ border-color:darkgray;
     outline: dashed 7px #ccaf76;
     border: dashed 6px #faebcd;
 }
+.Color_Filter_Base {
+    filter: grayscale(100%);
+    transition: all 0.09s ease;
+}
+.Color_Filter_0 {
+    filter: brightness(126%) hue-rotate(341deg);
+    transition: all 0.09s ease;
+}
+.Color_Filter_1 {
+    filter: sepia(100%) hue-rotate(83deg);
+    transition: all 0.09s ease;
+}
+.Color_Filter_2 {
+    filter: grayscale(28%) sepia(85%);
+    transition: all 0.09s ease;
+}
+.Color_Filter_3 {
+    filter: grayscale(28%) sepia(100%) brightness(128%);
+    transition: all 0.09s ease;
+}
+.Color_Filter_4 {
+    filter: grayscale(47%) sepia(72%) hue-rotate(360deg) contrast(274%);
+    transition: all0.09s ease;
+}
 
 .invis {
 display:none;

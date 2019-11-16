@@ -33,21 +33,7 @@
                 <div class="Center_Button">
                     <button id="AddNewStore" class="Event_Button_Go BitFont_Large" style="width:100%!important">Add New Store</button>
                 </div>
-                <div id="AddNewStoreWrapper" hidden>
-                    <form>
-                        <br>Store Name:<br>
-                        <input id="StoreNameInput" type="text">
-                        <br>Address:<br>
-                        <input id="StoreAddressInput" type="text">
-                        <br>Zip:<br>
-                        <input id="StoreZipInput" type="text">
-                        <br>City:<br>
-                        <input id="StoreCityInput" type="text">
-                        <br>State:<br>
-                        <input id="StoreStateInput" type="text">
-                    </form>
-                    <button id="SubmitNewStore"> Submit </button>
-                </div>
+
             </div>
             <div id="StoreEventDataWrapper"> </div>
 
@@ -55,6 +41,26 @@
         </div>
 
         <div id="map" style="height:100%;width:70%;margin:0px;padding:0px" class="col-sm-7 MapBorder"></div>
+    </div>
+    <div id="AddNewStoreWrapper" class="Modal_Container" style="width:275px!important">
+        <div class="Modal_Window">
+            <form>
+                <p class="BitFont_Large">Store Name:<p>
+                    <input id="StoreNameInput" class="Input_Box BitFont_Tight" type="text" autocomplete="off">
+                <p class="BitFont_Large">Address:<p>
+                    <input id="StoreAddressInput" class="Input_Box BitFont_Tight" type="text"autocomplete="off">
+                <p class="BitFont_Large">Zip:<p>
+                    <input id="StoreZipInput" class="Input_Box BitFont_Tight" type="text"autocomplete="off">
+                <p class="BitFont_Large">City:<p>
+                    <input id="StoreCityInput" class="Input_Box BitFont_Tight" type="text"autocomplete="off">
+                <p class="BitFont_Large">State:<p>
+                    <input id="StoreStateInput" class="Input_Box BitFont_Tight" type="text"autocomplete="off">
+            </form>
+            <div class="Center_Button">
+            <button id="SubmitNewStore" class="Event_Button_Sml BitFont_Large"> Submit </button>
+        </div>
+        </div>
+        
     </div>
     <div id="NewEventForm" class="Modal_Container">
         <partial name="~/Views/PartialViews/AddEventForm.cshtml" />

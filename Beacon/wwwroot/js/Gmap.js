@@ -3,6 +3,8 @@
 var map;
 var markers = new Array();
 var geocoder;
+var LargeIcon = new Array();
+var SmallIcon = new Array();
 function initMap() {
 
     var myStyles = 
@@ -287,7 +289,8 @@ function initMap() {
    geocoder = new google.maps.Geocoder();
     for (var x = 0; x < StoreCount; x++)
     {
-        geocodeAddress(StoreObj[x].Store.Address, StoreObj[x].Store.Id,x, geocoder, map,(x%5));
+        geocodeAddress(StoreObj[x].Store.Address, StoreObj[x].Store.Id, x, geocoder, map, (x % 5));
+        
     }
 
 
@@ -314,23 +317,40 @@ function checkAddress(address) {
     function geocodeAddress(address,Id,Index,geocoder, map,colorCode) {
         geocoder.geocode({ 'address': address }, function (results, status) {
             if (status === 'OK') {
+                var icons = {
+                    url:'http://www.google.com/mapfiles/marker.png?i=' + Index + ''
+                };
+                SmallIcon.push(icons);
+
                 map.setCenter(results[0].geometry.location);
                 var marker = new google.maps.Marker({
                     map: map,
                     position: results[0].geometry.location,
                     StoreId: Id,
                     ObjIndex: Index,
-                    color:colorCode
+                    color: colorCode,
+                    icon: icons.url
                 });
-                marker.addListener('click', function (point) {
+                marker.addListener('click', function () {
                     map.setZoom(15);
-                    marker.setIcon(null);
+                    $('img[src="' + this.icon + '"]').addClass('Color_Filter_' + this.color + '');
+                   // marker.setIcon(null);
                     map.setCenter(this.getPosition());
                     getStoreData(this.ObjIndex);
                     currentColor = colorCode;
+                    
+                });
+                marker.addListener('mouseover', function () {
+                    $('img[src="' + this.icon + '"]').addClass('Color_Filter_' + this.color + '');
+
+                });
+                marker.addListener('mouseout', function () {
+                    $('img[src="' + this.icon + '"]').removeClass('Color_Filter_' + this.color + '');
+
+
                 });
                 markers.push(marker);
-
+                
             }
             else {
                 //throw alert here 

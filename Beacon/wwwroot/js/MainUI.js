@@ -37,7 +37,11 @@ $('body').on('click','button#returnStoreDataWrapperView', function () {
     $('div#StoreEventDataWrapper').toggle(false); //Hide advanced store panel
     $('div#StoreDataWrapper').toggle(true); //Show store panel list
     map.setZoom(11); //revert map zoom
+    $('img[src="' + this.icon + '"]').animate().removeClass('Color_Filter_' + currentColor + '');
+    if ($('div#NewEventForm').hasClass('showModal') == true) 
+        $('div#NewEventForm').removeClass('showModal');
     $('button#returnStoreDataWrapperView').toggle(false); //Hide return button
+    
 });
 
 //If a store panel is clicked, we want to gather this store's information to display and adjust the map view
@@ -57,9 +61,37 @@ $('body').on('click','div#StorePanel', function () {
     }
     //Zoom the map into the corret marker,call the return store panel
     google.maps.event.trigger(markers[getIndex], 'click');
+    if ($('div#AddNewStoreWrapper').hasClass('showModal') == true) 
+        $('div#AddNewStoreWrapper').removeClass('showModal');
    
 });
+$('body').on('mouseover', 'div#StorePanel', function () {
+    var HoveId = $(this).attr('StoreId'); //get store ID
+    //find a matching store id stored in a JS object list
+    for (var x = 0; x < StoreObj.length; x++) {
+        //if you find the store ID
+        if (markers[x].StoreId == HoveId ) {
+            getIndex = x;
+            break;
+        }
+    }
+    //Zoom the map into the corret marker,call the return store panel
+    google.maps.event.trigger(markers[getIndex], 'mouseover');
 
+});
+$('body').on('mouseleave', 'div#StorePanel', function () {
+    var HoveId = $(this).attr('StoreId'); //get store ID
+    //find a matching store id stored in a JS object list
+    for (var x = 0; x < StoreObj.length; x++) {
+        //if you find the store ID
+        if (markers[x].StoreId == HoveId) {
+            getIndex = x;
+            break;
+        }
+    }
+    //Zoom the map into the corret marker,call the return store panel
+    google.maps.event.trigger(markers[getIndex], 'mouseout');
+});
 
 // If an 'Im Going!' button is clicked for an event
 $('body').on('click', 'button[id*=\'IncStoreEvent\']', function () {
@@ -70,6 +102,8 @@ $('body').on('click', 'button[id*=\'IncStoreEvent\']', function () {
         PostEventUpdate(id, 1);
         SubbedEvents = true;
         $(this).toggle(false); //hide ths clicked button
+        if ($('div#NewEventForm').hasClass('showModal') == true) 
+            $('div#NewEventForm').removeClass('showModal');
         $(this).siblings('button#DecStoreEvent').removeClass('No_Show'); //show the regert button
     }
 });
@@ -91,6 +125,7 @@ $('body').on('click', 'button[id*=\'AddEvent\']', function () {
     //if the form is not visible, make it visible, if visible make invisible  
     if ($('div#NewEventForm').hasClass('showModal') == true) {
         $('div#NewEventForm').removeClass('showModal');
+        return;
     }
     else {
         $('div#NewEventForm').addClass('showModal');
@@ -179,11 +214,11 @@ else
 //if the 'Add new Store' button is clicked
 $('button#AddNewStore').on('click', function () {
     //if the form is not visible, show it. If it is visible, hide it 
-    if ($('div#AddNewStoreWrapper').is(':visible') == false) {
-        $('div#AddNewStoreWrapper').toggle(true);
+    if ($('div#AddNewStoreWrapper').hasClass('showModal') == true) {
+        $('div#AddNewStoreWrapper').removeClass('showModal');
     }
     else {
-        $('div#AddNewStoreWrapper').toggle(false);
+        $('div#AddNewStoreWrapper').addClass('showModal');
     }
 
 });
