@@ -171,6 +171,9 @@ else
         var dataPayload = { "Id": 69, "EventName": $('#EventNameInput').val(), "StoreFK": storeId, "GameFK": $('select#EventGameInput').children(':selected').attr('id'), "StartDate": tempDate.format(), "EndDate": tempDate.format(), "Deleted": "False", "Participants": 0 };
         PostNewEvent(JSON.stringify(dataPayload), isToday, moment(startDate).format('MM/DD/YYYY hh:mm'), storeId);
         $('div#NewEventForm').removeClass('showModal');
+        $('#EventNameInput').val("");
+        $('#StartDateTimeValue').val("");
+        $('#StartTimeValue').val("");
     }
 });
 //if the 'Add new Store' button is clicked
@@ -194,8 +197,9 @@ $('button#SubmitNewStore').on('click', function () {
         var dataPayload = { "Name": $('input#StoreNameInput').val(), "Id": 69, "Address": $('input#StoreAddressInput').val(), "Zip": $('input#StoreZipInput').val(), "City": $('input#StoreCityInput').val(), "State": $('input#StoreStateInput').val(), "Deleted": false };
         PostNewStore(dataPayload);
     }).catch(badfo => {
-        return;
         //fail snack bar
+        DisplaySnackBar('Unable to submit new store', 3);
+        return;
     });
   
 });
