@@ -44,10 +44,11 @@ namespace Beacon.Hubs
             await Clients.All.SendAsync("GetNewEvent", html,StoreId,newEvent.EventName,temp.Name,isCurrentEvent);
         }
 
-        public async Task PostNewStore(string newStore) {
+        public async Task PostNewStore(string newStore,string CurrentColor,string currentNumber) {
             HomeController controller = new HomeController();
             StoreDataModel store= controller.CreateStore(newStore);
-            string html = "<div StoreId=\""+store.Id+"\" id=\"StorePanel\"><h2>"+store.Name+"</h2><p>"+store.Address+" </p></div>";
+           //"<div StoreId=\""+store.Id+"\" id=\"StorePanel\"><h2>"+store.Name+"</h2><p>"+store.Address+" </p></div>";
+            string html = "<div StoreId = \"" + store.Id + "\" color = \"'"+CurrentColor+"\" id = \"StorePanel\" class=\"Panel_Margin Store_Theme_" + CurrentColor + " Panel_Spacing \"><div class=\"Remove_Margin\"><h3 class=\"Side_By_Side_Data BitFont_Tight \">"+currentNumber+":&nbsp; </h3><h2 class=\"Side_By_Side_Data BitFont_Large \"> " + store.Name + "</h2> </div><div id = \"storeEvents\" storeId=\"" + store.Id + "\" ><h4 class=\"Side_By_Side_Data Remove_Margin BitFont_Tight\">No Current Events&nbsp;</h4><h3 class=\"Side_By_Side_Data Remove_Margin\"></h3></div><div id = \"storeParticipants\" storeId=\"" + store.Id + "\" hidden><h4 class=\"Side_By_Side_Data Remove_Margin BitFont_Tight\">Current Particpants:&nbsp;</h4><h3 class=\"Side_By_Side_Data Remove_Margin BitFont_Tight\"> <strong>0</strong></h3></div></div>";
             string JSON = JsonConvert.SerializeObject(store);
             await Clients.All.SendAsync("GetNewStore",html,JSON);
 

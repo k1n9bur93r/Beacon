@@ -116,7 +116,8 @@ connection.on("GetNewEvent", function (returnData, StoreId, EventName, StoreName
 
 //create new store event
 function PostNewStore(newStore) {
-    connection.invoke("PostNewStore", JSON.stringify(newStore)).catch(function (err) {
+    StoreCount++;
+    connection.invoke("PostNewStore", JSON.stringify(newStore), StoreCount%5, StoreCount).catch(function (err) {
         
         DisplaySnackBar('Failed to create new store!', 3);
         return console.error(err.toString());
@@ -125,7 +126,7 @@ function PostNewStore(newStore) {
 
 //get storeEvent
 connection.on("GetNewStore", function (html, JSONs) {
-    $('div#StoreDataWrapper').prepend(html);
+    $('div#StoreDataWrapper').append(html);
     var store = JSON.parse(JSONs);
     StoreObj.Store.push(JSON.parse(JSONs));
     DisplaySnackBar("New store added!", 1);

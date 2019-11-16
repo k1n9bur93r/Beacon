@@ -2,6 +2,7 @@
 var SubbedEventsID = new Array();
 var ActiveStore;
 var currentColor = 0;
+var isAnimating = false;
 
 $('#Test').on('click', function () {
     $('div#AlertBar').removeClass('Slider_Closed');
@@ -236,11 +237,12 @@ $('button#SubmitNewStore').on('click', function () {
         DisplaySnackBar('Unable to submit new store', 3);
         return;
     });
-  
+    $('div#AddNewStoreWrapper').removeClass('showModal');
 });
 //snack bar logic 
 function DisplaySnackBar(msgtext, state) {
     // Get the snackbar DIV'
+    $("div#snackbar").removeClass();
     $("div#snackbar").text(msgtext);
     $("div#snackbar").addClass('show');
     var classname;
@@ -272,12 +274,16 @@ function DisplaySnackBar(msgtext, state) {
                 break;
             }
     }
-
-    // After 3 seconds, remove the show class from DIV
-    setTimeout(function () {
-        $("div#snackbar").addClass('show');
-        $("div#snackbar").removeClass('show');
-    }, 3000);
+    if (isAnimating == false) {
+        isAnimating = true;
+        // After 3 seconds, remove the show class from DIV
+        setTimeout(function () {
+            // $("div#snackbar").addClass('show');
+            $("div#snackbar").removeClass('show');
+            $("div#snackbar").removeClass(classname);
+            isAnimating = false;
+        }, 3000);
+    }
 }
 
 $('body').on('click', 'h1#StoreTitle', function () {

@@ -37,39 +37,23 @@ filter:brightness(0);
 padding:10px;
 
 }
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
-}
-
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
-    width: 100%;
-}
-
-/* QR code generator */
-#qrCode {
-    margin: 15px;
-}
-
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
-    }
-}
-
-
-
 
 /*Custom CSS*/
-
+@media only screen and (max-device-width:768px) {
+    .hidescroll {
+        height:auto;
+    }
+}
+@media only screen and (min-device-width:769px) {
+    .hidescroll {
+        overflow-y: auto;
+        height: 900px;
+    }
+}
 .Store_vertical_Margin {
 margin-right:2%;
-height:900px;
-overflow-y:auto;
+
+margin-bottom:30px;
 }
 .StoreDisplayItem 
 {
@@ -191,9 +175,12 @@ border-color:darkgray;
 } 
 
 /*Gmap Stylings*/
+.MapSize {
+    height: 100%;
+    min-width 55%;
+    max-width: 100%;
+    padding: 0px;}
 .MapBorder {
-    height: 400px;
-    width: 50%;
     min-width: 100px;
     box-shadow: 0 0 0 5px #174960;
     outline: dashed 7px #ccaf76;
@@ -221,9 +208,20 @@ border-color:darkgray;
 }
 .Color_Filter_4 {
     filter: grayscale(47%) sepia(72%) hue-rotate(360deg) contrast(274%);
-    transition: all0.09s ease;
+    transition: all 0.09s ease;
 }
 
+.Blinking_Dot {
+width: 50px;
+height:50px;
+background:url('../images/blinking dot.png')left center;
+animation: play 1.3s steps(5) infinite;
+}
+@keyframes play {
+    100% {
+        background-position:-250px;
+    }
+}
 .invis {
 display:none;
 }
@@ -259,7 +257,8 @@ display:none;
 }
 .Panel_Margin {
     margin-top: 2%!important;
-    margin-bottom: 8%;
+    margin-bottom: 6%;
+
 }
 .Panel_Spacing {
     padding:3%;
@@ -290,6 +289,7 @@ justify-content:center;
     box-shadow: 0 0 0 5px #174960;
     outline: dashed 7px #ffc1c1;
     border: dashed 6px #bb4343;
+    cursor:pointer;
 }
 
 .Store_Theme_1 {
@@ -297,6 +297,7 @@ justify-content:center;
     box-shadow: 0 0 0 5px #174960;
     outline: dashed 7px #c7eeb1;
     border: dashed 6px #758d66;
+    cursor: pointer;
 }
 
 .Store_Theme_2 {
@@ -304,6 +305,7 @@ justify-content:center;
     box-shadow: 0 0 0 5px #174960;
     outline: dashed 7px #f1bb85;
     border: dashed 6px #987048;
+    cursor: pointer;
 }
 
 .Store_Theme_3 {
@@ -311,6 +313,7 @@ justify-content:center;
     box-shadow: 0 0 0 5px #174960;
     outline: dashed 7px #fae29c;
     border: dashed 6px #a19573;
+    cursor: pointer;
 }
 
 .Store_Theme_4 {
@@ -318,6 +321,7 @@ justify-content:center;
     box-shadow: 0 0 0 5px #174960;
     outline: dashed 7px #fcc371;
     border: dashed 6px #9f7334;
+    cursor: pointer;
 }
 
 /*EVENT PANEL THEMES*/

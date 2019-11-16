@@ -10,10 +10,12 @@
 </div>
 <div class="container-fluid">
     <div class="row" style="height:900px">
-        <div class="col-sm-3 Store_vertical_Margin">
+        <div class="col-sm-5 Store_vertical_Margin hidescroll">
+            <div id="StoreEventDataWrapper"> </div>
             <div id="StoreDataWrapper">
                 @for (int x = 0; x < Model.Count; x++)
                 {
+
                     <div StoreId="@Model[x].Store.Id" color="@(x%5)" id="StorePanel" class="Panel_Margin Store_Theme_@(x%5) Panel_Spacing ">
                         <div class="Remove_Margin">
                             <h3 class="Side_By_Side_Data BitFont_Tight ">@(x + 1):&nbsp; </h3><h2 class="Side_By_Side_Data BitFont_Large "> @Model[x].Store.Name</h2>
@@ -35,42 +37,41 @@
                 </div>
 
             </div>
-            <div id="StoreEventDataWrapper"> </div>
-
 
         </div>
-
-        <div id="map" style="height:100%;width:70%;margin:0px;padding:0px" class="col-sm-7 MapBorder"></div>
+        <div id="map" class="col-sm-6 MapBorder MapSize"></div>
     </div>
-    <div id="AddNewStoreWrapper" class="Modal_Container" style="width:275px!important">
-        <div class="Modal_Window">
-            <form>
-                <p class="BitFont_Large">Store Name:<p>
-                    <input id="StoreNameInput" class="Input_Box BitFont_Tight" type="text" autocomplete="off">
-                <p class="BitFont_Large">Address:<p>
-                    <input id="StoreAddressInput" class="Input_Box BitFont_Tight" type="text"autocomplete="off">
-                <p class="BitFont_Large">Zip:<p>
-                    <input id="StoreZipInput" class="Input_Box BitFont_Tight" type="text"autocomplete="off">
-                <p class="BitFont_Large">City:<p>
-                    <input id="StoreCityInput" class="Input_Box BitFont_Tight" type="text"autocomplete="off">
-                <p class="BitFont_Large">State:<p>
-                    <input id="StoreStateInput" class="Input_Box BitFont_Tight" type="text"autocomplete="off">
-            </form>
-            <div class="Center_Button">
+
+</div>
+<div id="AddNewStoreWrapper" class="Modal_Container" style="width:275px!important">
+    <div class="Modal_Window">
+        <form>
+            <p class="BitFont_Large">Store Name:<p>
+                <input id="StoreNameInput" class="Input_Box BitFont_Tight" type="text" autocomplete="off">
+            <p class="BitFont_Large">Address:<p>
+                <input id="StoreAddressInput" class="Input_Box BitFont_Tight" type="text" autocomplete="off">
+            <p class="BitFont_Large">Zip:<p>
+                <input id="StoreZipInput" class="Input_Box BitFont_Tight" type="text" autocomplete="off">
+            <p class="BitFont_Large">City:<p>
+                <input id="StoreCityInput" class="Input_Box BitFont_Tight" type="text" autocomplete="off">
+            <p class="BitFont_Large">State:<p>
+                <input id="StoreStateInput" class="Input_Box BitFont_Tight" type="text" autocomplete="off">
+        </form>
+        <div class="Center_Button Panel_Margin">
             <button id="SubmitNewStore" class="Event_Button_Sml BitFont_Large"> Submit </button>
         </div>
-        </div>
-        
-    </div>
-    <div id="NewEventForm" class="Modal_Container">
-        <partial name="~/Views/PartialViews/AddEventForm.cshtml" />
     </div>
 
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/js/Gmap.js"></script>
-    <script src="~/js/MainUI.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARC2ud3IHzqKVuh2ACGZXvSSb6r3cfGHA&callback=initMap"></script>
-    <script>
+</div>
+<div id="NewEventForm" class="Modal_Container">
+    <partial name="~/Views/PartialViews/AddEventForm.cshtml" />
+</div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/Gmap.js"></script>
+<script src="~/js/MainUI.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARC2ud3IHzqKVuh2ACGZXvSSb6r3cfGHA&callback=initMap"></script>
+<script>
     var NotifyIconUrl = '@Url.Content("~/images/Marker_Notify.png")';
      var StoreCount =@Model.Count();
         var StoreObj =@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented));
@@ -80,5 +81,5 @@
             });
             $('#StartDateTimeValue').datetimepicker();
         });
-    </script>
+</script>
 
