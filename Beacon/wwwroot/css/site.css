@@ -414,17 +414,17 @@ padding:3%;
     border-width: 3px;
     height: 40px;
     cursor:pointer;
+    width:100%
 }
 
 .Modal_Window {
     z-index: 1;
-    padding: 10px;
+    padding:10px;
     background-color: white;
-    margin: 80% auto;
+    margin: 10% auto;
     background-color: #A6B07B;
+    min-width:10%;
     max-width:800px;
-    width: 80%!important;
-   
     outline: dashed 7px #4e4e4e;
     border: dashed 6px #b0b0b0;
 }
