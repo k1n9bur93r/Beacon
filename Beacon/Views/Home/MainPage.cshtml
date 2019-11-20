@@ -11,7 +11,8 @@
 <div class="container-fluid">
     <div class="row" style="height:900px">
         <div class="col-sm-5 Store_vertical_Margin hidescroll">
-            <div id="StoreEventDataWrapper"> </div>
+            <div id="StoreEventDataWrapper"></div>
+            <div id="StoreButtonHolder">
             <div id="StoreDataWrapper">
                 @for (int x = 0; x < Model.Count; x++)
                 {
@@ -32,12 +33,13 @@
                         }
                     </div>
                 }
-                <div class="Center_Button">
-                    <button id="AddNewStore" class="Event_Button_Go BitFont_Large" style="width:100%!important">Add New Store</button>
-                </div>
+
 
             </div>
-
+            <div class="Center_Button">
+                <button id="AddNewStore" class="Event_Button_Go BitFont_Large" style="width:100%!important">Add New Store</button>
+            </div>
+            </div>
         </div>
         <div id="map" class="col-sm-6 MapBorder MapSize"></div>
     </div>

@@ -176,10 +176,12 @@ border-color:darkgray;
 
 /*Gmap Stylings*/
 .MapSize {
+    margin-top:12px;
     height: 100%;
-    min-width 55%;
+    min-width: 55%;
     max-width: 100%;
-    padding: 0px;}
+    padding: 0px;
+}
 .MapBorder {
     min-width: 100px;
     box-shadow: 0 0 0 5px #174960;
@@ -411,6 +413,7 @@ padding:3%;
     border-color: #51563b;
     border-width: 3px;
     height: 40px;
+    cursor:pointer;
 }
 
 .Modal_Window {

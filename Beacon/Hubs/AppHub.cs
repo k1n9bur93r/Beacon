@@ -13,6 +13,7 @@ namespace Beacon.Hubs
 {
     public class AppHub : Hub
     {
+  
         public async Task PostEventUpdate(string eventId,string storeId,int function)
         {
             bool isCurrentEvent = false;

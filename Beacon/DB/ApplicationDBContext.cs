@@ -22,7 +22,7 @@ namespace DB
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Server=localhost;Database=BeaconLocationData;Trusted_Connection=True;MultipleActiveResultSets=true;");
+            optionsBuilder.UseSqlServer("Server=tcp:beaconfinderdbserver.database.windows.net,1433;Initial Catalog=Beacon_db;Persist Security Info=False;User ID=SallySuAdmin;Password=21istheage2B!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

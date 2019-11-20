@@ -25,6 +25,7 @@ function getStoreData(data) {
         $('div#StoreEventDataWrapper').html(data); //inject the HTML into the webpage
         $('div#StoreEventDataWrapper').toggle(true); //Show this injected HTML
         $('div#StoreDataWrapper').toggle(false); //Hide current Store Panels
+        $('div#StoreButtonHolder').toggle(false);
         $('button#returnStoreDataWrapperView').toggle(true); //Show button to return app panels to view
     })
         .fail(function () {
@@ -36,9 +37,9 @@ function getStoreData(data) {
 $('body').on('click','button#returnStoreDataWrapperView', function () {
     ActiveStore = "none";
     $('div#StoreEventDataWrapper').toggle(false); //Hide advanced store panel
-    $('div#StoreDataWrapper').toggle(true); //Show store panel list
+    $('div#StoreButtonHolder').toggle(true); //show add store button
+    $('div#StoreDataWrapper').toggle(true);//Show store panel list
     map.setZoom(11); //revert map zoom
-    $('img[src="' + this.icon + '"]').animate().removeClass('Color_Filter_' + currentColor + '');
     if ($('div#NewEventForm').hasClass('showModal') == true) 
         $('div#NewEventForm').removeClass('showModal');
     $('button#returnStoreDataWrapperView').toggle(false); //Hide return button
