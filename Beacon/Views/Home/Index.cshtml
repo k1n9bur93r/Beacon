@@ -2,32 +2,42 @@
 <html lang="en">
 
 <head>
-    <title>Beacon</title>
+    <title>Beacon Landing Page</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicon -->
+    <link rel="icon" href="~/favicon.ico" type="image/x-icon" />
+
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-</head>h
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="~/css/Index.css">
+
+    <!-- JavaScript -->
+    <script type="text/javascript" src="~/js/Index.js"></script>
+</head>
 
 <body>
-
+    <!-- Icon on Header -->
     <div class="row">
         <div class="col">
             <div class="text-center">
-                <!-- logo -->
-                <img style="height: 50px; width: 50px" src="https://www.ferrarili.com/wp-content/uploads/2019/04/black-triangle-png632-419f-b72a-eacceedb500c.png" alt="logo"></img>
+                <img alt="Beacon Icon" src="~/images/beaconWhite_Icon.png" class="iconStyle" />
             </div>
         </div>
     </div>
 
-    <!-- Banner -->
+    <!-- Main Section -->
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
             <div class="row">
                 <div class="col-sm-4">
-                    <h1>Beacon</h1>
+                    <img alt="Beacon Logo" src="~/images/beacon_logo.png" class="logoStyle" style="width: 100%"/>
                     <p>Find game events in real-time in the Las Vegas area.</p>
                     <button id="0">Hey</button>
                     <button id="1">Hey</button>
@@ -48,8 +58,19 @@
                     </a>
                 </div>
 
+                <!-- Slideshow -->
                 <div class="col-sm-8">
-                    <img style="width: 650px; height: 400px" src="http://via.placeholder.com/650x400" alt="Website Example"></img>
+                    <div id="slideshow">
+                        <div>
+                            <img src="http://farm6.static.flickr.com/5224/5658667829_2bb7d42a9c_m.jpg">
+                        </div>
+                        <div>
+                            <img src="http://farm6.static.flickr.com/5230/5638093881_a791e4f819_m.jpg">
+                        </div>
+                        <div>
+                            Pretty cool eh? This slide is proof the content can be anything.
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -61,7 +82,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-4">
-                <img class="center" style="width: 100px; height: 90px" src="https://www.fourjay.org/myphoto/f/5/55553_map-icon-png.png"></img>
+                <img class="center" style="width: 100px; height: 90px" src="~/images/chessPiece_Icon.svg"></img>
                 <br>
                 <h3 class="text-center">Real-Time</h3>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
@@ -82,11 +103,6 @@
                 <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
             </div>
         </div>
-    </div>
-
-    <div class="p-3 mb-2 bg-light text-dark">
-        <p class="text-center">Las Vegas, Nevada</p>
-
     </div>
 </body>
 
