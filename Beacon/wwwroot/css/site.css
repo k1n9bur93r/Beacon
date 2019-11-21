@@ -14,28 +14,24 @@ for details on configuring this project to bundle and minify static web assets. 
 }
 body {
     background: linear-gradient(to bottom, #174960 70%, #063247 70%, #063247 85%, #011f2d 85%, #011f2d 93%, #000c12 93%, #000c12 97%, #000609 97%);
-    padding-left: 15px;
-    padding-right: 15px;
 }
 .Footer_Style {
-
-    background-color: #ebe3cd;
-    height:50px;
-    padding-left:3px;
+    background-color: #DFD2B0;
+    height: 50px;
+    padding-left: 3px;
 }
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .logo_header {
     width: 100%;
-    background-color: #562538;
-    margin-bottom:10px;
+    background-color: #DFD2B0;
+    margin-bottom: 10px;
 }
 .logo {
-width:19%;
-max-width:300px;
-filter:brightness(0);
-padding:10px;
-
+    width: 19%;
+    max-width: 300px;
+    filter: contrast(-126%) !important;
+    padding: 10px;
 }
 
 /*Custom CSS*/
@@ -286,6 +282,7 @@ justify-content:center;
 }
 
 /*Store PANEL THEMES*/
+
 .Store_Theme_0 {
     background-color: #FC9E99;
     box-shadow: 0 0 0 5px #174960;

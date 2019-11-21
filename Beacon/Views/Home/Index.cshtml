@@ -39,10 +39,6 @@
                 <div class="col-sm-4">
                     <img alt="Beacon Logo" src="~/images/beacon_logo.png" class="logoStyle" style="width: 100%"/>
                     <p>Find game events in real-time in the Las Vegas area.</p>
-                    <button id="0">Hey</button>
-                    <button id="1">Hey</button>
-                    <button id="2">Hey</button>
-                    <button id="3">Hey</button>
                     <input type='button' id="GoToApp " value='Go To App' onclick='window.location = "@Url.Action("RunApp", "Home")";' />
                     <a href="https://google.com/" class="btn">
                         <svg width="277" height="62">
@@ -115,18 +111,3 @@
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/js/Gmap.js"></script>
 <script src="~/js/MainUI.js"></script>
-<script>
-    $('#GoToApp').on('click', function () {
-        $.ajax({
-            type: "GET",
-            url: "/Home/RunApp",
-            contentType: "application/json;charset=utf-8",
-            dataType: "html"
-        });
-    });
-
-    $('button#0').on('click', function () { DisplaySnackBar("Good",0) });
-    $('button#1').on('click', function () { DisplaySnackBar("HEY",1) });
-    $('button#2').on('click', function () { DisplaySnackBar("careful",2) });
-    $('button#3').on('click', function () { DisplaySnackBar("bad",3) });
-</script>s
