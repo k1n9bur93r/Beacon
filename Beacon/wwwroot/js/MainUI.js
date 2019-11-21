@@ -51,7 +51,6 @@ $('body').on('click','div#StorePanel', function () {
     var ClickId = $(this).attr('StoreId'); //get store ID
     currentColor = $(this).attr('color');
     var getIndex;//variable that holds a current object index
-
     //find a matching store id stored in a JS object list
     for (var x = 0; x < StoreObj.length; x++)
     {

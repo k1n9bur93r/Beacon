@@ -13,6 +13,7 @@
         <div class="col-sm-5 Store_vertical_Margin hidescroll">
             <div id="StoreEventDataWrapper"></div>
             <div id="StoreButtonHolder">
+                <div></div>
             <div id="StoreDataWrapper">
                 @for (int x = 0; x < Model.Count; x++)
                 {
@@ -28,13 +29,11 @@
                         }
                         else
                         {
-                            <div id="storeEvents" storeId="@Model[x].Store.Id"><h4 class="Side_By_Side_Data Remove_Margin BitFont_Tight">No Current Events&nbsp;</h4><h3 class="Side_By_Side_Data Remove_Margin"></h3></div>
+                            <div id="storeEvents" storeId="@Model[x].Store.Id"><h4 class="Side_By_Side_Data Remove_Margin BitFont_Tight">No Current Events&nbsp;</h4><h3 class="Side_By_Side_Data Remove_Margin BitFont_Tight"></h3></div>
                             <div id="storeParticipants" storeId="@Model[x].Store.Id" hidden><h4 class="Side_By_Side_Data Remove_Margin BitFont_Tight">Current Particpants:&nbsp;</h4><h3 class="Side_By_Side_Data Remove_Margin BitFont_Tight"> <strong>@Model[x].TotalParticipants</strong></h3></div>
                         }
                     </div>
                 }
-
-
             </div>
             <div class="Center_Button">
                 <button id="AddNewStore" class="Event_Button_Go BitFont_Large" style="width:100%!important">Add New Store</button>

@@ -77,7 +77,6 @@ function PostNewEvent(eventData, IsToday, Time, StoreId) {
 
 //Receve New Event
 connection.on("GetNewEvent", function (returnData, StoreId, EventName, StoreName,current) {
-    if (StoreId == ActiveStore) {
         if (current) {
             $('div#CurrentEventList').append(returnData);
             $('div#CurrentEventList').children('h4').toggle(false);
@@ -93,22 +92,22 @@ connection.on("GetNewEvent", function (returnData, StoreId, EventName, StoreName
         $('h2#CurrentEvents').text(data);
         $('h3#NoCurrent').toggle(false);
         DisplaySnackBar("Event added", 0);
-    }
-    else
-    {
+    
         if (current) {
-            if ($('div[Storeid=' + StoreId + ']').children('div#id=storeEvents').is(':visible')) {
+            if ($('div[Storeid=' + StoreId + ']#storeParticipants').is(':visible')) {
                 var number = $('div[Storeid=' + StoreId + ']').children('div#id=storeEvents').children('h3').text();
                 number++;
                 $('div[Storeid=' + StoreId + '][id=storeEvents]').children('h4').text(number);
             }
             else {
-                $('div[Storeid=' + StoreId + ']').children('div#id=storeParticipants').toggle(true);
-                $('div[Storeid=' + StoreId + ']').children('div#id=storeParticipants').children('h3').text('0');
-                $('div[Storeid=' + StoreId + ']').children('div#id=storeParticipants').children('h4').text('Current Events:');
-                $('div[Storeid=' + StoreId + ']').children('div#id=storeEvents').children('h3').text('1');
+                $('div[Storeid=' + StoreId + ']#storeEvents').children('h3').toggle(true);
+                $('div[Storeid=' + StoreId + ']#storeEvents').children('h3').text('1');
+                $('div[Storeid=' + StoreId + ']#storeEvents').children('h4').text('Current Events:');
+                $('div[Storeid=' + StoreId + ']#storeParticipants').toggle(true);
+                $('div[Storeid=' + StoreId + ']#storeParticipants').children('h3').text('0');
             }
-        }
+    }
+    if (StoreId != ActiveStore) {
         DisplaySnackBar("Event " + EventName + " created at " + StoreName + "", 1);
     }
     UpdateMarkerNotify(storeId);
