@@ -16,7 +16,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="~/css/Index.css">
+    <link rel="stylesheet" type="text/css" href="~/css/Index.css" />
 
     <!-- JavaScript -->
     <script type="text/javascript" src="~/js/Index.js"></script>
@@ -24,16 +24,64 @@
 
 <body>
     <!-- Icon on Header -->
-    <div class="row">
-        <div class="col">
-            <div class="text-center">
-                <img alt="Beacon Icon" src="~/images/beaconWhite_Icon.png" class="iconStyle" />
+    <div style="background-color: #DFD2B0">
+        <div class="container-fluid">
+            <div class="row">
+                <img alt="Beacon Icon" src="~/images/Beacon_Icon.png" class="mx-auto d-block" style="width:5%;" />
             </div>
         </div>
     </div>
 
     <!-- Main Section -->
-    <div class="jumbotron jumbotron-fluid">
+    <div style="background-color: #174960; margin-bottom: -10px;">
+        <div class="container-fluid">
+            <!-- Beacon Logo -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <img alt="Beacon Logo" src="~/images/beacon_logo_main.png" class="mx-auto d-block" style="margin: 1%; width: 25%; height: auto;"/>
+                </div>
+            </div>
+
+            <!-- Main Section -->
+            <div class="row" style="margin: 5px;">
+                <!-- Left Section -->
+                <div class="col-sm-5">
+                    <!-- Slideshow -->
+                    <div id="slideshow">
+                        <!-- Image #1 -->
+                        <div>
+                            <img src="https://cdn.pixabay.com/photo/2013/10/02/23/03/dawn-190055_1280.jpg">
+                        </div>
+
+                        <!-- Image #2 -->
+                        <div>
+                            <img src="https://cdn.pixabay.com/photo/2018/06/13/18/20/wave-3473335_1280.jpg" />
+                        </div>
+
+                        <!-- Image #3 -->
+                        <div>
+                            <img src="https://cdn.pixabay.com/photo/2016/04/18/10/17/wolf-1336229_1280.jpg">
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <h2 style="color: lightgrey; margin: 10px; ">Find game events in real-time in the Las Vegas area.</h2>
+
+                    <!-- Button -->
+                    <button class="button" style="vertical-align:middle" onclick='window.location = "@Url.Action("RunApp", "Home")";'><span>ENTER</span></button>
+                </div>
+
+                <!-- Right Section -->
+                <div class="col-sm-7">
+                    <img src="https://via.placeholder.com/500x500" style="width: 100%; height: auto; margin-bottom: 30px; margin-top: 5px; max-height: 475px;"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Section -->
+    <!--
+    <div class="jumbotron text-left jumbotron-fluid" style="background-color: red; margin-bottom: 0;">
         <div class="container">
             <div class="row">
                 <div class="col-sm-4">
@@ -54,7 +102,6 @@
                     </a>
                 </div>
 
-                <!-- Slideshow -->
                 <div class="col-sm-8">
                     <div id="slideshow">
                         <div>
@@ -72,9 +119,8 @@
         </div>
 
     </div>
-
-    </div>
-
+    -->
+    <!--
     <div class="container">
         <div class="row">
             <div class="col-sm-4">
@@ -100,13 +146,9 @@
             </div>
         </div>
     </div>
+        -->
 </body>
-
 </html>
-
-
-
-
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/js/Gmap.js"></script>
