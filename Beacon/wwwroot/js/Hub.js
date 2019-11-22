@@ -93,11 +93,13 @@ connection.on("GetNewEvent", function (returnData, StoreId, EventName, StoreName
         $('h3#NoCurrent').toggle(false);
         DisplaySnackBar("Event added", 0);
     
-        if (current) {
-            if ($('div[Storeid=' + StoreId + ']#storeParticipants').is(':visible')) {
-                var number = $('div[Storeid=' + StoreId + ']').children('div#id=storeEvents').children('h3').text();
+    if (current) {
+        if ($('div[storeid=' + StoreId + ']#storeParticipants').is(':visible') || $('div#CurrentEventList').children('div').length >= 1) {
+            var number = $('div[storeid=' + StoreId + ']#storeEvents').children('h3').children('strong').text();
+                alert(number);
                 number++;
-                $('div[Storeid=' + StoreId + '][id=storeEvents]').children('h4').text(number);
+                alert(number);
+            $('div[storeid=' + StoreId + ']#storeEvents').children('h3').children('strong').text(number);
             }
             else {
                 $('div[Storeid=' + StoreId + ']#storeEvents').children('h3').toggle(true);

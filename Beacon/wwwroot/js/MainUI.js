@@ -171,9 +171,25 @@ $('body').on('click', $('input#EventToday') ,function () {
     }
         
 });
+//if the Add Event form back button is clicked
+$(document).on('click', 'button#butonreturnAddEvent', function () {
+    event.preventDefault();
+    $('input#EventNameInput').val('');
+    $('input#StartTimeValue').val('');
+    $('input#StartDateTimeValue').val('');
+    $('div#NewEventForm').removeClass('showModal');
+});
+//if the Add Event form back button is clicked
+$(document).on('click', 'button#returnAddStore', function () {
+    $('input#StoreNameInput').val('');
+    $('input#StoreAddressInput').val('');
+    $('input#StoreZipInput').val('');
+    $('input#StoreCityInput').val('');
+    $('input#StoreStateInput').val('');
+    $('div#AddNewStoreWrapper').removeClass('showModal');
+});
 //if the submit 'event button' was clicked
 $('body').on('click', 'button#SubmitEvent', function () {
-    event.preventDefault();
     var startDate; //hold the entered date
     var tempDate = moment(); //hold a fake date
     var isToday; //is the event scheduled for today
@@ -187,6 +203,7 @@ $('body').on('click', 'button#SubmitEvent', function () {
     {
         //get time 
         startDate = $('#StartTimeValue').data("DateTimePicker").viewDate();
+        startDate.add(3, 'minutes');
         isToday = true;
     }
 else
@@ -214,6 +231,7 @@ else
 });
 //if the 'Add new Store' button is clicked
 $('button#AddNewStore').on('click', function () {
+    alert($('div[storeid=AFA9BC2B-55C6-4396-A444-63A14F1D8502]#storeEvents').children('h3').children('strong').text());
     //if the form is not visible, show it. If it is visible, hide it 
     if ($('div#AddNewStoreWrapper').hasClass('showModal') == true) {
         $('div#AddNewStoreWrapper').removeClass('showModal');
