@@ -467,8 +467,7 @@ padding:3%;
 }
 
     .Event_Button_No:hover {
-        background: grey;
-        margin:-4.5px;       
+        background: grey;    
         box-shadow: inset -4.5px -4.5px 0px 0px darkgrey;
     }
 

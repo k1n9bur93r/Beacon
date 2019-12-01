@@ -10,12 +10,12 @@
     @foreach (EventDataModel Event in Model.Events)
     {
 
-        if (Event.EndDate > DateTime.Now)
+        if (DateTime.Now.AddMinutes(3) > Event.StartDate && Event.EndDate > DateTime.Now.AddHours(6))
         {
             currentEvent++;
             curPartAmt += Event.Participants;
         }
-        else
+        else if(Event.StartDate>DateTime.Now &&Event.Deleted==false)
         {
             totPartAmt += Event.Participants;
         }
@@ -84,23 +84,29 @@
             @foreach (EventDataModel Event in Model.Events)
             {
 
-                @if (DateTime.Now < Event.EndDate)
+                @if (Event.StartDate< DateTime.Now.AddMinutes(3)&&Event.EndDate>DateTime.Now)
                 {
                     numCounter += 1;
                     isCurrent[Model.Events.FindIndex(a => a.Id == Event.Id)] = true;
-                    <div id="@Event.Id" EndTime="@Event.EndDate" class="Event_Margin Event_SubTheme_1 Event_Sub_Structure">
+        <div id="@Event.Id" EndTime="@Event.EndDate" class="Event_Margin Event_SubTheme_1 Event_Sub_Structure">
 
-                        <div>
-                            <p id="name" class="Side_By_Side_Data BitFont_Tight">@Event.EventName </p>
-                            <p id="attending" num="@Event.Participants" class="Side_By_Side_Data BitFont_Tight"> : </p><p id="number" class="Side_By_Side_Data BitFont_Tight"> @Event.Participants</p><p id="attending" num="@Event.Participants" class="Side_By_Side_Data BitFont_Tight">&nbsp;Attending</p>
-                        </div>
-                        <div class="Center_Button">
-                            <p id="PosSlideNum" class="slideNumber No_Show">+1</p>
-                            <button id="IncStoreEvent" EventId="@Event.Id" class="Event_Button_Go BitFont_Large">I'm Going!</button>
-                            <button id="DecStoreEvent" EventId="@Event.Id" class="Event_Button_No No_Show BitFont_Large" hidden>Never Mind...</button>
-                        </div>
+            <div>
+                <p id="name" class=" BitFont_Large">@Event.EventName </p>
+                <p id="attending" num="@Event.Participants" class="Side_By_Side_Data BitFont_Tight">Attending :&nbsp;</p> <p id="number" class="Side_By_Side_Data BitFont_Large"> @Event.Participants</p>
+            </div>
+            <div>
+                <p id="startDate" class="Side_By_Side_Data BitFont_Tight"> Starting Time : </p><h4 class="Side_By_Side_Data BitFont_Tight">@Event.StartDate </h4>
+            </div>
+            <div>
+                <p id="EndDate" class="Side_By_Side_Data BitFont_Tight"> Ending Time :</p><h4 id="number" class="  Side_By_Side_Data BitFont_Tight"> @Event.EndDate</h4>
+            </div>
+            <div class="Center_Button">
+                <p id="PosSlideNum" class="slideNumber No_Show">+1</p>
+                <button id="IncStoreEvent" EventId="@Event.Id" class="Event_Button_Go BitFont_Large">I'm Going!</button>
+                <button id="DecStoreEvent" EventId="@Event.Id" class="Event_Button_No No_Show BitFont_Large" hidden>Never Mind...</button>
+            </div>
 
-                    </div>
+        </div>
 
                 }
 
@@ -115,19 +121,25 @@
     <div id="EventList" class="Panel_Margin">
         @foreach (EventDataModel Event in Model.Events)
         {
-            if (!isCurrent[Model.Events.FindIndex(a => a.Id == Event.Id)] == true)
+            if (!isCurrent[Model.Events.FindIndex(a => a.Id == Event.Id)] == true&&Event.Deleted==false&&Event.StartDate>DateTime.Now)
             {
                 pastEvent++;
-                <div id="@Event.Id" EndTime="@Event.EndDate" class="Event_Margin  Event_Sub_Structure">
-                    <div>
-                        <p id="name" class="Side_By_Side_Data BitFont_Tight">@Event.EventName </p>
-                        <p id="attending" num="@Event.Participants" class="Side_By_Side_Data BitFont_Tight"> : </p><p id="number" class="Side_By_Side_Data BitFont_Tight"> @Event.Participants</p><p id="attending" num="@Event.Participants" class="Side_By_Side_Data BitFont_Tight">&nbsp;Attending</p>
-                    </div>
-                    <div class="Center_Button">
-                        <button id="IncStoreEvent" EventId="@Event.Id" class="Event_Button_Go BitFont_Large">I'm Going!</button>
-                        <button id="DecStoreEvent" EventId="@Event.Id" class="Event_Button_No No_Show BitFont_Large">Never Mind...</button>
-                    </div>
-                </div>
+        <div id="@Event.Id" EndTime="@Event.EndDate" class="Event_Margin  Event_Sub_Structure">
+            <div>
+                <p id="name" class=" BitFont_Large">@Event.EventName </p>
+                <p id="attending" num="@Event.Participants" class="Side_By_Side_Data BitFont_Tight">Attending :&nbsp;</p> <p id="number" class="Side_By_Side_Data BitFont_Large"> @Event.Participants</p>
+            </div>
+            <div>
+                <p id="startDate" class="Side_By_Side_Data BitFont_Tight"> Starting Time : </p><h4 class="Side_By_Side_Data BitFont_Tight">@Event.StartDate </h4>
+            </div>
+            <div>
+                <p id="EndDate" class="Side_By_Side_Data BitFont_Tight"> Ending Time :</p><h4 id="number" class="  Side_By_Side_Data BitFont_Tight"> @Event.EndDate</h4>
+            </div>
+            <div class="Center_Button">
+                <button id="IncStoreEvent" EventId="@Event.Id" class="Event_Button_Go BitFont_Large">I'm Going!</button>
+                <button id="DecStoreEvent" EventId="@Event.Id" class="Event_Button_No No_Show BitFont_Large">Never Mind...</button>
+            </div>
+        </div>
             }
         }
         @if (pastEvent == 0)

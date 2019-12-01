@@ -48,13 +48,19 @@ namespace Beacon.BL
         {
             newEvent.Id = Guid.NewGuid().ToString();
             newEvent.StartDate = DateTime.Parse(Time);
-            newEvent.EndDate = newEvent.StartDate.AddHours(8);
+            newEvent.EndDate = DateTime.Parse(Time);
+           // newEvent.StartDate=newEvent.StartDate.AddHours(12);
+            newEvent.EndDate = newEvent.EndDate.AddHours(8);
             this.Insert(newEvent);
             return newEvent;
         }
         public List<EventDataModel> GetStoreEvents(string storeID)
         {
-            List<EventDataModel> allEvents = _EventsDAO.ReadByStore(storeID); 
+            List<EventDataModel> allEvents = _EventsDAO.ReadByStore(storeID);
+            foreach (EventDataModel Event in allEvents)
+            {
+                if (Event.EndDate < DateTime.Now) Event.Deleted = true;
+            }
             return allEvents;
         }
 
@@ -63,7 +69,7 @@ namespace Beacon.BL
             int counter = 0;
             foreach (EventDataModel singleEvent in data)
             {
-                if (singleEvent.EndDate > DateTime.Now) counter += singleEvent.Participants;
+                if (singleEvent.StartDate < DateTime.Now && DateTime.Now< singleEvent.EndDate ) counter += singleEvent.Participants;
                 
             }
             return counter;
@@ -73,7 +79,7 @@ namespace Beacon.BL
             int counter = 0;
             foreach (EventDataModel singleEvent in data)
             {
-                if (singleEvent.EndDate > DateTime.Now) counter++;
+                if (DateTime.Now >singleEvent.StartDate && singleEvent.EndDate>DateTime.Now ) counter++;
             }
             return counter;
         }

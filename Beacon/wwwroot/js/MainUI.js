@@ -40,6 +40,7 @@ $('body').on('click','button#returnStoreDataWrapperView', function () {
     $('div#StoreButtonHolder').toggle(true); //show add store button
     $('div#StoreDataWrapper').toggle(true);//Show store panel list
     map.setZoom(11); //revert map zoom
+    subbedEvents = false;
     if ($('div#NewEventForm').hasClass('showModal') == true) 
         $('div#NewEventForm').removeClass('showModal');
     $('button#returnStoreDataWrapperView').toggle(false); //Hide return button
@@ -214,15 +215,21 @@ else
 
     }
     //if the selected time is less that the present, fail
-    if (startDate < moment()) {
+    if (startDate < tempDate) {
         //highlight in read, create Event a past date/time
         DisplaySnackBar('Cannot create events in the past!', 3);
+        return;
+    }
+    else if (startDate > tempDate.add(1, 'months'))
+    {
+        DisplaySnackBar('Cannot create events more than 1 month in the future!', 3);
+        return;
     }
     else {
         //create a EventModel payload
         var storeId = $('button#AddEvent').attr('StoreId');
-        var dataPayload = { "Id": 69, "EventName": $('#EventNameInput').val(), "StoreFK": storeId, "GameFK": $('select#EventGameInput').children(':selected').attr('id'), "StartDate": tempDate.format(), "EndDate": tempDate.format(), "Deleted": "False", "Participants": 0 };
-        PostNewEvent(JSON.stringify(dataPayload), isToday, moment(startDate).format('MM/DD/YYYY hh:mm'), storeId);
+        var dataPayload = { "Id": 69, "EventName": $('#EventNameInput').val(), "StoreFK": storeId, "GameFK": $('select#EventGameInput').children(':selected').attr('id'), "StartDate": moment(startDate).format('MM/DD/YYYY hh:mm a'), "EndDate": moment(startDate).format('MM/DD/YYYY hh:mm a'), "Deleted": "False", "Participants": 0 };
+        PostNewEvent(JSON.stringify(dataPayload), isToday, moment(startDate).format('MM/DD/YYYY hh:mm a'), storeId);
         $('div#NewEventForm').removeClass('showModal');
         $('#EventNameInput').val("");
         $('#StartDateTimeValue').val("");

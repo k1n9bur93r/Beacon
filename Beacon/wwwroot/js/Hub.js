@@ -24,13 +24,23 @@ function PostEventUpdate(event,action) {
 
 //Recieve event update
 
-connection.on("GetEventUpdate", function (event, store, action,current,storeName) {
+connection.on("GetEventUpdate", function (event, store, action, current, storeName) {
+
+    var frontNumber = $('div[Storeid=' + store + '][id=StorePanel]').children('div#storeParticipants').children('h3').text();
     if (store == ActiveStore) {
         var number = $('div#' + event + '').children('div').children('p#attending').siblings("p#number").text();
         var eventName = $('div#' + event + '').children('div').children('p#name').text();
         var totalnumber;
-            if (action == 1) number++; else number--;
-            $('div#' + event + '').children('div').children('p#attending').siblings("p#number").text(number);
+        if (action == 1) {
+            number++;
+            frontNumber++;
+        }
+        else {
+            number--;
+            frontNumber--;
+        }
+        $('div#' + event + '').children('div').children('p#attending').siblings("p#number").text(number);
+        $('div[Storeid=' + store + '][id=StorePanel]').children('div#storeParticipants').children('h3').text(frontNumber);
             if (current) {
                 totalnumber = $('h3#curPartCount').text();
                 if (action == 1) totalnumber++; else totalnumber--;
@@ -40,7 +50,7 @@ connection.on("GetEventUpdate", function (event, store, action,current,storeName
                 totalnumber = $('h3#upPartCount').text();
                 if (action == 1) totalnumber++; else totalnumber--;
                 $('h3#upPartCount').text(totalnumber);
-        }
+             }
 
         if (action==1)
             DisplaySnackBar("New attendee at  "+eventName+"", 0);
@@ -49,21 +59,23 @@ connection.on("GetEventUpdate", function (event, store, action,current,storeName
     }
     else {
 
-        if ( current == true)
-        {
-            if (action == 1)
-            DisplaySnackBar("More people are going to an event at " + storeName + "", 1);
-            var frontNumber = $('div[Storeid=' + store + ']').children('div#storeParticipants').children('h3').text();
-            
-            if (action == 1) frontNumber++; else frontNumber--;
-            $('div[Storeid=' + store + '][id=StorePanel]').children('div#storeParticipants').children('h3').text(frontNumber);
+        if (current == true){
+         if (action == 1){
+                frontNumber++;
+                $('div[Storeid=' + store + '][id=StorePanel]').children('div#storeParticipants').children('h3').text(frontNumber);
+                DisplaySnackBar("More people are going to an event at " + storeName + "", 1);
+                        }
+         else {
+              frontNumber--; 
+              }
+           
 
         }
     }
         UpdateMarkerNotify(store);
     
 
-});
+ });
 
 //Create Event
 
@@ -94,15 +106,13 @@ connection.on("GetNewEvent", function (returnData, StoreId, EventName, StoreName
         DisplaySnackBar("Event added", 0);
     
     if (current) {
-        if ($('div[storeid=' + StoreId + ']#storeParticipants').is(':visible') || $('div#CurrentEventList').children('div').length >= 1) {
-            var number = $('div[storeid=' + StoreId + ']#storeEvents').children('h3').children('strong').text();
-                alert(number);
+        var number = $('div[storeid=' + StoreId + ']#storeEvents').children('h3').children('strong').text();
+        if (number!=0) {
                 number++;
-                alert(number);
             $('div[storeid=' + StoreId + ']#storeEvents').children('h3').children('strong').text(number);
             }
-            else {
-                $('div[Storeid=' + StoreId + ']#storeEvents').children('h3').toggle(true);
+        else {
+            $('div[Storeid=' + StoreId + ']#storeEvents').children('h3').removeClass("No_Show");
                 $('div[Storeid=' + StoreId + ']#storeEvents').children('h3').text('1');
                 $('div[Storeid=' + StoreId + ']#storeEvents').children('h4').text('Current Events:');
                 $('div[Storeid=' + StoreId + ']#storeParticipants').toggle(true);
