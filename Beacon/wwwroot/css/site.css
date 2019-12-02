@@ -486,7 +486,10 @@ padding:3%;
         background: grey;    
         box-shadow: inset -4.5px -4.5px 0px 0px darkgrey;
     }
-
+.col-centered {
+    float: none;
+    margin: 0 auto;
+}
 .Event_Button_Sml {
     background: #fff;
     display: inline-block;
