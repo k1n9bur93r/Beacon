@@ -15,7 +15,6 @@
         <div class="Event_Margin select">
             <p class="Side_By_Side_Data BitFont_Large">Event Game:</p>
             <select id="EventGameInput">
-                <option>Select Game</option>
             </select>
         </div>
 
@@ -40,3 +39,10 @@
         <button id="SubmitEvent" class="Event_Button_Sml BitFont_Large ">Submit New Event</button>
     </div>
 </div>
+
+<script>
+
+    $(doucment).ready(function () {
+        $('input#StartTime').val(moment().format('MM/DD/YYYY hh:mm a'));
+    });
+</script>

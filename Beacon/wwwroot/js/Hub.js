@@ -17,12 +17,13 @@ connection.start().then(function () {
 function PostEventUpdate(event,action) {
     connection.invoke("PostEventUpdate", event, ActiveStore, action).catch(function (error) {
         DisplaySnackBar('Failed to add yourself to the event!', 3);
-        return console.error(error.toString());
+        console.error(error.toString());
+        return 0;
     });
+    return 1;
 }
 
 
-//Recieve event update
 
 connection.on("GetEventUpdate", function (event, store, action, current, storeName) {
 

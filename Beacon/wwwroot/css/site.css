@@ -290,6 +290,9 @@ justify-content:center;
     border: dashed 6px #bb4343;
     cursor:pointer;
 }
+    .Store_Theme_0:focus {
+        background-color: #bd7470 !important;
+    }
 
 .Store_Theme_1 {
     background-color: #D7E7CE;
@@ -298,6 +301,9 @@ justify-content:center;
     border: dashed 6px #758d66;
     cursor: pointer;
 }
+    .Store_Theme_1:focus {
+        background-color: #9bac91 !important;
+    }
 
 .Store_Theme_2 {
     background-color: #D7AA7C;
@@ -306,6 +312,10 @@ justify-content:center;
     border: dashed 6px #987048;
     cursor: pointer;
 }
+    .Store_Theme_2:focus {
+        background-color: #a48361 !important;
+    }
+
 
 .Store_Theme_3 {
     background-color: #F7EBC8;
@@ -314,6 +324,9 @@ justify-content:center;
     border: dashed 6px #a19573;
     cursor: pointer;
 }
+    .Store_Theme_3:focus {
+        background-color: #a37c55!important;
+    }
 
 .Store_Theme_4 {
     background-color: #EFB15A;
@@ -322,6 +335,9 @@ justify-content:center;
     border: dashed 6px #9f7334;
     cursor: pointer;
 }
+    .Store_Theme_4:focus {
+        background-color: #b58645!important;
+    }
 
 /*EVENT PANEL THEMES*/
 .Text_UnderLine {
@@ -446,7 +462,7 @@ padding:3%;
     transition: .09s;
     transition-timing-function: ease-in-out;
 }
-    .Event_Button_Go:hover {
+    .Event_Button_Go:hover,:focus {
         background: lightgrey;
 
         box-shadow: inset -4.5px -4.5px 0px 0px grey;
@@ -466,7 +482,7 @@ padding:3%;
     transition-timing-function: ease-in-out;
 }
 
-    .Event_Button_No:hover {
+    .Event_Button_No:hover,:focus {
         background: grey;    
         box-shadow: inset -4.5px -4.5px 0px 0px darkgrey;
     }
@@ -485,7 +501,7 @@ padding:3%;
     transition-timing-function: ease-in-out;
 }
 
-    .Event_Button_Sml:hover {
+    .Event_Button_Sml:hover,:focus {
         background: lightgrey;
         box-shadow: inset -4.5px -4.5px 0px 0px grey;
     }

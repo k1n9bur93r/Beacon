@@ -59,6 +59,7 @@ namespace Beacon.BL
             List<EventDataModel> allEvents = _EventsDAO.ReadByStore(storeID);
             foreach (EventDataModel Event in allEvents)
             {
+
                 if (Event.EndDate < DateTime.Now) Event.Deleted = true;
             }
             return allEvents;

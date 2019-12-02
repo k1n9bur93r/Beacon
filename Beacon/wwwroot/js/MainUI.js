@@ -7,6 +7,13 @@ var isAnimating = false;
 $('#Test').on('click', function () {
     $('div#AlertBar').removeClass('Slider_Closed');
 });
+$('div#StorePanel').keydown(function () {
+    if (event.keyCode != 13) return;
+    if ($(this).is(":focus"))
+    {
+        StorePanelClicked($(this));
+    }
+})
 
 //Function that is called to get a detailed store panel
 //It is called either by clicking a Map marker or a Store's side panel
@@ -40,7 +47,7 @@ $('body').on('click','button#returnStoreDataWrapperView', function () {
     $('div#StoreButtonHolder').toggle(true); //show add store button
     $('div#StoreDataWrapper').toggle(true);//Show store panel list
     map.setZoom(11); //revert map zoom
-    subbedEvents = false;
+    SubbedEvents = false;
     if ($('div#NewEventForm').hasClass('showModal') == true) 
         $('div#NewEventForm').removeClass('showModal');
     $('button#returnStoreDataWrapperView').toggle(false); //Hide return button
@@ -49,12 +56,16 @@ $('body').on('click','button#returnStoreDataWrapperView', function () {
 
 //If a store panel is clicked, we want to gather this store's information to display and adjust the map view
 $('body').on('click','div#StorePanel', function () {
-    var ClickId = $(this).attr('StoreId'); //get store ID
-    currentColor = $(this).attr('color');
+
+    StorePanelClicked($(this));
+});
+function StorePanelClicked( element)
+{
+    var ClickId = $(element).attr('StoreId'); //get store ID
+    currentColor = $(element).attr('color');
     var getIndex;//variable that holds a current object index
     //find a matching store id stored in a JS object list
-    for (var x = 0; x < StoreObj.length; x++)
-    {
+    for (var x = 0; x < StoreObj.length; x++) {
         //if you find the store ID
         if (markers[x].StoreId == ClickId) {
             getIndex = x;
@@ -63,10 +74,9 @@ $('body').on('click','div#StorePanel', function () {
     }
     //Zoom the map into the corret marker,call the return store panel
     google.maps.event.trigger(markers[getIndex], 'click');
-    if ($('div#AddNewStoreWrapper').hasClass('showModal') == true) 
+    if ($('div#AddNewStoreWrapper').hasClass('showModal') == true)
         $('div#AddNewStoreWrapper').removeClass('showModal');
-   
-});
+}
 $('body').on('mouseover', 'div#StorePanel', function () {
     var HoveId = $(this).attr('StoreId'); //get store ID
     //find a matching store id stored in a JS object list
@@ -101,12 +111,13 @@ $('body').on('click', 'button[id*=\'IncStoreEvent\']', function () {
     if (!SubbedEvents) {
         var id = $(this).attr('eventId'); //get the related event ID
         
-        PostEventUpdate(id, 1);
-        SubbedEvents = true;
-        $(this).toggle(false); //hide ths clicked button
-        if ($('div#NewEventForm').hasClass('showModal') == true) 
-            $('div#NewEventForm').removeClass('showModal');
-        $(this).siblings('button#DecStoreEvent').removeClass('No_Show'); //show the regert button
+        if (PostEventUpdate(id, 1)) {
+            SubbedEvents = true;
+            $(this).toggle(false); //hide ths clicked button
+            if ($('div#NewEventForm').hasClass('showModal') == true)
+                $('div#NewEventForm').removeClass('showModal');
+            $(this).siblings('button#DecStoreEvent').removeClass('No_Show'); //show the regert button
+        }
     }
 });
 
@@ -143,7 +154,7 @@ $('body').on('click', 'button[id*=\'AddEvent\']', function () {
     {
         data = JSON.parse(data);
         $('select#EventGameInput').children().remove();//clean dropdown
-        $('select#EventGameInput').append('<option >Select Game</option>');//add default opiton
+        $('select#EventGameInput').append('<option value="" ></option>');//add default opiton
         //populate all returned game types 
         for (var x = 0; x < data.length; x++)
         {
@@ -198,6 +209,11 @@ $('body').on('click', 'button#SubmitEvent', function () {
     if ($('#EventNameInput').val() == '')
     {
         DisplaySnackBar('Event has no name!',3);
+        return;
+    }
+    if ($('select#EventGameInput').val()=='')
+    {
+        DisplaySnackBar('Event type not selected!', 3);
         return;
     }
     if ($('input#EventToday').is(':checked'))
