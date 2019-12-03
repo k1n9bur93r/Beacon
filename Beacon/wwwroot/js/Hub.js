@@ -67,7 +67,8 @@ connection.on("GetEventUpdate", function (event, store, action, current, storeNa
                 DisplaySnackBar("More people are going to an event at " + storeName , 1);
                         }
          else {
-              frontNumber--; 
+             frontNumber--; 
+             $('div[Storeid=' + store + '][id=StorePanel]').children('div#storeParticipants').children('h3').text(frontNumber);
               }
            
 
@@ -116,11 +117,11 @@ connection.on("GetNewEvent", function (returnData, StoreId, EventName, StoreName
             $('div[storeid=' + StoreId + ']#storeEvents').children('h3').children('strong').text(number);
             }
         else {
-            $('div[Storeid=' + StoreId + ']#storeEvents').children('h3').removeClass("No_Show");
-                $('div[Storeid=' + StoreId + ']#storeEvents').children('h3').text('1');
-                $('div[Storeid=' + StoreId + ']#storeEvents').children('h4').text('Current Events:');
-                $('div[Storeid=' + StoreId + ']#storeParticipants').toggle(true);
-                $('div[Storeid=' + StoreId + ']#storeParticipants').children('h3').text('0');
+            $('div[storeid=' + StoreId + ']#storeEvents').children('h3').removeClass("No_Show");
+            $('div[storeid=' + StoreId + ']#storeEvents').children('h3').text('1');
+                $('div[storeid=' + StoreId + ']#storeEvents').children('h4').text('Current Events:');
+                $('div[storeid=' + StoreId + ']#storeParticipants').toggle(true);
+                $('div[storeid=' + StoreId + ']#storeParticipants').children('h3').text('0');
             }
     }
     if (StoreId != ActiveStore) {

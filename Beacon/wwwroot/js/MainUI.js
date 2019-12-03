@@ -253,8 +253,7 @@ else
     }
 });
 //if the 'Add new Store' button is clicked
-$('button#AddNewStore').on('click', function () {
-    alert($('div[storeid=AFA9BC2B-55C6-4396-A444-63A14F1D8502]#storeEvents').children('h3').children('strong').text());
+$('button#AddNewStore').on('click', function () { 
     //if the form is not visible, show it. If it is visible, hide it 
     if ($('div#AddNewStoreWrapper').hasClass('showModal') == true) {
         $('div#AddNewStoreWrapper').removeClass('showModal');

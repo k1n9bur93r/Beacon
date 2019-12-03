@@ -70,7 +70,7 @@ namespace Beacon.BL
             int counter = 0;
             foreach (EventDataModel singleEvent in data)
             {
-                if (singleEvent.StartDate < DateTime.Now && DateTime.Now< singleEvent.EndDate ) counter += singleEvent.Participants;
+                if ( DateTime.Now < singleEvent.EndDate&& singleEvent.StartDate < DateTime.Now.AddMinutes(4)) counter += singleEvent.Participants;
                 
             }
             return counter;
@@ -80,7 +80,7 @@ namespace Beacon.BL
             int counter = 0;
             foreach (EventDataModel singleEvent in data)
             {
-                if (DateTime.Now >singleEvent.StartDate && singleEvent.EndDate>DateTime.Now ) counter++;
+                if (DateTime.Now.AddMinutes(4) > singleEvent.StartDate && singleEvent.EndDate>DateTime.Now ) counter++;
             }
             return counter;
         }
