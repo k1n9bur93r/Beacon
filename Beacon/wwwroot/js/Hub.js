@@ -73,7 +73,7 @@ connection.on("GetEventUpdate", function (event, store, action, current, storeNa
 
         }
     }
-        UpdateMarkerNotify(store);
+        //UpdateMarkerNotify(store);
     
 
  });
@@ -89,7 +89,8 @@ function PostNewEvent(eventData, IsToday, Time, StoreId) {
 }
 
 //Receve New Event
-connection.on("GetNewEvent", function (returnData, StoreId, EventName, StoreName,current) {
+connection.on("GetNewEvent", function (returnData, StoreId, EventName, StoreName, current) {
+    if (StoreId == ActiveStore) {
         if (current) {
             $('div#CurrentEventList').append(returnData);
             $('div#CurrentEventList').children('h4').toggle(false);
@@ -98,13 +99,15 @@ connection.on("GetNewEvent", function (returnData, StoreId, EventName, StoreName
             $('div#EventList').append(returnData);
             $('div#EventList').children('h4').toggle(false);
         }
-        
-
-        var data = $('h3#CurrentEvents').text();
-        data++;
-        $('h2#CurrentEvents').text(data);
+        var data1 = $('h2#CurrentEvents').text();
+        data1++;
+        $('div#CurrentEventsWrapper').toggle(true);
+        $('div#CurrentParts').toggle(true);
+        $('div#TotalParts').toggle(true);
+        $('h2#CurrentEvents').text(data1);
         $('h3#NoCurrent').toggle(false);
         DisplaySnackBar("Event added", 0);
+    }
     
     if (current) {
         var number = $('div[storeid=' + StoreId + ']#storeEvents').children('h3').children('strong').text();
@@ -123,7 +126,7 @@ connection.on("GetNewEvent", function (returnData, StoreId, EventName, StoreName
     if (StoreId != ActiveStore) {
         DisplaySnackBar("Event " + EventName + " created at " + StoreName + "", 1);
     }
-    UpdateMarkerNotify(storeId);
+   // UpdateMarkerNotify(storeId);
 });
 
 

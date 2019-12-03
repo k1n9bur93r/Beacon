@@ -26,7 +26,7 @@ namespace Beacon.Hubs
             List<EventDataModel>storeEvent=eventBo.GetStoreEvents(storeId);
             EventDataModel single = storeEvent.Find(a => a.Id==eventId);
             StoreDataModel singleStore = storesBO.ReadIndividual(storeId);
-            if (single.StartDate < DateTime.Now &&single.EndDate>DateTime.Now) isCurrentEvent = true;
+            if (single.StartDate < DateTime.Now.AddMinutes(3) &&single.EndDate>DateTime.Now) isCurrentEvent = true;
             await Clients.All.SendAsync("GetEventUpdate", eventId,storeId,function,isCurrentEvent, singleStore.Name);
         }
 
@@ -37,10 +37,8 @@ namespace Beacon.Hubs
             EventDataModel newEvent=controller.CreateEvent(eventData,IsToday,Time);
             newEvent.StartDate = DateTime.Parse(Time);
             newEvent.EndDate = DateTime.Parse(Time);
-            //newEvent.StartDate = newEvent.StartDate.AddHours(12);
-           newEvent.EndDate = newEvent.EndDate.AddHours(8);
-            if (newEvent.StartDate.AddMinutes(4)>DateTime.Now && newEvent.EndDate < DateTime.Now.AddHours(12)) isCurrentEvent = true;
-            //  string html= "<div><div id=\"" + newEvent.Id + "\"><p id=\"name\"> Name: " + newEvent.EventName + " </p> <div id=\"attending\" num=\"" + newEvent.Participants + "\">People Attending:<p id=\"number\"> " + newEvent.Participants + "</p></div><button id=\"IncStoreEvent\" EventId=\"" + newEvent.Id + "\">I'm Going!</button><button id=\"DecStoreEvent\" EventId=\"" + newEvent.Id + "\" hidden>Never Mind...</button></div></div>";
+            newEvent.EndDate = newEvent.EndDate.AddHours(8);
+            if (newEvent.StartDate.AddMinutes(2) > DateTime.Now&& newEvent.EndDate < DateTime.Now.AddHours(12)) isCurrentEvent = true;
             string html = "<div id=\"TEMPID\" EndTime=\""+newEvent.EndDate+ "\" class=\"Event_Margin Event_Sub_Structure Event_SubTheme_"+currentColor+"\"><div> <p id = \"name\" class=\" BitFont_Large\">" + newEvent.EventName+ "</p> <p id = \"number\" class=\"Side_By_Side_Data BitFont_Large\">" + newEvent.Participants + "</p><p id = \"attending\" num=\"" + newEvent.Participants+ "\" class=\"Side_By_Side_Data BitFont_Tight\">&nbsp:Attending;</p></div><div><p id = \"startDate\" class=\"Side_By_Side_Data BitFont_Tight\"> Starting Time : </p><h4 class=\"Side_By_Side_Data BitFont_Tight\">"+newEvent.StartDate+"</h4></div><div><p id = \"EndDate\" class=\"Side_By_Side_Data BitFont_Tight\"> Ending Time :</p><h4 id = \"number\" class=\"  Side_By_Side_Data BitFont_Tight\"> "+newEvent.EndDate+"</h4></div><div class=\"Center_Button\"><button id = \"IncStoreEvent\" EventId=\"" + newEvent.Id + "\" class=\"Event_Button_Go BitFont_Large\">I'm Going!</button><button id = \"DecStoreEvent\" EventId=\"" + newEvent.Id + "\" class=\"Event_Button_No No_Show BitFont_Large\">Never Mind...</button> </div> </div></div>";
             StoresBO storesBO = new StoresBO();
             StoreDataModel temp = storesBO.ReadIndividual(newEvent.StoreFK);
@@ -50,7 +48,6 @@ namespace Beacon.Hubs
         public async Task PostNewStore(string newStore,string CurrentColor,int currentNumber) {
             HomeController controller = new HomeController();
             StoreDataModel store= controller.CreateStore(newStore);
-           //"<div StoreId=\""+store.Id+"\" id=\"StorePanel\"><h2>"+store.Name+"</h2><p>"+store.Address+" </p></div>";
             string html = "<div StoreId = \"" + store.Id + "\" color = \"'"+CurrentColor+"\" id = \"StorePanel\" class=\"Panel_Margin Store_Theme_" + CurrentColor + " Panel_Spacing \"><div class=\"Remove_Margin\"><h3 class=\"Side_By_Side_Data BitFont_Tight \">"+(currentNumber+1)+":&nbsp; </h3><h2 class=\"Side_By_Side_Data BitFont_Large \"> " + store.Name + "</h2> </div><div id = \"storeEvents\" storeId=\"" + store.Id + "\" ><h4 class=\"Side_By_Side_Data Remove_Margin BitFont_Tight\">No Current Events&nbsp;</h4><h3 class=\"Side_By_Side_Data Remove_Margin\"></h3></div><div id = \"storeParticipants\" storeId=\"" + store.Id + "\" hidden><h4 class=\"Side_By_Side_Data Remove_Margin BitFont_Tight\">Current Particpants:&nbsp;</h4><h3 class=\"Side_By_Side_Data Remove_Margin BitFont_Tight\"> <strong>0</strong></h3></div></div>";
             string JSON = JsonConvert.SerializeObject(store);
             await Clients.All.SendAsync("GetNewStore",html,JSON);
