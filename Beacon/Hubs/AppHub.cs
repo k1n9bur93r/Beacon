@@ -26,7 +26,7 @@ namespace Beacon.Hubs
             List<EventDataModel>storeEvent=eventBo.GetStoreEvents(storeId);
             EventDataModel single = storeEvent.Find(a => a.Id==eventId);
             StoreDataModel singleStore = storesBO.ReadIndividual(storeId);
-            if (single.EndDate > DateTime.Now) isCurrentEvent = true;
+            if (single.StartDate < DateTime.Now &&single.EndDate>DateTime.Now) isCurrentEvent = true;
             await Clients.All.SendAsync("GetEventUpdate", eventId,storeId,function,isCurrentEvent, singleStore.Name);
         }
 

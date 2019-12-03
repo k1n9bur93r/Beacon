@@ -220,7 +220,7 @@ $('body').on('click', 'button#SubmitEvent', function () {
     {
         //get time 
         startDate = $('#StartTimeValue').data("DateTimePicker").viewDate();
-        startDate.add(3, 'minutes');
+        startDate.add(1, 'minutes');
         isToday = true;
     }
 else

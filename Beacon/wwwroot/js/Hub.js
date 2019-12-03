@@ -64,7 +64,7 @@ connection.on("GetEventUpdate", function (event, store, action, current, storeNa
          if (action == 1){
                 frontNumber++;
                 $('div[Storeid=' + store + '][id=StorePanel]').children('div#storeParticipants').children('h3').text(frontNumber);
-                DisplaySnackBar("More people are going to an event at " + storeName + "", 1);
+                DisplaySnackBar("More people are going to an event at " + storeName , 1);
                         }
          else {
               frontNumber--; 

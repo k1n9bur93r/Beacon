@@ -42,17 +42,33 @@ body {
     .hidescroll {
         height:auto;
     }
+    .Store_vertical_Margin {
+        margin-bottom: 30px;
+    }
+    .MapSize {
+        margin: 14px;
+        height: 100%;
+        min-width: 55%;
+        max-width: 100%;
+        padding: 0px;
+    }
 }
 @media only screen and (min-device-width:769px) {
     .hidescroll {
         overflow-y: auto;
         height: 900px;
     }
-}
-.Store_vertical_Margin {
-margin-right:2%;
-
-margin-bottom:30px;
+    .Store_vertical_Margin {
+        margin-right: 2%;
+        margin-bottom: 30px;
+    }
+    .MapSize {
+        margin-top: 12px;
+        height: 100%;
+        min-width: 55%;
+        max-width: 100%;
+        padding: 0px;
+    }
 }
 .StoreDisplayItem 
 {
@@ -259,7 +275,7 @@ display:none;
 }
 .Panel_Margin {
     margin-top: 2%!important;
-    margin-bottom: 6%;
+    margin-bottom: 20px;
 
 }
 .Panel_Spacing {
