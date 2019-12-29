@@ -13,67 +13,20 @@
         <div class="col-sm-5 Store_vertical_Margin hidescroll  ">
             <div id="StoreEventDataWrapper"></div>
             <div id="StoreButtonHolder">
-            <div id="StoreDataWrapper" >
-                @for (int x = 0; x < Model.Count; x++)
-                {
-
-                    <div StoreId="@Model[x].Store.Id" color="@(x%5)" id="StorePanel" class="Panel_Margin Store_Theme_@(x%5) Panel_Spacing " tabindex="0">
-                        <div class="Remove_Margin">
-                            <h3 class="Side_By_Side_Data BitFont_Tight ">@(x + 1):&nbsp; </h3><h2 class="Side_By_Side_Data BitFont_Large "> @Model[x].Store.Name</h2>
-                        </div>
-                        @if (Model[x].CurrentEvents > 0)
-                        {
-                            <div id="storeEvents" storeId="@Model[x].Store.Id"><h4 class="Side_By_Side_Data Remove_Margin BitFont_Tight">Current Events:&nbsp;</h4><h3 class="Side_By_Side_Data Remove_Margin BitFont_Tight"><strong>@Model[x].CurrentEvents</strong></h3></div>
-                            <div id="storeParticipants" storeId="@Model[x].Store.Id"><h4 class="Side_By_Side_Data Remove_Margin BitFont_Tight">Current Participants:&nbsp;</h4><h3 class="Side_By_Side_Data Remove_Margin BitFont_Tight"><strong>@Model[x].TotalParticipants</strong></h3></div>
-                        }
-                        else
-                        {
-                            <div id="storeEvents" storeId="@Model[x].Store.Id"><h4 class="Side_By_Side_Data Remove_Margin BitFont_Tight">No Current Events&nbsp;</h4><h3 class="Side_By_Side_Data Remove_Margin BitFont_Tight No_Show">0</h3></div>
-                            <div id="storeParticipants" storeId="@Model[x].Store.Id" hidden><h4 class="Side_By_Side_Data Remove_Margin BitFont_Tight">Current Particpants:&nbsp;</h4><h3 class="Side_By_Side_Data Remove_Margin BitFont_Tight"> <strong>@Model[x].TotalParticipants</strong></h3></div>
-                        }
-                    </div>
-                }
-            </div>
-            <div class="Center_Button">
-                <button id="AddNewStore" class="Event_Button_Go BitFont_Large" style="width:100%!important">Add New Store</button>
-            </div>
+                <div id="StoreDataWrapper">
+                    <partial name="~/Views/PartialViews/StorePanelGroup.cshtml" model="@Model" />
+                </div>
+                <div class="Center_Button">
+                    <button id="AddNewStore" class="Event_Button_Go BitFont_Large" style="width:100%!important">Add New Store</button>
+                </div>
             </div>
         </div>
         <div id="map" class="col-sm-6 MapBorder MapSize"></div>
     </div>
-
 </div>
-<div id="AddNewStoreWrapper" class="Modal_Container" style="width:275px!important">
-    <div class="Modal_Window">
-        <div class="Event_Title_Flex">
-            <div class="Center_Button">
-                <button id="returnAddStore" class="Event_Button_Sml" style="height:35px!important;width:55px!important;margin-top:5px;margin-bottom:5px;margin-right:5px" hidden><img src="~/images/backArrow.png" style="width:30px"></button>
-            </div>
-            <div>
-                <p class="BitFont_Large" style="margin-top:13px;">Store Name:<p>
-            </div>
-        </div>
-        <form>
+<partial name="~/Views/PartialViews/AddStoreForm.cshtml" />
+<partial name="~/Views/PartialViews/AddEventForm.cshtml" />
 
-                <input id="StoreNameInput" class="Input_Box BitFont_Tight" type="text" autocomplete="off">
-            <p class="BitFont_Large">Address:<p>
-                <input id="StoreAddressInput" class="Input_Box BitFont_Tight" type="text" autocomplete="off">
-            <p class="BitFont_Large">Zip:<p>
-                <input id="StoreZipInput" class="Input_Box BitFont_Tight" type="text" autocomplete="off">
-            <p class="BitFont_Large">City:<p>
-                <input id="StoreCityInput" class="Input_Box BitFont_Tight" type="text" autocomplete="off">
-            <p class="BitFont_Large">State:<p>
-                <input id="StoreStateInput" class="Input_Box BitFont_Tight" type="text" autocomplete="off">
-        </form>
-        <div class="Center_Button Panel_Margin">
-            <button id="SubmitNewStore" class="Event_Button_Sml BitFont_Large"> Submit </button>
-        </div>
-    </div>
-
-</div>
-<div id="NewEventForm" class="Modal_Container">
-    <partial name="~/Views/PartialViews/AddEventForm.cshtml" />
-</div>
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/js/Gmap.js"></script>

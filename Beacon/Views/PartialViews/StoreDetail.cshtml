@@ -1,0 +1,69 @@
+﻿@model StoreEventModel;
+@using Models;
+@{
+    bool[] isCurrent = new bool[Model.Events.Count()];
+    int x = ViewBag.Color;
+    ViewBag.ButtonPressed = false;
+}
+
+<div id="EventPanelWrapper" style="height:100%;" class="Event_Structure Event_Theme_@x">
+
+    <div class="Event_Title_Flex">
+        <div class="Center_Button">
+            <button id="returnStoreDataWrapperView" class="Event_Button_Sml" style="height:50px!important;width:70px!important;margin-top:11px;margin-right:11px" hidden><img src="~/images/backArrow.png" style="width:50px"></button>
+        </div>
+        <div>
+            <h1 id="StoreTitle" Address="@Model.Store.Address" class="Hover_Link BitFont_Large"> @Model.Store.Name </h1>
+        </div>
+
+    </div>
+    <div id="StoreEventDetails">
+   <partial name="~/Views/PartialViews/StoreDetailEvents.cshtml"model="@Model"/>
+    </div>
+    <h3 class="BitFont_Tight">Current:</h3>
+    <div id="CurrentEventList" class="Panel_Margin">
+        @if (Model.CurrentEvents == 0)
+        {
+            <h4 class="BitFont_Large Panel_Spacing Event_SubTheme_@x">There are no current events.</h4>
+
+        }
+        else
+        {
+            @foreach (EventDataModel Event in Model.Events)
+            {
+                @if (Event.StartDate < DateTime.Now.AddMinutes(3) && Event.EndDate > DateTime.Now)
+                {
+                    isCurrent[Model.Events.FindIndex(a => a.Id == Event.Id)] = true;
+                    <div>
+                    <partial name="~/Views/PartialViews/EventPanel.cshtml" for="@Event" />
+                    </div>
+                }
+
+            }
+        }
+    </div>
+    <h3 class="BitFont_Tight">Scheduled:</h3>
+    <div id="EventList" class="Panel_Margin">
+        @if (Model.UpcommingParticipants == 0)
+        {
+            <h4 class=" BitFont_Large Panel_Spacing Event_SubTheme_@x">There are no upcomming events.</h4>
+        }
+        else
+        {
+        @foreach (EventDataModel Event in Model.Events)
+        {
+            if (!isCurrent[Model.Events.FindIndex(a => a.Id == Event.Id)] == true && Event.Deleted == false && Event.StartDate > DateTime.Now)
+            {
+                <div>
+                <partial name="~/Views/PartialViews/EventPanel.cshtml" for="@Event" />
+                </div>
+            }
+        }
+        }
+    </div>
+
+    <div class="Panel_Margin Center_Button">
+        <button id="AddEvent" StoreId="@Model.Store.Id" class="Event_Button_Sml BitFont_Large"> Add New Event </button>
+    </div>
+
+</div>

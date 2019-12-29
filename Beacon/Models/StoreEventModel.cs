@@ -11,8 +11,10 @@ namespace Models
     {
         public List<EventDataModel> Events = new List<EventDataModel>();
         public StoreDataModel Store { get; set; }
-        public int TotalParticipants { get; set; }
+        public int UpcommingParticipants { get; set; }
+        public int CurrentPartcipants { get; set; }
         public int CurrentEvents { get; set; }
+        public int PastEvents { get; set; }
 
     }
 }

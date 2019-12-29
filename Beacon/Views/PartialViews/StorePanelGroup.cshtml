@@ -1,0 +1,9 @@
+﻿@model List<Models.StoreEventModel>
+
+@{int x = 0;}
+@foreach (StoreEventModel Store in Model)
+{
+    ViewBag.Color = x;
+    <partial name="~/Views/PartialViews/StorePanel.cshtml" model="@Store" />
+    x++;
+}

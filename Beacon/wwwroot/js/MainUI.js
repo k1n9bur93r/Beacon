@@ -1,12 +1,10 @@
-﻿var SubbedEvents = false;// variable that keeps track of all sessions that a user commits themsleves to 
-var SubbedEventsID = new Array();
-var ActiveStore;
-var currentColor = 0;
-var isAnimating = false;
+﻿var SubbedEvents = false;// variable that keeps track if a user is currently subbed to an event
+var SubbedEventsID = new Array(); //array that keeps track of all events that a user is subbed to
+var ActiveStore; //variable that stores the ID of the current store page a user is on
+var currentColor = 0; //variable that holds the color code of a current store
+var isAnimating = false; //used to keep the snackbar's animation from being reset while animating, as this tends to break the snackbar
 
-$('#Test').on('click', function () {
-    $('div#AlertBar').removeClass('Slider_Closed');
-});
+//Accessability helper, if a store panel object is in focus and enter is pressed, acts as a click.
 $('div#StorePanel').keydown(function () {
     if (event.keyCode != 13) return;
     if ($(this).is(":focus"))
@@ -16,7 +14,7 @@ $('div#StorePanel').keydown(function () {
 })
 
 //Function that is called to get a detailed store panel
-//It is called either by clicking a Map marker or a Store's side panel
+//It is called either by clicking a Map marker or a Store's panel object
 function getStoreData(data) {
 
     //set flag for which store is currently active 
@@ -24,15 +22,15 @@ function getStoreData(data) {
 
     $.ajax({ //set up the ajax call
         type: "GET",
-        url: "/Home/GetStoreInfo",
+        url: "/Home/GetStoreDetail",
         contentType: "application/json;charset=utf-8",
-        data: { "JSON": JSON.stringify(StoreObj[data].Store) },
+        data: { "JSON": JSON.stringify(StoreObj[data].Store), "Color": currentColor },
         dataType: "html"
     }).done(function (data) {
         $('div#StoreEventDataWrapper').html(data); //inject the HTML into the webpage
         $('div#StoreEventDataWrapper').toggle(true); //Show this injected HTML
         $('div#StoreDataWrapper').toggle(false); //Hide current Store Panels
-        $('div#StoreButtonHolder').toggle(false);
+        $('div#StoreButtonHolder').toggle(false);// Hide add new store button
         $('button#returnStoreDataWrapperView').toggle(true); //Show button to return app panels to view
     })
         .fail(function () {
@@ -40,26 +38,28 @@ function getStoreData(data) {
             DisplaySnackBar("Failed to get data for " + StoreObj[data].Store.Name + "", 3);
         });
 }
-//if the return to store list view
+//If the back arrow is clicked to exit a store panel
 $('body').on('click','button#returnStoreDataWrapperView', function () {
     ActiveStore = "none";
     $('div#StoreEventDataWrapper').toggle(false); //Hide advanced store panel
     $('div#StoreButtonHolder').toggle(true); //show add store button
     $('div#StoreDataWrapper').toggle(true);//Show store panel list
     map.setZoom(11); //revert map zoom
-    SubbedEvents = false;
+    SubbedEvents = false; //Reset user subbed events 
+    //if the "Add new Event" modal is showing, hide it 
     if ($('div#NewEventForm').hasClass('showModal') == true) 
         $('div#NewEventForm').removeClass('showModal');
-    $('button#returnStoreDataWrapperView').toggle(false); //Hide return button
+    $('button#returnStoreDataWrapperView').toggle(false); //Hide back button
     
 });
 
 //If a store panel is clicked, we want to gather this store's information to display and adjust the map view
 $('body').on('click','div#StorePanel', function () {
-
     StorePanelClicked($(this));
 });
-function StorePanelClicked( element)
+
+//Function that is called when a store's map marker is clicked, or when a store panel is clicked
+function StorePanelClicked(element)
 {
     var ClickId = $(element).attr('StoreId'); //get store ID
     currentColor = $(element).attr('color');
@@ -77,6 +77,7 @@ function StorePanelClicked( element)
     if ($('div#AddNewStoreWrapper').hasClass('showModal') == true)
         $('div#AddNewStoreWrapper').removeClass('showModal');
 }
+//If the user hovers their mouse over a store panel, change the color of the store's marker to match
 $('body').on('mouseover', 'div#StorePanel', function () {
     var HoveId = $(this).attr('StoreId'); //get store ID
     //find a matching store id stored in a JS object list
@@ -87,10 +88,11 @@ $('body').on('mouseover', 'div#StorePanel', function () {
             break;
         }
     }
-    //Zoom the map into the corret marker,call the return store panel
+    //set the marker color 
     google.maps.event.trigger(markers[getIndex], 'mouseover');
 
 });
+//if a user is no longer hovering over a store panel change the color of the marker back
 $('body').on('mouseleave', 'div#StorePanel', function () {
     var HoveId = $(this).attr('StoreId'); //get store ID
     //find a matching store id stored in a JS object list
@@ -101,34 +103,42 @@ $('body').on('mouseleave', 'div#StorePanel', function () {
             break;
         }
     }
-    //Zoom the map into the corret marker,call the return store panel
+    //change the color back
     google.maps.event.trigger(markers[getIndex], 'mouseout');
 });
 
 // If an 'Im Going!' button is clicked for an event
 $('body').on('click', 'button[id*=\'IncStoreEvent\']', function () {
-    var element = $(this);
+    //if the user is not currently subbed to an event
     if (!SubbedEvents) {
         var id = $(this).attr('eventId'); //get the related event ID
-        
+        var element = $('div#' + id + '').parent();
+        $(element).children().hide();
+        $(element).append('<div class="Event_SubTheme_' + currentColor + ' Event_Margin  Event_Sub_Structure" style="height:125px!important;"><div class="Spinner"></div><div>');
+        //make a call to the server to update the event's participation
         if (PostEventUpdate(id, 1)) {
-            SubbedEvents = true;
-            $(this).toggle(false); //hide ths clicked button
+            SubbedEvents = true; 
+            //if the "Add New Event" modal is displayed, hide it 
             if ($('div#NewEventForm').hasClass('showModal') == true)
                 $('div#NewEventForm').removeClass('showModal');
-            $(this).siblings('button#DecStoreEvent').removeClass('No_Show'); //show the regert button
         }
     }
 });
 
 // If an 'Never Mind...' button is clicked for an event
 $('body').on('click', 'button[id*=\'DecStoreEvent\']', function () {
+    //if someone is subscribed to an event
     if (SubbedEvents) {
-        var id = $(this).prev().attr('eventId');//get the related event ID
+        var id = $(this).attr('eventId');//get the related event ID
+        var element = $('div#' + id + '').parent();
+        $(element).children().hide();
+        $(element).append('<div class="Event_SubTheme_' + currentColor + ' Event_Margin  Event_Sub_Structure" style="height:125px!important;"><div class="Spinner"></div><div>');
         PostEventUpdate(id, -1);
         SubbedEvents = false;
-        $(this).addClass('No_Show');//hide ths clicked button
-        $(this).siblings('button#IncStoreEvent').toggle(true);//show the I'm in button
+        //if the "Add New Event" modal is displayed, hide it 
+        if ($('div#NewEventForm').hasClass('showModal') == true)
+            $('div#NewEventForm').removeClass('showModal');
+      
     }
 });
 
@@ -206,16 +216,19 @@ $('body').on('click', 'button#SubmitEvent', function () {
     var tempDate = moment(); //hold a fake date
     var isToday; //is the event scheduled for today
     //if the is the event today checkbox is checked 
+    //check if the event name exists 
     if ($('#EventNameInput').val() == '')
     {
         DisplaySnackBar('Event has no name!',3);
         return;
     }
+    //check if an input type was selected
     if ($('select#EventGameInput').val()=='')
     {
         DisplaySnackBar('Event type not selected!', 3);
         return;
     }
+    //check if the input is selected for today
     if ($('input#EventToday').is(':checked'))
     {
         //get time 
@@ -279,14 +292,16 @@ $('button#SubmitNewStore').on('click', function () {
     });
     $('div#AddNewStoreWrapper').removeClass('showModal');
 });
+
 //snack bar logic 
 function DisplaySnackBar(msgtext, state) {
-    // Get the snackbar DIV'
+    // reset the snackbar for the next message, add the text, show the bar
     $("div#snackbar").removeClass();
     $("div#snackbar").text(msgtext);
     $("div#snackbar").addClass('show');
     var classname;
     classname = 'temp';
+    //depending on the state passed in, color the snack bar accordingly 
     switch (state)
     {
         case 0:
@@ -314,6 +329,7 @@ function DisplaySnackBar(msgtext, state) {
                 break;
             }
     }
+    //if the snackbar is not currently visible, start the animation agian
     if (isAnimating == false) {
         isAnimating = true;
         // After 3 seconds, remove the show class from DIV
@@ -328,23 +344,65 @@ function DisplaySnackBar(msgtext, state) {
 
 $('body').on('click', 'h1#StoreTitle', function () {
     var text = $(this).attr('Address');
-     if /* if we're on iOS, open in Apple Maps */
+     if //open map with apple maps if on ios
     ((navigator.platform.indexOf("iPhone") != -1) || 
      (navigator.platform.indexOf("iPad") != -1) || 
          (navigator.platform.indexOf("iPod") != -1))
          window.open(genMapLink(text,false));
-else /* else use Google */
+else//open map with google if on android 
          window.open(genMapLink(text, true));
 
 });
 
-function genMapLink(text, status)
+
+
+function UpdateEventPanel(ID,element,state)
 {
-    if (!status) {
-        return "maps://maps.google.com/maps?q=" + text;
-    }
-    else
-    {
-        return "http://maps.google.com/maps?q=" + text;
-        }
+    $.ajax({
+        type: "GET",
+        url: "/Home/GetEventPanel",
+        contentType: "application/json;charset=utf-8",
+        data: { "ID": ID, "Color": currentColor,"State":state},
+        dataType: "html"
+    }).done(function (data) {
+        $(element).empty();
+        $(element).append(data);
+        $(element).children('h4').toggle(false);
+    }).fail(function () {
+        DisplaySnackBar("Failed to fetch new event panel update", 3);
+
+    });
 }
+
+function UpdateStorePanels(element)
+{
+        $.ajax({
+            type: "GET",
+            url: "/Home/GetStorePanel",
+            contentType: "application/json;charset=utf-8",
+            dataType: "html"
+        }).done(function (data) {
+            $(element).empty();
+            $(element).append(data);
+            }).fail(function () {
+                DisplaySnackBar("Failed to fetch new store panel update", 3);
+        });
+
+}
+function UpdateStoreEventDetails(ID,element) {
+    $.ajax({
+        type: "GET",
+        url: "/Home/GetStoreDetailEvents",
+        contentType: "application/json;charset=utf-8",
+        data: { "ID": ID},
+        dataType: "html"
+    }).done(function (data) {
+        $(element).empty();
+        $(element).append(data);
+        $(element).children('h4').toggle(false);
+    }).fail(function () {
+        DisplaySnackBar("Failed to fetch new store event details", 3);
+    });
+
+}
+

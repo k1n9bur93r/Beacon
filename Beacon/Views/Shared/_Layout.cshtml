@@ -4,65 +4,28 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title> Beacon</title>
-
-    <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
+    <link rel="stylesheet" href="~/css/bootstrapDatePicker/tools/content/Content/bootstrap-datetimepicker.css" />
+    <link rel="stylesheet" href="~/css/site.css">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
 </head>
 <body>
-  
-
-
-    <div >
+    <div>
         @RenderBody()
-       
         <div class="Footer_Style page-footer">
             <hr />
             <p class="BitFont_Tight ">&copy;&nbsp; 2019 - Beacon and Friends</p>
-
         </div>
     </div>
-
-    <environment include="Development">
-
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script type="text/javascript" src="~/lib/Moment/moment.js"></script>
-        <script type="text/javascript" src="~/js/signalr/dist/browser/signalr.js"></script>
-        <script type="text/javascript" src="~/js/Hub.js"></script>
-        <script type="text/javascript" src="~/lib/bootstrapDatePicker/content/Scripts/bootstrap-datetimepicker.min.js"></script>
-        <link rel="stylesheet" href="~/css/bootstrapDatePicker/tools/content/Content/bootstrap-datetimepicker.css" />
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
-        </script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
-        </script>
-    </environment>
-
-    @RenderSection("Scripts", required: false)
-     <!-- Use a button to open the snackbar -->
-<!-- The actual snackbar -->
-<div id="snackbar">Some text some message..</div>
+    <div id="snackbar">Why are you looking through the code my man?</div>
 </body>
-
 </html>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<script src="Scripts/angular.js"></script>
+<script type="text/javascript" src="~/lib/Moment/moment.js"></script>
+<script type="text/javascript" src="~/js/signalr/dist/browser/signalr.js"></script>
+<script type="text/javascript" src="~/js/Hub.js"></script>
+<script type="text/javascript" src="~/lib/bootstrapDatePicker/content/Scripts/bootstrap-datetimepicker.min.js"></script>
 
 
 

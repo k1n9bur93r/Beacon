@@ -21,6 +21,12 @@ namespace Beacon.BL
         {
             return _EventsDAO.ReadAll();
         }
+
+        private EventDataModel ReadSingle(string Id)
+        {
+            return _EventsDAO.ReadEvent(Id);
+        }
+
         #endregion
 
         #region Insert
@@ -44,25 +50,37 @@ namespace Beacon.BL
         }
         #endregion
 
+
+        public EventDataModel GetEventData(string ID)
+        {
+            return ReadSingle(ID);
+        }
+
         public EventDataModel createNewEvent(EventDataModel newEvent,string Time)
         {
             newEvent.Id = Guid.NewGuid().ToString();
             newEvent.StartDate = DateTime.Parse(Time);
             newEvent.EndDate = DateTime.Parse(Time);
-           // newEvent.StartDate=newEvent.StartDate.AddHours(12);
             newEvent.EndDate = newEvent.EndDate.AddHours(8);
             this.Insert(newEvent);
             return newEvent;
         }
-        public List<EventDataModel> GetStoreEvents(string storeID)
+        public StoreEventModel GetStoreEvents(StoreEventModel Store)
         {
-            List<EventDataModel> allEvents = _EventsDAO.ReadByStore(storeID);
-            foreach (EventDataModel Event in allEvents)
+            Store.Events = _EventsDAO.ReadByStore(Store.Store.Id);
+            foreach (EventDataModel Event in Store.Events)
             {
-
-                if (Event.EndDate < DateTime.Now) Event.Deleted = true;
+                if (Event.EndDate < DateTime.Now)
+                    Event.Deleted = true;
+                if (DateTime.Now.AddMinutes(3) > Event.StartDate && Event.EndDate > DateTime.Now)
+                {
+                    Store.CurrentEvents++;
+                    Store.CurrentPartcipants += Event.Participants;
+                }
+                else if (Event.StartDate > DateTime.Now && Event.Deleted == false)
+                    Store.UpcommingParticipants += Event.Participants;
             }
-            return allEvents;
+            return Store;
         }
 
         public int GetCurrentParticipants(List<EventDataModel> data)

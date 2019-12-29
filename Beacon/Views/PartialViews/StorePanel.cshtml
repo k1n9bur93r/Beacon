@@ -1,0 +1,17 @@
+﻿@model StoreEventModel
+@{ int x = ViewBag.Color; }
+<div StoreId="@Model.Store.Id" color="@(x%5)" id="StorePanel" class="Panel_Margin Store_Theme_@(x%5) Panel_Spacing " tabindex="0">
+    <div class="Remove_Margin">
+        <h3 class="Side_By_Side_Data BitFont_Tight ">@(x + 1):&nbsp; </h3><h2 class="Side_By_Side_Data BitFont_Large "> @Model.Store.Name</h2>
+    </div>
+    @if (Model.CurrentEvents > 0)
+    {
+        <div id="storeEvents" storeId="@Model.Store.Id"><h4 class="Side_By_Side_Data Remove_Margin BitFont_Tight">Current Events:&nbsp;</h4><h3 class="Side_By_Side_Data Remove_Margin BitFont_Tight"><strong>@Model.CurrentEvents</strong></h3></div>
+        <div id="storeParticipants" storeId="@Model.Store.Id"><h4 class="Side_By_Side_Data Remove_Margin BitFont_Tight">Current Participants:&nbsp;</h4><h3 class="Side_By_Side_Data Remove_Margin BitFont_Tight"><strong>@Model.CurrentPartcipants</strong></h3></div>
+    }
+    else
+    {
+        <div id="storeEvents" storeId="@Model.Store.Id"><h4 class="Side_By_Side_Data Remove_Margin BitFont_Tight">No Current Events&nbsp;</h4><h3 class="Side_By_Side_Data Remove_Margin BitFont_Tight No_Show">0</h3></div>
+        <div id="storeParticipants" storeId="@Model.Store.Id" hidden><h4 class="Side_By_Side_Data Remove_Margin BitFont_Tight">Current Particpants:&nbsp;</h4><h3 class="Side_By_Side_Data Remove_Margin BitFont_Tight"> <strong>@Model.CurrentPartcipants</strong></h3></div>
+    }
+</div> 

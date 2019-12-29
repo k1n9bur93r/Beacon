@@ -9,48 +9,50 @@ using Microsoft.AspNetCore.Mvc;
 using Models;
 using Newtonsoft.Json;
 
+
 namespace Beacon.Hubs
 {
     public class AppHub : Hub
     {
-  
-        public async Task PostEventUpdate(string eventId,string storeId,int function)
+        private static StoresBO _storeBO = new StoresBO();
+        private static EventsBO _eventsBO = new EventsBO();
+
+        public async Task PostEventUpdate(string eventId, string storeId, int function)
         {
             bool isCurrentEvent = false;
-            EventsBO eventBo = new EventsBO();
-            StoresBO storesBO = new StoresBO();
             if (function == 1)
-                eventBo.IncEventParticipants(eventId);
+                _eventsBO.IncEventParticipants(eventId);
             else if (function == -1)
-                eventBo.DecEventParticipants(eventId);
-            List<EventDataModel>storeEvent=eventBo.GetStoreEvents(storeId);
-            EventDataModel single = storeEvent.Find(a => a.Id==eventId);
-            StoreDataModel singleStore = storesBO.ReadIndividual(storeId);
+                _eventsBO.DecEventParticipants(eventId);
+            StoreEventModel storeEvent = new StoreEventModel {
+                Store = new StoreDataModel { Id = storeId }
+            };
+             storeEvent=_eventsBO.GetStoreEvents(storeEvent);
+            EventDataModel single = storeEvent.Events.Find(a => a.Id==eventId);
+            StoreDataModel singleStore = _storeBO.ReadIndividual(storeId);
             if (single.StartDate < DateTime.Now.AddMinutes(3) &&single.EndDate>DateTime.Now) isCurrentEvent = true;
-            await Clients.All.SendAsync("GetEventUpdate", eventId,storeId,function,isCurrentEvent, singleStore.Name);
+            await Clients.All.SendAsync("GetEventUpdate", eventId,storeId,function,isCurrentEvent, single.EventName,singleStore.Name);
         }
 
-        public async Task PostNewEvent(string eventData, bool IsToday, string Time,string StoreId,int currentColor)
+        public async Task PostNewEvent(string eventDataJSON, bool IsToday, string Time,string StoreId,int currentColor)
         {
             bool isCurrentEvent = false;
-            HomeController controller = new HomeController();
-            EventDataModel newEvent=controller.CreateEvent(eventData,IsToday,Time);
+            EventDataModel newEvent = JsonConvert.DeserializeObject<EventDataModel>(eventDataJSON);
+            newEvent = _eventsBO.createNewEvent(newEvent, Time);
             newEvent.StartDate = DateTime.Parse(Time);
             newEvent.EndDate = DateTime.Parse(Time);
             newEvent.EndDate = newEvent.EndDate.AddHours(8);
             if (newEvent.StartDate < DateTime.Now.AddMinutes(4) && newEvent.EndDate < DateTime.Now.AddHours(9)) isCurrentEvent = true;
-            string html = "<div id=\"TEMPID\" EndTime=\""+newEvent.EndDate+ "\" class=\"Event_Margin Event_Sub_Structure Event_SubTheme_"+currentColor+"\"><div> <p id = \"name\" class=\" BitFont_Large\">" + newEvent.EventName+ "</p> <p id = \"number\" class=\"Side_By_Side_Data BitFont_Large\">" + newEvent.Participants + "</p><p id = \"attending\" num=\"" + newEvent.Participants+ "\" class=\"Side_By_Side_Data BitFont_Tight\">&nbsp:Attending;</p></div><div><p id = \"startDate\" class=\"Side_By_Side_Data BitFont_Tight\"> Starting Time : </p><h4 class=\"Side_By_Side_Data BitFont_Tight\">"+newEvent.StartDate+"</h4></div><div><p id = \"EndDate\" class=\"Side_By_Side_Data BitFont_Tight\"> Ending Time :</p><h4 id = \"number\" class=\"  Side_By_Side_Data BitFont_Tight\"> "+newEvent.EndDate+"</h4></div><div class=\"Center_Button\"><button id = \"IncStoreEvent\" EventId=\"" + newEvent.Id + "\" class=\"Event_Button_Go BitFont_Large\">I'm Going!</button><button id = \"DecStoreEvent\" EventId=\"" + newEvent.Id + "\" class=\"Event_Button_No No_Show BitFont_Large\">Never Mind...</button> </div> </div></div>";
             StoresBO storesBO = new StoresBO();
             StoreDataModel temp = storesBO.ReadIndividual(newEvent.StoreFK);
-            await Clients.All.SendAsync("GetNewEvent", html,StoreId,newEvent.EventName,temp.Name,isCurrentEvent);
+            await Clients.All.SendAsync("GetNewEvent", StoreId,newEvent.Id,temp.Name,isCurrentEvent);
         }
 
-        public async Task PostNewStore(string newStore,string CurrentColor,int currentNumber) {
-            HomeController controller = new HomeController();
-            StoreDataModel store= controller.CreateStore(newStore);
-            string html = "<div StoreId = \"" + store.Id + "\" color = \"'"+CurrentColor+"\" id = \"StorePanel\" class=\"Panel_Margin Store_Theme_" + CurrentColor + " Panel_Spacing \"><div class=\"Remove_Margin\"><h3 class=\"Side_By_Side_Data BitFont_Tight \">"+(currentNumber+1)+":&nbsp; </h3><h2 class=\"Side_By_Side_Data BitFont_Large \"> " + store.Name + "</h2> </div><div id = \"storeEvents\" storeId=\"" + store.Id + "\" ><h4 class=\"Side_By_Side_Data Remove_Margin BitFont_Tight\">No Current Events&nbsp;</h4><h3 class=\"Side_By_Side_Data Remove_Margin\"></h3></div><div id = \"storeParticipants\" storeId=\"" + store.Id + "\" hidden><h4 class=\"Side_By_Side_Data Remove_Margin BitFont_Tight\">Current Particpants:&nbsp;</h4><h3 class=\"Side_By_Side_Data Remove_Margin BitFont_Tight\"> <strong>0</strong></h3></div></div>";
-            string JSON = JsonConvert.SerializeObject(store);
-            await Clients.All.SendAsync("GetNewStore",html,JSON);
+        public async Task PostNewStore(string newStoreJSON,string CurrentColor,int currentNumber) {
+            StoreDataModel newStore = JsonConvert.DeserializeObject<StoreDataModel>(newStoreJSON);
+            _storeBO.CreateNewStore(newStore);
+            string JSON = JsonConvert.SerializeObject(newStore);
+            await Clients.All.SendAsync("GetNewStore",JSON);
 
         }
     }

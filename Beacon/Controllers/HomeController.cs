@@ -19,111 +19,69 @@ namespace Beacon.Controllers
     public class HomeController : Controller
     {
         IServiceProvider serviceProvider;
+        private static StoresBO _storesBO = new StoresBO();
+        private static EventsBO _eventsBO = new EventsBO();
+        private static GamesBO _gamesBO = new GamesBO();
+
         public IActionResult Index()
         {
             return View();
         }
-        [HttpGet]
-        public IActionResult GetStoreInfo(string JSON)
-        {
-            StoreEventModel storeEvents = new StoreEventModel();
-            
-            storeEvents.Store= JsonConvert.DeserializeObject<StoreDataModel>(JSON);
-            EventsBO eventsBO = new EventsBO();
-            storeEvents.Events= eventsBO.GetStoreEvents(storeEvents.Store.Id);
 
-            return PartialView("Views/PartialViews/StoreEventData.cshtml", storeEvents);
+        [HttpGet]
+        public IActionResult GetStoreDetail(string JSON, int Color)
+        {
+            ViewBag.Color = Color;
+            return PartialView("Views/PartialViews/StoreDetail.cshtml", _eventsBO.GetStoreEvents(new StoreEventModel { Store = JsonConvert.DeserializeObject<StoreDataModel>(JSON)}));
+        }
+
+        [HttpGet]
+        public IActionResult GetStoreDetailEvents(string ID)
+        {
+            return PartialView("Views/PartialViews/StoreDetailEvents.cshtml", _eventsBO.GetStoreEvents(new StoreEventModel { Store = new StoreDataModel { Id = ID }}));
         }
 
         [HttpGet]
         public string GetGames()
         {
-            GamesBO gamesBO = new GamesBO();
-            List<GameDataModel> gameData= gamesBO.Read();
-
-            return JsonConvert.SerializeObject(gameData); 
+            return JsonConvert.SerializeObject(_gamesBO.Read()); 
         }
 
-        [HttpGet]
-        public EventDataModel CreateEvent(string JSON, bool IsToday,string Time) {
-
-            EventDataModel newEvent = JsonConvert.DeserializeObject<EventDataModel>(JSON);
-            EventsBO eventsBO = new EventsBO();
-           return newEvent= eventsBO.createNewEvent(newEvent,Time);
-        }
-
-        [HttpGet]
-        public StoreDataModel CreateStore(string JSON) {
-            StoreDataModel newStore = JsonConvert.DeserializeObject<StoreDataModel>(JSON);
-            StoresBO storeBO = new StoresBO();
-            storeBO.CreateNewStore(newStore);
-            return newStore;
-        }
-
-        [HttpGet]
+     [HttpGet]
        public ActionResult RunApp()
         {
-            int tot;
-            StoresBO storesBO = new StoresBO();
-            EventsBO eventsBO = new EventsBO();
-            List<StoreDataModel> stores = storesBO.Read();
+            return View("Views/Home/MainPage.cshtml", StoreListInfo());
+        }
 
+        private List<StoreEventModel>StoreListInfo()
+        {
+            List<StoreDataModel> stores = _storesBO.Read();
             List<StoreEventModel> allInfo = new List<StoreEventModel>();
             foreach (StoreDataModel store in stores)
             {
                 StoreEventModel temp = new StoreEventModel();
                 temp.Store = store;
-                temp.Events = eventsBO.GetStoreEvents(store.Id);
-                temp.TotalParticipants = eventsBO.GetCurrentParticipants(temp.Events);
-                temp.CurrentEvents = eventsBO.GetCurrentEvents(temp.Events);
+                temp = _eventsBO.GetStoreEvents(temp);
                 allInfo.Add(temp);
-                
+
             }
-           
-            return View("Views/Home/MainPage.cshtml",allInfo);
-            
+            return allInfo;
         }
 
         [HttpGet]
-        public void IncEventAmount(string Id)
+        public IActionResult GetStorePanel()
         {
-            EventsBO eventsBO = new EventsBO();
-            eventsBO.IncEventParticipants(Id);
+            return PartialView("~/Views/PartialViews/StorePanelGroup.cshtml", StoreListInfo());
         }
+
         [HttpGet]
-        public void DecEventAmount(string Id)
+        public IActionResult GetEventPanel(string ID, int Color,bool state)
         {
-            EventsBO eventsBO = new EventsBO();
-            eventsBO.DecEventParticipants(Id);
+            EventDataModel Panel = _eventsBO.GetEventData(ID);
+            ViewBag.Color = Color;
+            ViewBag.ButtonPressed = state;
+            return PartialView("~/Views/PartialViews/EventPanel.cshtml", Panel);
         }
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-
-
 
     }
 

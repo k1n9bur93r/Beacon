@@ -1,13 +1,11 @@
-﻿
+﻿var map; //Gmap object
+var markers = new Array(); //array that holds all current markers on the map
+var geocoder; //object that gets the lat/long of an inputted address
+var MarkerColorSet = 5;
 
-var map;
-var markers = new Array();
-var geocoder;
-var LargeIcon = new Array();
-var SmallIcon = new Array();
 function initMap() {
 
-    var myStyles = 
+    var mapStyle = 
         [
         {
             "elementType": "geometry",
@@ -282,14 +280,15 @@ function initMap() {
         disableDefaultUI: true,
         clickableIcons: false,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
-        styles: myStyles
+        styles: mapStyle
 
     });
 
    geocoder = new google.maps.Geocoder();
     for (var x = 0; x < StoreCount; x++)
     {
-        geocodeAddress(StoreObj[x].Store.Address, StoreObj[x].Store.Id, x, geocoder, map, (x % 5));
+        //Fetch the lat long of a store based on it's address, then pass in additonal data as tag information
+        geocodeAddress(StoreObj[x].Store.Address, StoreObj[x].Store.Id, x, geocoder, map, (x % MarkerColorSet));
         
     }
 
@@ -314,15 +313,15 @@ function checkAddress(address) {
     
         }
 
-    function geocodeAddress(address,Id,Index,geocoder, map,colorCode) {
+function geocodeAddress(address, Id, Index, geocoder, map, colorCode) {
+        //Check the address of the store, if it exists then create a marker object with store information and listener information
         geocoder.geocode({ 'address': address }, function (results, status) {
             if (status === 'OK') {
                 var icons = {
                     url:'http://www.google.com/mapfiles/marker.png?i=' + Index + ''
                 };
-                SmallIcon.push(icons);
-
                 map.setCenter(results[0].geometry.location);
+                //create a new marker
                 var marker = new google.maps.Marker({
                     map: map,
                     position: results[0].geometry.location,
@@ -331,19 +330,21 @@ function checkAddress(address) {
                     color: colorCode,
                     icon: icons.url
                 });
+                //Add a listener to show the Store panel when clicked/to zoom in the map
                 marker.addListener('click', function () {
                     map.setZoom(15);
                     $('img[src="' + this.icon + '"]').addClass('Color_Filter_' + this.color + '');
-                   // marker.setIcon(null);
                     map.setCenter(this.getPosition());
                     getStoreData(this.ObjIndex);
                     currentColor = colorCode;
                     
                 });
+                //add a listener to change the color of the marker when hovered over 
                 marker.addListener('mouseover', function () {
                     $('img[src="' + this.icon + '"]').addClass('Color_Filter_' + this.color + '');
 
                 });
+                 //add a listener to revert the color of the marker when hover lost
                 marker.addListener('mouseout', function () {
                     $('img[src="' + this.icon + '"]').removeClass('Color_Filter_' + this.color + '');
 
@@ -353,7 +354,7 @@ function checkAddress(address) {
                 
             }
             else {
-                //throw alert here 
+                DisplaySnackBar("Failed to Place Pins for Store Number "+Id,3);
             }
         });
     }
@@ -368,4 +369,14 @@ function UpdateMarkerNotify(markerId)
     }
 
    
+}
+
+// generate a link to google maps based on the ouputted geolocation data
+function genMapLink(text, status) {
+    if (!status) {
+        return "maps://maps.google.com/maps?q=" + text;
+    }
+    else {
+        return "http://maps.google.com/maps?q=" + text;
+    }
 }

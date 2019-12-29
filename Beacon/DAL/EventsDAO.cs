@@ -21,7 +21,7 @@ namespace Beacon.DAL
                 context.Database.EnsureCreated();
                 if (id != String.Empty)
                 {
-                  Meetups = context.Events.Where(a => a.Id == id).Where(b => b.Deleted != true).FirstOrDefault();
+                  Meetups = context.Events.Where(a => a.Id == id).FirstOrDefault();
 
                 }
             }
