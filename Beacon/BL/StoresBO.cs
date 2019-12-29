@@ -20,15 +20,22 @@ namespace Beacon
         {
             return _StoresDAO.Read();
         }
-        #endregion
-        #region ReadIndividual
+
         public StoreDataModel ReadIndividual(string FK)
         {
             return _StoresDAO.ReadIndividual(FK);
         }
+
         #endregion
 
         #region Insert
+
+        public void CreateNewStore(StoreDataModel newStore)
+        {
+            newStore.Id = Guid.NewGuid().ToString();
+            this.Insert(newStore);
+        }
+
         private void  Insert(StoreDataModel data)
         {
             _StoresDAO.Insert(data);
@@ -49,10 +56,6 @@ namespace Beacon
         }
         #endregion
 
-        public void CreateNewStore(StoreDataModel newStore)
-        {
-            newStore.Id = Guid.NewGuid().ToString();
-            this.Insert(newStore);
-        }
+
     }
 }

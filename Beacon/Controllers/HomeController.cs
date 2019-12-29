@@ -18,14 +18,19 @@ namespace Beacon.Controllers
 {
     public class HomeController : Controller
     {
-        IServiceProvider serviceProvider;
         private static StoresBO _storesBO = new StoresBO();
         private static EventsBO _eventsBO = new EventsBO();
-        private static GamesBO _gamesBO = new GamesBO();
+        private static GamesBO  _gamesBO = new GamesBO();
 
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult RunApp()
+        {
+            return View("Views/Home/MainPage.cshtml", StoreListInfo());
         }
 
         [HttpGet]
@@ -42,16 +47,26 @@ namespace Beacon.Controllers
         }
 
         [HttpGet]
+        public IActionResult GetStorePanel()
+        {
+            return PartialView("~/Views/PartialViews/StorePanelGroup.cshtml", StoreListInfo());
+        }
+
+        [HttpGet]
+        public IActionResult GetEventPanel(string ID, int Color, bool state)
+        {
+            EventDataModel Panel = _eventsBO.GetEventData(ID);
+            ViewBag.Color = Color;
+            ViewBag.ButtonPressed = state;
+            return PartialView("~/Views/PartialViews/EventPanel.cshtml", Panel);
+        }
+
+        [HttpGet]
         public string GetGames()
         {
             return JsonConvert.SerializeObject(_gamesBO.Read()); 
         }
 
-     [HttpGet]
-       public ActionResult RunApp()
-        {
-            return View("Views/Home/MainPage.cshtml", StoreListInfo());
-        }
 
         private List<StoreEventModel>StoreListInfo()
         {
@@ -67,22 +82,6 @@ namespace Beacon.Controllers
             }
             return allInfo;
         }
-
-        [HttpGet]
-        public IActionResult GetStorePanel()
-        {
-            return PartialView("~/Views/PartialViews/StorePanelGroup.cshtml", StoreListInfo());
-        }
-
-        [HttpGet]
-        public IActionResult GetEventPanel(string ID, int Color,bool state)
-        {
-            EventDataModel Panel = _eventsBO.GetEventData(ID);
-            ViewBag.Color = Color;
-            ViewBag.ButtonPressed = state;
-            return PartialView("~/Views/PartialViews/EventPanel.cshtml", Panel);
-        }
-
     }
 
 }

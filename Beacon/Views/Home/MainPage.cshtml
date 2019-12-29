@@ -28,12 +28,8 @@
 <partial name="~/Views/PartialViews/AddEventForm.cshtml" />
 
 
-<script src="~/lib/jquery/dist/jquery.js"></script>
-<script src="~/js/Gmap.js"></script>
-<script src="~/js/MainUI.js"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARC2ud3IHzqKVuh2ACGZXvSSb6r3cfGHA&callback=initMap"></script>
 <script>
-    var NotifyIconUrl = '@Url.Content("~/images/Marker_Notify.png")';
      var StoreCount =@Model.Count();
         var StoreObj =@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented));
         $(function () {

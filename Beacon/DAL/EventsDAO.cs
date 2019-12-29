@@ -29,28 +29,38 @@ namespace Beacon.DAL
             return Meetups;
         }
 
-
-        #endregion
-
         public List<EventDataModel> ReadAll()
         {
-
             List<EventDataModel> Meetups = new List<EventDataModel>();
             //this using statement creates our connection to the database
             using (var context = new ApplicationDBContext())
             {
                 context.Database.EnsureCreated();
-                    if (context.Events.Any())
+                if (context.Events.Any())
+                {
+                    foreach (var Meetup in context.Events)
                     {
-                        foreach (var Meetup in context.Events)
-                        {
-                            Meetups.Add(Meetup);
-                        }
+                        Meetups.Add(Meetup);
                     }
+                }
             }
 
             return Meetups;
         }
+
+        public List<EventDataModel> ReadByStore(string id)
+        {
+            List<EventDataModel> Meetups = new List<EventDataModel>();
+            //this using statement creates our connection to the database
+            using (var context = new ApplicationDBContext())
+            {
+                context.Database.EnsureCreated();
+                Meetups = context.Events.Where(a => a.StoreFK == id).Where(b => b.Deleted != true).ToList();
+            }
+            return Meetups;
+        }
+
+        #endregion
 
         #region Insert
         public void Insert(EventDataModel data)
@@ -97,16 +107,6 @@ namespace Beacon.DAL
         }
 
         #endregion
-        public List<EventDataModel> ReadByStore(string id)
-        {
-            List<EventDataModel> Meetups = new List<EventDataModel>();
-            //this using statement creates our connection to the database
-            using (var context = new ApplicationDBContext())
-            {
-                context.Database.EnsureCreated();
-                Meetups = context.Events.Where(a => a.StoreFK == id).Where(b => b.Deleted != true).ToList();
-            }
-            return Meetups;
-        }
+       
     }
 }
