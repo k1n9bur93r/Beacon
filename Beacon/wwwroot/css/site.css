@@ -46,11 +46,13 @@ body {
         margin-bottom: 30px;
     }
     .MapSize {
-        margin: 14px;
-        height: 100%;
-        min-width: 55%;
-        max-width: 100%;
-        padding: 0px;
+        display:none;
+    }
+    .MapBorder {
+        min-width: 100px;
+        box-shadow: 0 0 0 5px #174960;
+        outline: dashed 7px #ccaf76;
+        border: dashed 6px #faebcd;
     }
 }
 @media only screen and (min-device-width:769px) {
@@ -68,6 +70,12 @@ body {
         min-width: 55%;
         max-width: 100%;
         padding: 0px;
+    }
+    .MapBorder {
+        min-width: 100px;
+        box-shadow: 0 0 0 5px #174960;
+        outline: dashed 7px #ccaf76;
+        border: dashed 6px #faebcd;
     }
 }
 .StoreDisplayItem 
@@ -187,23 +195,15 @@ border-color:darkgray;
         bottom: 0;
         opacity: 0;
     }
-} 
-
-/*Gmap Stylings*/
-.MapSize {
-    margin-top:12px;
-    height: 100%;
-    min-width: 55%;
-    max-width: 100%;
-    padding: 0px;
 }
-.MapBorder {
 
-    min-width: 100px;
-    box-shadow: 0 0 0 5px #174960;
-    outline: dashed 7px #ccaf76;
-    border: dashed 6px #faebcd;
+.MapSlide {
+display:normal!important;
+height:400px;
+width:100%;
+margin-bottom:12px;
 }
+
 .Color_Filter_Base {
     filter: grayscale(100%);
     transition: all 0.09s ease;
