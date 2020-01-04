@@ -335,8 +335,9 @@ function geocodeAddress(address, Id, Index, geocoder, map, colorCode) {
                     map.setZoom(15);
                     $('img[src="' + this.icon + '"]').addClass('Color_Filter_' + this.color + '');
                     map.setCenter(this.getPosition());
-                    getStoreData(this.ObjIndex);
                     currentColor = colorCode;
+                    getStoreData(this.ObjIndex);
+                    
                     
                 });
                 //add a listener to change the color of the marker when hovered over 

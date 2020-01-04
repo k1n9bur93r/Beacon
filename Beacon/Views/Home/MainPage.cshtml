@@ -9,8 +9,8 @@
     <img class="logo" src="~/images/beacon_logo.png">
 </div>
 <div class="container-fluid">
-    <div class="row" style="height:100%">
-        <div class="col-sm-5 Store_vertical_Margin hidescroll  ">
+    <div class="row">
+        <div class="col-sm-5 Store_vertical_Margin hidescroll">
             <div id="StoreEventDataWrapper"></div>
             <div id="StoreButtonHolder">
                 <div id="StoreDataWrapper">
@@ -30,11 +30,5 @@
 <script>
      var StoreCount =@Model.Count();
         var StoreObj =@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented));
-        $(function () {
-            $('#StartTimeValue').datetimepicker({
-                format: 'LT'
-            });
-            $('#StartDateTimeValue').datetimepicker();
-        });
 </script>
 

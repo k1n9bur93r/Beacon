@@ -2,7 +2,7 @@
 for details on configuring this project to bundle and minify static web assets. */
 @font-face {
     font-family: '8_bit_partyregular';
-    src: url('css/Fonts/8_bit_party-webfont.woff2') format('woff2'), url('/css/Fonts/8_bit_party-webfont.woff') format('woff');
+    src: url('Fonts/8_bit_party-webfont.woff2') format('woff2'), url('Fonts/8_bit_party-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
@@ -49,7 +49,6 @@ body {
         display:none;
     }
     .MapBorder {
-        min-width: 100px;
         box-shadow: 0 0 0 5px #174960;
         outline: dashed 7px #ccaf76;
         border: dashed 6px #faebcd;
@@ -58,21 +57,17 @@ body {
 @media only screen and (min-device-width:769px) {
     .hidescroll {
         overflow-y: auto;
-        height: 900px;
+        height: 85vh;
     }
     .Store_vertical_Margin {
         margin-right: 2%;
-        margin-bottom: 30px;
     }
     .MapSize {
         margin-top: 12px;
-        height: 900px;
-        min-width: 55%;
-        max-width: 100%;
-        padding: 0px;
+        height: 83vh;
+        width:55%!important;
     }
     .MapBorder {
-        min-width: 100px;
         box-shadow: 0 0 0 5px #174960;
         outline: dashed 7px #ccaf76;
         border: dashed 6px #faebcd;
