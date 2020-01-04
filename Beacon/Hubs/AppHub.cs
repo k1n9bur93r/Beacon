@@ -53,7 +53,7 @@ namespace Beacon.Hubs
 
             StoreDataModel temp = _storeBO.ReadIndividual(newEvent.StoreFK);
 
-            await Clients.All.SendAsync("GetNewEvent", StoreId,newEvent.Id,temp.Name,isCurrentEvent);
+            await Clients.All.SendAsync("GetNewEvent", StoreId,newEvent.Id,newEvent.EventName,temp.Name,isCurrentEvent);
         }
 
         public async Task PostNewStore(string newStoreJSON,string CurrentColor,int currentNumber) {

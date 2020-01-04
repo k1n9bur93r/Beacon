@@ -8,7 +8,7 @@ $('body').on('click', $('input#EventToday'), function () {
 });
 
 //if the add event button was clicked, 
-$('body').on('click', 'button[id*=\'AddEvent\']', function () {
+$('body').on('click', 'button#AddEvent', function () {
     DisplayEventForm();
 });
 //if the submit 'event button' was clicked
@@ -54,11 +54,12 @@ function DisplayEventForm()
         $('div#NewEventForm').removeClass('No_Show');
         $('div#StoreDetailContainer').addClass('No_Show');
         $("html, body").animate({ scrollTop: "0px" });
-        return;
+      
     }
     else {
         $('div#NewEventForm').addClass('No_Show');
         $('div#StoreDetailContainer').removeClass('No_Show');
+        return;
     }
     //get the dropdown data for game types
     $.ajax({

@@ -1,5 +1,5 @@
 ﻿var SubbedEvents = false;// variable that keeps track if a user is currently subbed to an event
-var ActiveStore; //variable that stores the ID of the current store page a user is on
+var ActiveStore=""; //variable that stores the ID of the current store page a user is on
 var currentColor = 0; //variable that holds the color code of a current store
 var isAnimating = false; //used to keep the snackbar's animation from being reset while animating, as this tends to break the snackbar
 var LastClickedStore;

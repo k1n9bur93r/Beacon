@@ -2,7 +2,7 @@
 
 "use strict";
 
-var connection = new signalR.HubConnectionBuilder().withUrl("/appHub").withAutomaticReconnect([0, 1000, 5000, null]).build();
+var connection = new signalR.HubConnectionBuilder().withUrl("/appHub").build();
 
 connection.start().then(function () {
     console.log("SignalR Connection Made");
@@ -53,7 +53,7 @@ function PostNewEvent(eventData, IsToday, Time, StoreId) {
 }
 
 //Receve New Event from server 
-connection.on("GetNewEvent", function (StoreId, EventId, StoreName, current) {
+connection.on("GetNewEvent", function (StoreId, EventId,EventName ,StoreName, current) {
     //check if the event is a store that the user is currently viewing 
     if (StoreId == ActiveStore) {
         //check if the event is a current event or one to be scheduled 
@@ -70,7 +70,7 @@ connection.on("GetNewEvent", function (StoreId, EventId, StoreName, current) {
         DisplaySnackBar("Event " + EventName + " created at " + StoreName + "", 1);
     }
      //update the main store panel
-    if (current) {
+    if (current == true) {
         UpdateStorePanels($('div#StoreDataWrapper'));
     }
 });
