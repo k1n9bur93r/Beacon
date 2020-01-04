@@ -9,7 +9,7 @@ $('body').on('click', 'button#returnStoreDataWrapperView', function () {
 
 //If a store name is clicked, redirect to maps or website
 $('body').on('click', 'h1#StoreTitle', function () {
-    LinkToStoreDirections()
+    LinkToStoreDirections($(this));
 });
 
 //
@@ -64,9 +64,9 @@ function getStoreData(data) {
 //
 
 //Sends User to gmail store 
-function LinkToStoreDirections()
+function LinkToStoreDirections(element)
 {
-    var text = $(this).attr('Address');
+    var text = $(element).attr('Address');
     if //open map with apple maps if on ios
     ((navigator.platform.indexOf("iPhone") != -1) ||
     (navigator.platform.indexOf("iPad") != -1) ||
