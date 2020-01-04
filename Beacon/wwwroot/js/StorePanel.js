@@ -8,6 +8,7 @@ $('body').on('click', 'div#StorePanel', function () {
     var screenSpace = window.innerWidth;
     if (screenSpace > 768) {
         StorePanelClicked($(this));
+        $("html, body").animate({ scrollTop: "0px" });
     }
     else {
         if (StoreClickedCount == 0) {
@@ -16,6 +17,7 @@ $('body').on('click', 'div#StorePanel', function () {
         }
         else if (LastClickedStore == $(this).attr('StoreId') && StoreClickedCount == 1) {
             StorePanelClicked($(this));
+            $("html, body").animate({ scrollTop: "0px" });
             StoreClickedCount = 0;
         }
         else

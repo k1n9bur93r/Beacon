@@ -363,6 +363,7 @@ function SlideInMap(element,ClickID)
 {
     var getIndex;
     LastClickedStore = ClickID;
+    currentColor = $(element).attr('color');
     for (var x = 0; x < StoreObj.length; x++) {
         //if you find the store ID
         

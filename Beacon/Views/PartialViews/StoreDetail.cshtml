@@ -6,7 +6,7 @@
     ViewBag.ButtonPressed = false;
 }
 
-<div id="EventPanelWrapper" style="height:100%;" class="Event_Structure Event_Theme_@x">
+<div id="StoreDetailContainer" style="height:100%!important;" class="Event_Structure Event_Theme_@x">
 
     <div class="Event_Title_Flex">
         <div class="Center_Button">
@@ -67,3 +67,14 @@
     </div>
 
 </div>
+<div id="NewEventForm" class="No_Show">
+<partial name="~/Views/PartialViews/AddEventForm.cshtml" />
+    </div>
+<script>
+    $(function () {
+        $('#StartTimeValue').datetimepicker({
+            format: 'LT'
+        });
+        $('#StartDateTimeValue').datetimepicker();
+    });
+</script>

@@ -17,12 +17,13 @@ $('body').on('click', 'button#SubmitEvent', function () {
 });
 
 //if the Add Store form back button is clicked
-$(document).on('click', 'button#butonreturnAddEvent', function () {
+$(document).on('click', 'button#ButtonReturnAddEvent', function () {
     event.preventDefault();
     $('input#EventNameInput').val('');
     $('input#StartTimeValue').val('');
     $('input#StartDateTimeValue').val('');
-    $('div#NewEventForm').removeClass('showModal');
+    $('div#NewEventForm').addClass('No_Show');
+    $('div#StoreDetailContainer').removeClass('No_Show');
 });
 
 //
@@ -49,12 +50,15 @@ function EventTodayToggle()
 function DisplayEventForm()
 {
     //if the form is not visible, make it visible, if visible make invisible  
-    if ($('div#NewEventForm').hasClass('showModal') == true) {
-        $('div#NewEventForm').removeClass('showModal');
+    if ($('div#NewEventForm').hasClass('No_Show') == true) {
+        $('div#NewEventForm').removeClass('No_Show');
+        $('div#StoreDetailContainer').addClass('No_Show');
+        $("html, body").animate({ scrollTop: "0px" });
         return;
     }
     else {
-        $('div#NewEventForm').addClass('showModal');
+        $('div#NewEventForm').addClass('No_Show');
+        $('div#StoreDetailContainer').removeClass('No_Show');
     }
     //get the dropdown data for game types
     $.ajax({

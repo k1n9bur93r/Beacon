@@ -1,9 +1,8 @@
 ﻿
 <div class="Modal_Window">
+    <button id="ButtonReturnAddEvent" class="Event_Button_Sml_No" style="height:100%!important;width:70px!important;margin-right:100px;"><img src="~/images/backArrow.png" style="width:50px"></button>
+
     <div class="Event_Title_Flex">
-        <div class="Center_Button">
-            <button id="returnAddEvent" class="Event_Button_Sml" style="height:35px!important;width:55px!important;margin-top:5px;margin-bottom:5px;margin-right:5px" hidden><img src="~/images/backArrow.png" style="width:30px"></button>
-        </div>
         <div>
             <p class="Side_By_Side_Data BitFont_Large" style="margin-top:13px;"> Event Name:</p>
         </div>
@@ -14,35 +13,28 @@
         </div>
         <div class="Event_Margin select">
             <p class="Side_By_Side_Data BitFont_Large">Event Game:</p>
-            <select id="EventGameInput">
-            </select>
+            <select id="EventGameInput"></select>
         </div>
 
         <p class=" BitFont_Large Event_Margin">Event Date:</p>
         <div class="Side_By_Side_Data ModalFlex">
             <div class="Side_By_Side_Data ">
-                <div class="Side_By_Side_Data ">
+                <div class=" ">
                     <p class="Side_By_Side_Data BitFont_Tight">Is the Event Today?</p>
                     <input id="EventToday" class="Side_By_Side_Data" style="width:20px!important;height:20px!important" type="checkbox" checked>
-                </div>
 
-                <div class='input-group date BitFont_Tight  Side_By_Side_Data' id='StartTime'>
-                    <input type='text' class="Input_Box" id="StartTimeValue" autocomplete="off" />
-                </div>
-                <div class='input-group date No_Show BitFont_Tight  Side_By_Side_Data' id='StartDateTime'>
-                    <input type='text' class="Input_Box" id="StartDateTimeValue" autocomplete="off" />
+
+                    <div class='input-group date BitFont_Tight' id='StartTime'>
+                        <input type='text' class="Input_Box" id="StartTimeValue" autocomplete="off" />
+                    </div>
+                    <div class='input-group date No_Show BitFont_Tight' id='StartDateTime'>
+                        <input type='text' class="Input_Box" id="StartDateTimeValue" autocomplete="off" />
+                    </div>
                 </div>
             </div>
         </div>
     </form>
-    <div class="Center_Button Event_Margin">
+    <div class=" Event_Margin Side_By_Side_Data Center_Button">
         <button id="SubmitEvent" class="Event_Button_Sml BitFont_Large ">Submit New Event</button>
     </div>
 </div>
-
-<script>
-
-    $(doucment).ready(function () {
-        $('input#StartTime').val(moment().format('MM/DD/YYYY hh:mm a'));
-    });
-</script>

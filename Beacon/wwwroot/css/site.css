@@ -66,7 +66,7 @@ body {
     }
     .MapSize {
         margin-top: 12px;
-        height: 100%;
+        height: 900px;
         min-width: 55%;
         max-width: 100%;
         padding: 0px;
@@ -443,6 +443,7 @@ padding:3%;
 .Input_Box {
     background-color: #808372;
     border: dashed;
+    border: dashed;
     border-color: #51563b;
     border-width: 3px;
     height: 40px;
@@ -454,7 +455,7 @@ padding:3%;
     z-index: 1;
     padding:10px;
     background-color: white;
-    margin: 10% auto;
+    margin: 2% auto;
     background-color: #A6B07B;
     min-width:10%;
     max-width:800px;
@@ -519,15 +520,32 @@ padding:3%;
     width: 50%;
     padding: 5px;
     text-decoration: none;
-    box-shadow: inset -4.5px -4.5px 0px 0px lightgrey!important;
+    box-shadow: inset -4.5px -4.5px 0px 0px grey !important;
     transition: .09s;
     transition-timing-function: ease-in-out;
 }
-
-    .Event_Button_Sml:hover,:focus {
+    .Event_Button_Sml:hover, :focus {
         background: lightgrey;
         box-shadow: inset -4.5px -4.5px 0px 0px grey;
     }
+.Event_Button_Sml_No {
+    background: lightgrey;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    font-size: 12px;
+    width: 50%;
+    padding: 5px;
+    text-decoration: none;
+    box-shadow: inset -4.5px -4.5px 0px 0px lightgrey !important;
+    transition: .09s;
+    transition-timing-function: ease-in-out;
+}
+.Event_Button_Sml_No:hover, :focus {
+    background: grey;
+    box-shadow: inset -4.5px -4.5px 0px 0px darkgrey;
+}
+
 
 .No_Show {
 display:none!important;
