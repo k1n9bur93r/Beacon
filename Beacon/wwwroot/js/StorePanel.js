@@ -5,27 +5,7 @@
 //
 //If a store panel is clicked, we want to gather this store's information to display and adjust the map view
 $('body').on('click', 'div#StorePanel', function () {
-    var screenSpace = window.innerWidth;
-    if (screenSpace > 768) {
-        StorePanelClicked($(this));
-        $("html, body").animate({ scrollTop: "0px" });
-    }
-    else {
-        if (StoreClickedCount == 0) {
-            SlideInMap($(this), $(this).attr('StoreId'));
-            StoreClickedCount++;
-        }
-        else if (LastClickedStore == $(this).attr('StoreId') && StoreClickedCount == 1) {
-            StorePanelClicked($(this));
-            $("html, body").animate({ scrollTop: "0px" });
-            StoreClickedCount = 0;
-        }
-        else
-        {
-            SlideInMap($(this), $(this).attr('StoreId'));
-        }
-
-    }
+    determineMapSlide($(this));
 });
 
 //if a user is no longer hovering over a store panel change the color of the marker back
@@ -46,8 +26,34 @@ $('div#StorePanel').keydown(function () {
 // Logic
 //
 
+function determineMapSlide(element)
+{
+
+    var screenSpace = window.innerWidth;
+    if (screenSpace > 768) {
+        StorePanelClicked($(element));
+       
+    }
+    else {
+        if (StoreClickedCount == 0) {
+            SlideInMap($(element), $(element).attr('StoreId'), true);
+            StoreClickedCount++;
+        }
+        else if (LastClickedStore == $(element).attr('StoreId') && StoreClickedCount == 1) {
+            StorePanelClicked($(element));
+            StoreClickedCount = 0;
+            SlideInMap($(element), $(element).attr('StoreId'), false);
+        }
+        else {
+            SlideInMap($(element), $(element).attr('StoreId'), true);
+        }
+
+    }
+}
+
 //Function that is called when a store's map marker is clicked, or when a store panel is clicked
 function StorePanelClicked(element) {
+    $("html, body").animate({ scrollTop: "0px" });
     var ClickId = $(element).attr('StoreId'); //get store ID
     currentColor = $(element).attr('color');
     var getIndex;//variable that holds a current object index

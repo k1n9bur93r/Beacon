@@ -360,27 +360,35 @@ function geocodeAddress(address, Id, Index, geocoder, map, colorCode) {
         });
     }
 
-function SlideInMap(element,ClickID)
+function SlideInMap(element,ClickID,toggleSlide)
 {
     var getIndex;
-    LastClickedStore = ClickID;
-    currentColor = $(element).attr('color');
-    for (var x = 0; x < StoreObj.length; x++) {
-        //if you find the store ID
-        
-        if (markers[x].StoreId == ClickID) {
-            getIndex = x;
-            break;
+    if (toggleSlide == true) {
+        LastClickedStore = ClickID;
+        currentColor = $(element).attr('color');
+        for (var x = 0; x < StoreObj.length; x++) {
+            //if you find the store ID
+
+            if (markers[x].StoreId == ClickID) {
+                getIndex = x;
+                break;
+            }
         }
+        google.maps.event.trigger(markers[getIndex], 'mouseover');
+        map.panTo(markers[getIndex].getPosition());
+        map.setZoom(13);
+        $('div#map').removeClass('col-sm-6');
+        $('div#map').addClass('MapSlide');
+        $('div#map').toggle(true);
+        $('div#map').insertAfter(element);
+        $('html, body').animate({ scrollTop: ($('div#map').first().offset().top - $('div#map').height() / 2) }, 500);
     }
-    google.maps.event.trigger(markers[getIndex], 'mouseover');
-    map.panTo(markers[getIndex].getPosition());
-    map.setZoom(13);
-    $('div#map').removeClass('col-sm-6');
-    $('div#map').addClass('MapSlide');
-    $('div#map').toggle(true);
-    $('div#map').insertAfter(element);
-    $('html, body').animate({ scrollTop: ($('div#map').first().offset().top - $('div#map').height() / 2)}, 500);
+    else
+    {
+        $('div#map').insertAfter($('div.row'));
+        $('div#map').removeClass('MapSlide');
+        $('div#map').toggle(false);
+    }
    
 
 }

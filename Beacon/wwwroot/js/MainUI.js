@@ -49,6 +49,6 @@ function DisplaySnackBar(msgtext, state) {
             $("div#snackbar").removeClass('show');
             $("div#snackbar").removeClass(classname);
             isAnimating = false;
-        }, 3000);
+        }, 6000);
     }
 }

@@ -2,7 +2,7 @@
 
 "use strict";
 
-var connection = new signalR.HubConnectionBuilder().withUrl("/appHub").build();
+var connection = new signalR.HubConnectionBuilder().withUrl("/appHub").withAutomaticReconnect([0, 1000, 5000, null]).build();
 
 connection.start().then(function () {
     console.log("SignalR Connection Made");
