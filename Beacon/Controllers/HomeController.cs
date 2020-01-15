@@ -24,14 +24,14 @@ namespace Beacon.Controllers
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        [HttpGet]
-        public ActionResult RunApp()
-        {
             return View("Views/Home/MainPage.cshtml", StoreListInfo());
         }
+
+        //[HttpGet]
+        //public ActionResult RunApp()
+        //{
+        //    return View("Views/Home/MainPage.cshtml", StoreListInfo());
+        //}
 
         [HttpGet]
         public IActionResult GetStoreDetail(string JSON, int Color)
