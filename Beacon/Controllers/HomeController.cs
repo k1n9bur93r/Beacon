@@ -27,6 +27,7 @@ namespace Beacon.Controllers
             return View("Views/Home/MainPage.cshtml", StoreListInfo());
         }
 
+        //hello
         //[HttpGet]
         //public ActionResult RunApp()
         //{
