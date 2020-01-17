@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Beacon.BL;
-using Beacon.Models;
 using System.IO;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -27,7 +26,6 @@ namespace Beacon.Controllers
             return View("Views/Home/MainPage.cshtml", StoreListInfo());
         }
 
-        //hello
         //[HttpGet]
         //public ActionResult RunApp()
         //{
@@ -40,6 +38,7 @@ namespace Beacon.Controllers
             ViewBag.Color = Color;
             return PartialView("Views/PartialViews/StoreDetail.cshtml", _eventsBO.GetStoreEvents(new StoreEventModel { Store = JsonConvert.DeserializeObject<StoreDataModel>(JSON)}));
         }
+
 
         [HttpGet]
         public IActionResult GetStoreDetailEvents(string ID)
@@ -57,6 +56,7 @@ namespace Beacon.Controllers
         public IActionResult GetEventPanel(string ID, int Color, bool state)
         {
             EventDataModel Panel = _eventsBO.GetEventData(ID);
+            Panel.GameFK = _gamesBO.CurrentEventGame(Panel.GameFK);
             ViewBag.Color = Color;
             ViewBag.ButtonPressed = state;
             return PartialView("~/Views/PartialViews/EventPanel.cshtml", Panel);

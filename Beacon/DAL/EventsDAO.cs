@@ -1,5 +1,4 @@
-﻿using Beacon.Models;
-using DB;
+﻿using DB;
 using Models;
 using System;
 using System.Collections.Generic;

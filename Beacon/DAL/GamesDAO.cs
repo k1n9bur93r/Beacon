@@ -1,4 +1,4 @@
-﻿using Beacon.Models;
+﻿using Models;
 using DB;
 using System;
 using System.Collections.Generic;
@@ -30,6 +30,19 @@ namespace Beacon.DAL
             return Activites;
         }
 
+        public GameDataModel ReadSingle(string ID) {
+            GameDataModel Activity = new GameDataModel();
+            using (var context=new ApplicationDBContext())
+            {
+                context.Database.EnsureCreated();
+                if (ID != String.Empty)
+                {
+                    Activity = context.Games.Where(a => a.Id == ID).FirstOrDefault();
+
+                }
+            }
+            return Activity;
+        }
 
         #endregion
 

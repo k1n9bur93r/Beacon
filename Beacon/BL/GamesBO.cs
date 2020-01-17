@@ -1,5 +1,5 @@
 ﻿using Beacon.DAL;
-using Beacon.Models;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +20,12 @@ namespace Beacon.BL
         public List<GameDataModel> Read()
         {
             return _GamesDAO.Read();
+        }
+
+        public string CurrentEventGame(string gameID)
+        {
+         GameDataModel gameData = _GamesDAO.ReadSingle(gameID);
+            return gameData.GameName;
         }
         #endregion
 

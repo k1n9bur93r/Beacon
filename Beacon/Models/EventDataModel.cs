@@ -12,7 +12,7 @@ namespace Models
         public string Id { get; set; }
         [Required]
         [MaxLength(2048)]
-        public string EventName { get; set; }
+        public string EventName { get; set; } 
         [Required]
         [MaxLength(2048)]
         public string StoreFK { get; set; }

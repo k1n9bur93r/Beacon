@@ -1,26 +1,31 @@
 ﻿@model EventDataModel
-@{int x = ViewBag.Color; }
-    <div id="@Model.Id" EndTime="@Model.EndDate" class="Event_Margin  Event_Sub_Structure Event_SubTheme_@x">
-        <div>
-            <p id="name" class=" BitFont_Large">@Model.EventName </p>
-            <p id="number" class="Side_By_Side_Data BitFont_Large"> @Model.Participants</p> <p id="attending" num="@Model.Participants" class="Side_By_Side_Data BitFont_Tight">&nbsp;: Attending</p>
-        </div>
-        <div>
-            <p id="startDate" class="Side_By_Side_Data BitFont_Tight"> Starting Time : </p><h4 class="Side_By_Side_Data BitFont_Tight">@Model.StartDate </h4>
-        </div>
-        <div>
-            <p id="EndDate" class="Side_By_Side_Data BitFont_Tight"> Ending Time :</p><h4 class="  Side_By_Side_Data BitFont_Tight"> @Model.EndDate</h4>
-        </div>
-        <div class="Center_Button">
-            @if (ViewBag.ButtonPressed)
-            {
-                <button id="IncStoreEvent" EventId="@Model.Id" class="Event_Button_Go No_Show BitFont_Large" tabindex="0">I'm Going!</button>
-                <button id="DecStoreEvent" EventId="@Model.Id" class="Event_Button_No  BitFont_Large" tabindex="0">Never Mind...</button>
-            }
-            else
-            {
-                <button id="IncStoreEvent" EventId="@Model.Id" class="Event_Button_Go  BitFont_Large" tabindex="0">I'm Going!</button>
-                <button id="DecStoreEvent" EventId="@Model.Id" class="Event_Button_No No_Show BitFont_Large" tabindex="0">Never Mind...</button>
-            }
-        </div>
+@using Models
+    @{ int x = ViewBag.Color;}
+<div id="@Model.Id" EndTime="@Model.EndDate" class="Event_Margin  Event_Sub_Structure Event_SubTheme_@x">
+
+    <div>
+        <p id="name" class=" BitFont_Large Side_By_Side_Data">@Model.EventName </p>
+         <p id="game" class="BitFont_Tight Side_By_Side_Data"> &nbsp;:@Model.GameFK </p>
     </div>
+    <div>
+        <p id="number" class="Side_By_Side_Data BitFont_Large"> @Model.Participants</p> <p id="attending" num="@Model.Participants" class="Side_By_Side_Data BitFont_Tight">&nbsp;: Attending</p>
+    </div>
+    <div>
+        <p id="startDate" class="Side_By_Side_Data BitFont_Tight"> Starting Time : </p><h4 class="Side_By_Side_Data BitFont_Tight">@Model.StartDate </h4>
+    </div>
+    <div>
+        <p id="EndDate" class="Side_By_Side_Data BitFont_Tight"> Ending Time :</p><h4 class="  Side_By_Side_Data BitFont_Tight"> @Model.EndDate</h4>
+    </div>
+    <div class="Center_Button">
+        @if (ViewBag.ButtonPressed)
+        {
+            <button id="IncStoreEvent" EventId="@Model.Id" class="Event_Button_Go No_Show BitFont_Large" tabindex="0">I'm Going!</button>
+            <button id="DecStoreEvent" EventId="@Model.Id" class="Event_Button_No  BitFont_Large" tabindex="0">Never Mind...</button>
+        }
+        else
+        {
+            <button id="IncStoreEvent" EventId="@Model.Id" class="Event_Button_Go  BitFont_Large" tabindex="0">I'm Going!</button>
+            <button id="DecStoreEvent" EventId="@Model.Id" class="Event_Button_No No_Show BitFont_Large" tabindex="0">Never Mind...</button>
+        }
+    </div>
+</div>

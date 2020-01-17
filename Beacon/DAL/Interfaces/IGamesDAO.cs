@@ -1,4 +1,4 @@
-﻿using Beacon.Models;
+﻿using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +10,7 @@ namespace Beacon.DAL
     {
         void Delete(GameDataModel data);
         List<GameDataModel> Read();
+        GameDataModel ReadSingle(string ID);
         void Insert(GameDataModel data);
         void Update(GameDataModel data);
 

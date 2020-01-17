@@ -1,5 +1,4 @@
-﻿using Beacon.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
 using System.Collections.Generic;

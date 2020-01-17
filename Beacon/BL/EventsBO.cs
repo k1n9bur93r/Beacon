@@ -14,6 +14,7 @@ namespace Beacon.BL
         public EventsBO()
         {
             _EventsDAO = new EventsDAO();
+
         }
 
         #region Read
@@ -21,8 +22,10 @@ namespace Beacon.BL
         public StoreEventModel GetStoreEvents(StoreEventModel Store)
         {
             Store.Events = _EventsDAO.ReadByStore(Store.Store.Id);
+           GamesBO _GamesBO = new GamesBO();
             foreach (EventDataModel Event in Store.Events)
             {
+                Event.GameFK = _GamesBO.CurrentEventGame(Event.GameFK);
                 if (Event.EndDate < DateTime.Now)
                     Event.Deleted = true;
                 if (DateTime.Now.AddMinutes(3) > Event.StartDate && Event.EndDate > DateTime.Now)
@@ -31,7 +34,7 @@ namespace Beacon.BL
                     Store.CurrentPartcipants += Event.Participants;
                 }
                 else if (Event.StartDate > DateTime.Now && Event.Deleted == false)
-                    Store.UpcommingParticipants += Event.Participants;
+                    Store.UpcomingParticipants += Event.Participants;
             }
             return Store;
         }
