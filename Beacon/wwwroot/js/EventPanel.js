@@ -46,7 +46,8 @@ function UpdateEventPanel(ID, element, state) {
         url: "/Home/GetEventPanel",
         contentType: "application/json;charset=utf-8",
         data: { "ID": ID, "Color": currentColor, "State": state },
-        dataType: "html"
+        dataType: "html",
+        headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() }
     }).done(function (data) {
         $(element).empty();
         $(element).append(data);

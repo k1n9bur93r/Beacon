@@ -77,7 +77,8 @@ function UpdateStorePanels(element) {
         type: "GET",
         url: "/Home/GetStorePanel",
         contentType: "application/json;charset=utf-8",
-        dataType: "html"
+        dataType: "html",
+        headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() }
     }).done(function (data) {
         $(element).empty();
         $(element).append(data);

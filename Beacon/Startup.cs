@@ -33,7 +33,9 @@ namespace Beacon
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
+            services.AddMvc(options=> {
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            });
             services.AddSignalR();
                 services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

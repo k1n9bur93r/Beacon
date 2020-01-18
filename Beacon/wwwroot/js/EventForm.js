@@ -18,12 +18,7 @@ $('body').on('click', 'button#SubmitEvent', function () {
 
 //if the Add Store form back button is clicked
 $(document).on('click', 'button#ButtonReturnAddEvent', function () {
-    event.preventDefault();
-    $('input#EventNameInput').val('');
-    $('input#StartTimeValue').val('');
-    $('input#StartDateTimeValue').val('');
-    $('div#NewEventForm').addClass('No_Show');
-    $('div#StoreDetailContainer').removeClass('No_Show');
+    returnToStoreDetail();
 });
 
 //
@@ -66,7 +61,8 @@ function DisplayEventForm()
         type: "GET",
         url: "/Home/GetGames",
         contentType: "application/json;charset=utf-8",
-        dataType: "html"
+        dataType: "html",
+        headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() }
     }
     ).done(function (data) {
         data = JSON.parse(data);
@@ -129,7 +125,19 @@ function GatherEventFormData()
         $('#EventNameInput').val("");
         $('#StartDateTimeValue').val("");
         $('#StartTimeValue').val("");
+        //return to store detail page 
+        returnToStoreDetail();
     }
+}
+
+function returnToStoreDetail()
+{
+    event.preventDefault();
+    $('input#EventNameInput').val('');
+    $('input#StartTimeValue').val('');
+    $('input#StartDateTimeValue').val('');
+    $('div#NewEventForm').addClass('No_Show');
+    $('div#StoreDetailContainer').removeClass('No_Show');
 }
 
 

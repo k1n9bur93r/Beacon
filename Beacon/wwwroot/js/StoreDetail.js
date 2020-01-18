@@ -45,7 +45,8 @@ function getStoreData(data) {
         url: "/Home/GetStoreDetail",
         contentType: "application/json;charset=utf-8",
         data: { "JSON": JSON.stringify(StoreObj[data].Store), "Color": currentColor },
-        dataType: "html"
+        dataType: "html",
+        headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() }
     }).done(function (data) {
         $('div#StoreEventDataWrapper').html(data); //inject the HTML into the webpage
         $('div#StoreEventDataWrapper').toggle(true); //Show this injected HTML
@@ -83,7 +84,8 @@ function UpdateStoreEventDetails(ID, element) {
         url: "/Home/GetStoreDetailEvents",
         contentType: "application/json;charset=utf-8",
         data: { "ID": ID },
-        dataType: "html"
+        dataType: "html",
+        headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() }
     }).done(function (data) {
         $(element).empty();
         $(element).append(data);

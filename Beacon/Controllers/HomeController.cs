@@ -33,6 +33,7 @@ namespace Beacon.Controllers
         //}
 
         [HttpGet]
+        [ValidateAntiForgeryToken]
         public IActionResult GetStoreDetail(string JSON, int Color)
         {
             ViewBag.Color = Color;
@@ -41,18 +42,21 @@ namespace Beacon.Controllers
 
 
         [HttpGet]
+        [ValidateAntiForgeryToken]
         public IActionResult GetStoreDetailEvents(string ID)
         {
             return PartialView("Views/PartialViews/StoreDetailEvents.cshtml", _eventsBO.GetStoreEvents(new StoreEventModel { Store = new StoreDataModel { Id = ID }}));
         }
 
         [HttpGet]
+        [ValidateAntiForgeryToken]
         public IActionResult GetStorePanel()
         {
             return PartialView("~/Views/PartialViews/StorePanelGroup.cshtml", StoreListInfo());
         }
 
         [HttpGet]
+        [ValidateAntiForgeryToken]
         public IActionResult GetEventPanel(string ID, int Color, bool state)
         {
             EventDataModel Panel = _eventsBO.GetEventData(ID);
@@ -63,6 +67,7 @@ namespace Beacon.Controllers
         }
 
         [HttpGet]
+        [ValidateAntiForgeryToken]
         public string GetGames()
         {
             return JsonConvert.SerializeObject(_gamesBO.Read()); 
